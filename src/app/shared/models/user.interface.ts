@@ -5,8 +5,8 @@ export interface User{
 }
 
 export interface UserResponse{
-    message: string;
+    message: string; //Opcional
     token: string;
-    userID: number;
-    rol: Roles;
+    userID: number; //Opcional
+    rol: Roles; //Necesario para mostrar las diferentes pantallas a cada usuario
 }

@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  API_URL:'http://13.80.8.137:8083/api/1/login'
+  API_URL:'http://13.80.8.137/api/1'
 };
 
 /*

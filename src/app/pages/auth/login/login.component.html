@@ -2,13 +2,15 @@
     <mat-card class="mat-card">
         <mat-card-content>
             <h1>Login</h1>
+            <form [formGroup] = "loginForm" (ngSubmit)="onLogin()">
             <mat-form-field class="full-width-input">
-                <input matInput type="text" placeholder="Usuario" required>
+                <input matInput formControlName="username" ype="text" placeholder="Usuario" required>
             </mat-form-field>
             <mat-form-field class="full-width-input">
-                <input matInput type="password" placeholder="Contraseña" required>
+                <input matInput formControlName="password" type="password" placeholder="Contraseña" required>
             </mat-form-field>
             <button mat-raised-button color="primary">Iniciar sesion</button>
+        </form>
         </mat-card-content>
     </mat-card>
     
