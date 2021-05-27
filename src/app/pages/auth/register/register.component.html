@@ -1,0 +1,25 @@
+<div class="login-form">
+    <mat-card class="mat-card">
+        <mat-card-content>
+            <h1>Registro</h1>
+            <form [formGroup] = "registerForm" (ngSubmit)="onRegister()">
+            <mat-form-field class="full-width-input">
+                <input matInput formControlName="name" ype="text" placeholder="Nombre" required>
+            </mat-form-field>
+            <mat-form-field class="full-width-input">
+                <input matInput formControlName="lastname" ype="text" placeholder="Apellidos" required>
+            </mat-form-field>
+            <mat-form-field class="full-width-input">
+                <input matInput formControlName="username" ype="text" placeholder="Usuario" required>
+            </mat-form-field>
+            <mat-form-field class="full-width-input">
+                <input matInput formControlName="password" type="password" placeholder="Contraseña" required>
+            </mat-form-field>
+            <mat-form-field class="full-width-input">
+                <input matInput formControlName="rol" type="number" placeholder="Rol" required>
+            </mat-form-field>
+            <button mat-raised-button color="primary">Registrarse</button>
+        </form>
+        </mat-card-content>
+    </mat-card>
+</div>
