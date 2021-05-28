@@ -1,20 +1,33 @@
-import { Component, OnInit, Output, EventEmitter} from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, OnDestroy} from '@angular/core';
 import { AuthService } from '@app/pages/auth/auth.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
   isAdmin = false;
   isLogged = false;
+  
+  //Generamos un objeto de tipo Subscription que nos ayadará con la perfomance de la aplicacion, 
+  // ya que no dejaremos abiertos objetos de tipo Observable que consuman memoria de la aplicacion
+  private subscription: Subscription = new Subscription;
+
   @Output() toggleSidenav = new EventEmitter<void>();
   constructor(private authSvc:AuthService) { }
 
   ngOnInit(): void {
+    this.subscription.add(
+      this.authSvc.isLogged.subscribe( (res) => (this.isLogged = res))
+    );
     //Comprobamos si esta logado y asignamos la respuesta a la varibale isLogged, que cambiara los botones del html
-    this.authSvc.isLogged.subscribe( (res) => (this.isLogged = res));
+    
+  }
+  //Eliminara el subscrible (suelen ser Observable) añadido en init
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   onToggleSidenav(): void{

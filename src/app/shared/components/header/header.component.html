@@ -1,6 +1,7 @@
 <mat-toolbar color="primary">
     <ng-container *ngIf="!isAdmin; else viewAdmin">
-    <span>TFG</span>
+    <a mat-mini-fab routerLink="/">TFG</a>
+    
     <span class="spacer"></span>
     <div>
         <a mat-button *ngIf="!isLogged; else viewLogout" routerLink="/login">Login</a>

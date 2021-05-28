@@ -24,15 +24,14 @@ export class AuthService {
   }
   /* Recibimos un authUser de tipo User (lo hemos creado nosotros en user.interface y se pueden añadir mas registros) */
   login(authData:string): Observable < UserResponse | void > {
+    console.log("En auth.service enviamos la peticion a la BD ->", authData)
     /* A la general del servidor habra que acceder al regustro de login */
     return this.http.post<UserResponse>(`${environment.API_URL}/login`, authData).pipe(
       map( (res: UserResponse) => {
         console.log("En auth.service obtenemos la respuesta de la BD ->", res)
         /* Guardamos el token. En la respuesta tiene que venir un campo llamado token */
         this.saveToken(res.token);
-        var rol = "SuperUser";
-        this.saveRol(rol);
-        //this.saveRol(res.rol);
+        this.saveRol(res.rol);
         //Guardamos que esta logado
         this.loggedIn.next(true);
         return res;
@@ -42,6 +41,7 @@ export class AuthService {
   }
   logout():void{
     localStorage.removeItem('token');
+    localStorage.removeItem('rol');
     this.loggedIn.next(false);
     //Le decimos que cuando nos desloguemos nos lleve a login de nuevo
     this.router.navigate(['login']);
@@ -74,9 +74,9 @@ export class AuthService {
 
   //Aqui enviamos la peticion de registro al server
   register(authData:any): Observable < any > {
-    console.log("En authSErvice ->", authData)
+    console.log("En authService ->", authData)
     /* A la general del servidor habra que acceder al regustro de usuarios */
-    return this.http.post(`${environment.API_URL}/register`, authData).pipe(
+    return this.http.post(`${environment.API_URL}/register`, authData, {responseType: 'text'}).pipe(
       map( (res: any) => {
         console.log("En auth.service obtenemos la respuesta de la BD ->", res)
         return res;

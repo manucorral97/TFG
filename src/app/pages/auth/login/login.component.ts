@@ -1,32 +1,42 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { FormBuilder} from '@angular/forms';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   loginForm = this.fb.group({
     username:[""],
     password: [""]
   });
 
+  //Generamos un objeto de tipo Subscription que nos ayadará con la perfomance de la aplicacion
+  private subscription: Subscription = new Subscription;
+
   constructor(private authSvc: AuthService, private fb:FormBuilder, private router: Router ) { }
 
-  ngOnInit(): void {
 
+  ngOnInit(): void {  }
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   onLogin():void{
     const formValue = this.loginForm.value;
-    this.authSvc.login(formValue).subscribe( (res) => {
-      if (res){
-        this.router.navigate([""]);
-      }
-    })
+    //No es necesario pasarlo a JSON para que las keys tengan ""
+    //var form = JSON.stringify(formValue);
+    this.subscription.add(
+      this.authSvc.login(formValue).subscribe( (res) => {
+        if (res){
+          this.router.navigate([""]);
+        }
+      })
+    )
   }
 
 }
