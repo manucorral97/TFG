@@ -27,7 +27,13 @@ const routes: Routes = [
       //Comporbamos si ya esta logeado para que no pueda acceder a la ruta
       canActivate:[CheckLoginGuard]
   },
-  { path: 'register', loadChildren: () => import('./pages/auth/register/register.module').then(m => m.RegisterModule) },
+  { path: 'register', 
+    loadChildren: () => 
+      import('./pages/auth/register/register.module').then(m => m.RegisterModule),
+      //Comporbamos si ya esta logeado para que no pueda acceder a la ruta
+      canActivate:[CheckLoginGuard]
+      //Quiero comprobar tambien que no acceda al registro si no es superAdmin (?)
+  },
 ];
 
 @NgModule({

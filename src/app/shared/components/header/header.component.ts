@@ -8,7 +8,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  isAdmin = false;
+  userRol = "";
   isLogged = false;
   
   //Generamos un objeto de tipo Subscription que nos ayadará con la perfomance de la aplicacion, 
@@ -16,12 +16,17 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private subscription: Subscription = new Subscription;
 
   @Output() toggleSidenav = new EventEmitter<void>();
-  constructor(private authSvc:AuthService) { }
+  constructor(public authSvc:AuthService) { }
 
   ngOnInit(): void {
     this.subscription.add(
-      this.authSvc.isLogged.subscribe( (res) => (this.isLogged = res))
-    );
+      this.authSvc.isLogged.subscribe( (res) => (this.isLogged = res)));
+
+    //Comprobamos el rol que tiene 
+    this.subscription.add(
+      this.authSvc.userRol.subscribe( (res) => (this.userRol = res)));
+    
+
     //Comprobamos si esta logado y asignamos la respuesta a la varibale isLogged, que cambiara los botones del html
     
   }

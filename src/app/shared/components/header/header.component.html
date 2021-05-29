@@ -1,24 +1,26 @@
 <mat-toolbar color="primary">
-    <ng-container *ngIf="!isAdmin; else viewAdmin">
+    <!-- Titulo -->
     <a mat-mini-fab routerLink="/">TFG</a>
-    
-    <span class="spacer"></span>
+    <!-- Menu si esta logado -->
+    <ng-container>
+        <button mat-icon-button *ngIf="isLogged;" (click)="onToggleSidenav()">
+            <mat-icon>
+                menu
+            </mat-icon>
+        </button>
+    </ng-container>
+
+    <!-- Dejamos hueco para las opciones -->
+    <span class="spacer"></span>    
     <div>
+        <!-- Si esta logado y es superAdmin que pueda registrar a gente -->
+        <a mat-button *ngIf="isLogged && userRol == '0' " routerLink="/register">Registro</a>
+        <!-- Si no esta logado que aparezca login -->
         <a mat-button *ngIf="!isLogged; else viewLogout" routerLink="/login">Login</a>
-        
-        <a mat-button *ngIf="!isLogged;" routerLink="/register">Registro</a>
     </div>
-</ng-container>
 </mat-toolbar>
+
+<!-- Si esta logado que me cambie el boton de login por logout-->
 <ng-template #viewLogout>
     <a mat-button (click)="onLogout()">Logout</a>
-</ng-template>
-
-<ng-template #viewAdmin>
-    <button mat-icon-button (click)="onToggleSidenav()">
-        <mat-icon>
-            menu
-        </mat-icon>
-    </button>
-    <span class="spacer"></span>
 </ng-template>
