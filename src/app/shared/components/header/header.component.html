@@ -6,7 +6,7 @@
     <div>
         <a mat-button *ngIf="!isLogged; else viewLogout" routerLink="/login">Login</a>
         
-        <a mat-button routerLink="/register">Registro</a>
+        <a mat-button *ngIf="!isLogged;" routerLink="/register">Registro</a>
     </div>
 </ng-container>
 </mat-toolbar>

@@ -7,9 +7,14 @@
                 <input matInput formControlName="username" ype="text" placeholder="Usuario" required>
             </mat-form-field>
             <mat-form-field class="full-width-input">
-                <input matInput formControlName="password" type="password" placeholder="Contraseña" required>
+                <input matInput formControlName="password" [type] = "hide ? 'password' : 'text'" placeholder="Contraseña" required>
+                <button mat-icon-button matSuffix (click)="hide = !hide">
+                    <mat-icon>
+                        {{ hide ? "visibility_off" : "visibility" }}
+                    </mat-icon>
+                </button>
             </mat-form-field>
-            <button mat-raised-button color="primary">Iniciar sesion</button>
+            <button [disabled]="loginForm.invalid" type="submit" mat-raised-button color="primary">Iniciar sesion</button>
         </form>
         </mat-card-content>
     </mat-card>
