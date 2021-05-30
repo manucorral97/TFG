@@ -10,7 +10,7 @@ import { map, take } from 'rxjs/operators';
 export class CheckLoginGuard implements CanActivate {
   constructor(private authSvc: AuthService){}
   canActivate(): Observable<boolean>{
-    console.log("El guard de login envia esto: ", this.authSvc.isLogged.pipe(take(1),map( (isLogged: boolean)=> !isLogged)));
+    //console.log("El guard de login envia esto: ", this.authSvc.isLogged.pipe(take(1),map( (isLogged: boolean)=> !isLogged)));
     return this.authSvc.isLogged.pipe(
       take(1),
       map( (isLogged: boolean)=> !isLogged)

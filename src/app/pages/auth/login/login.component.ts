@@ -19,6 +19,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   private subscription: Subscription = new Subscription;
 
   hide = true;
+  //Creamos una varibale que nos servira para mostrar un mensaje por pantlla en caso de que no haya usuario registrado
+  statusLogin = true;
 
   constructor(private authSvc: AuthService, private fb:FormBuilder, private router: Router ) { }
 
@@ -33,14 +35,21 @@ export class LoginComponent implements OnInit, OnDestroy {
     if(this.loginForm.invalid){
       return;
     }
+    //Llamamos al modulo de autenticacion a la funcion del estatus y cogemos la respuesta
+    this.authSvc.statusLogin.subscribe( (res) => (this.statusLogin = res));
 
     const formValue = this.loginForm.value;
     //No es necesario pasarlo a JSON para que las keys tengan ""
     //var form = JSON.stringify(formValue);
     this.subscription.add(
       this.authSvc.login(formValue).subscribe( (res) => {
+        console.log(res)
         if (res){
+          console.log(res)
           this.router.navigate([""]);
+        }
+        else{
+          console.log(res)
         }
       })
     )

@@ -15,6 +15,7 @@
                 </button>
             </mat-form-field>
             <button [disabled]="loginForm.invalid" type="submit" mat-raised-button color="primary">Iniciar sesion</button>
+        <p *ngIf="!statusLogin"> Usuario o contraseña incorrectos</p>
         </form>
         </mat-card-content>
     </mat-card>
