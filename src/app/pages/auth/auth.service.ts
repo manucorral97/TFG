@@ -26,7 +26,7 @@ export class AuthService {
   }
 
   get userRol():Observable < string >{
-    console.log(this.rol.asObservable());
+    console.log("ELEEEEE", this.rol.asObservable());
     return this.rol.asObservable();
   }
 

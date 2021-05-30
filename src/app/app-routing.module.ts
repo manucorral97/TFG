@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CheckLoginGuard } from '@shared/guards/check-login.guard';
+import { CheckRolGuard } from './shared/guards/check-rol.guard';
 
 const routes: Routes = [
   {
@@ -30,9 +31,11 @@ const routes: Routes = [
   { path: 'register', 
     loadChildren: () => 
       import('./pages/auth/register/register.module').then(m => m.RegisterModule),
-      //Comporbamos si ya esta logeado para que no pueda acceder a la ruta
-      canActivate:[CheckLoginGuard]
-      //Quiero comprobar tambien que no acceda al registro si no es superAdmin (?)
+      data:{
+        allowRol : '0'
+      },
+      //Comporbamos si ya esta logeado para que no pueda acceder a la ruta y que tenga los permisos
+      canActivate:[CheckRolGuard]
   },
 ];
 
