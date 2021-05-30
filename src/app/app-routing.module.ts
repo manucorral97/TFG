@@ -20,6 +20,11 @@ const routes: Routes = [
     path: 'admin',
     loadChildren: () =>
       import('./pages/admin/admin.module').then((m) => m.AdminModule),
+      data:{
+        allowRol : ['0','1']
+      },
+      //Comporbamos si ya esta logeado para que no pueda acceder a la ruta y que tenga los permisos
+      canActivate:[CheckRolGuard]
   },
   {
     path: 'login',

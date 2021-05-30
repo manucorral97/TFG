@@ -24,7 +24,7 @@ export class CheckRolGuard implements CanActivate {
     if (rol){
       console.log("Tenemos este rol", rol);
       console.log("Se permiten estos roles para esta ruta,", route.data.allowRol);
-      if (rol.includes(route.data.allowRol)){
+      if (route.data.allowRol.includes(rol)){
         console.log("Se incluye! ", rol);
         return true;
       } else{

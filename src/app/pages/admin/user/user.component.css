@@ -1,0 +1,18 @@
+table{
+    width: 97%;
+    margin: 0 auto;
+    margin-top: 1rem;
+}
+
+th.mat-sort-header-sorted {
+    color: black;
+}
+
+.button-edit{
+    width: 20%;
+    margin-right: 10%;
+}
+.button-delete{
+    width: 20%;
+
+}

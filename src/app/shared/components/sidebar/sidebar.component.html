@@ -1,1 +1,15 @@
-<p>sidebar works!</p>
+<mat-nav-list>
+    <a mat-list-item routerLink="/admin">
+        <mat-icon>
+            insert_chart_outlined
+        </mat-icon>
+        <span class="nav-link">Dashboard</span>
+    </a>
+    <!-- SOLO SI ES SUPERADMIN (entiendo) -->
+    <a mat-list-item *ngIf="isLogged && userRol == '0'||'1' " routerLink="admin/users" >
+        <mat-icon>
+            people
+        </mat-icon>
+        <span class="nav-link">Usuarios</span>
+    </a>
+</mat-nav-list>

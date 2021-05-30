@@ -2,7 +2,8 @@
     position: absolute;
     bottom: 0;
     width: 100%;
-    background-color: black;
+    height: 10%;
+    background-color: grey;
     color: aliceblue;
 
 }
