@@ -13,8 +13,8 @@ export class AdminComponent implements OnInit {
   }
 
   
-  url="../images/logo_uva.jpeg";
-  
+  url="https://www.elegantthemes.com/blog/wp-content/uploads/2014/01/import-export-wordpress-content.png";
+
   onSelectFile(e:any){
     if(e.target.files){
       var reader = new FileReader();

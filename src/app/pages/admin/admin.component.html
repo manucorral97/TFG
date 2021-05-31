@@ -1,12 +1,16 @@
 <div class="container-center">
-    <img [src]="url">
+    <img [src]="url"><br>
 
-        <mat-icon>
-            cloud_upload
-        </mat-icon>
+    <div class="container-file">
+        <label class="custom-file">
+    <mat-icon class="icon">
+        file_upload
         <input type="file" (change)="onSelectFile($event)">
-        <span>Selecciona un fichero</span>
-
+    </mat-icon>
+    
+    </label>
+    </div>
+    <span>Seleccione una imagen</span>
 
 </div>
 

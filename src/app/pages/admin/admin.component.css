@@ -3,13 +3,19 @@
 }
 
 input[type="file"]{
-    display: block;
+    display: none;
     margin: auto;
     height: 90% !important;
 }
-
-form{
-    width: 100%;
-    margin: auto;
-
+img{
+    margin-top: 1rem;
+    width: 1024px;
+    height: 508px;
+}
+.icon{
+    padding: 5px;
+}
+.icon:hover{
+    background-color: rgba(128, 128, 128, 0.3);
+    border-radius: 100px;
 }
