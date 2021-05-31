@@ -24,10 +24,22 @@
         </mat-icon>
         <span class="nav-link">Mi granja</span>
     </a>
-    <a mat-list-item *ngIf="isLogged && userRol == '0'||'1'||'2' " routerLink="" >
+    <!-- 
+    <a mat-extension-panel *ngIf="isLogged && userRol == '0'||'1'||'2' " routerLink="" >
         <mat-icon>
             sensors
         </mat-icon>
         <span class="nav-link">Componentes</span>
-    </a>
+    </a> 
+    -->
+    <mat-expansion-panel hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <mat-icon>sensors</mat-icon>
+        Componentes
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <p>Humedad</p>
+        <p>Temperatura</p>
+      </mat-expansion-panel>
 </mat-nav-list>

@@ -5,5 +5,5 @@
     /*  background-size: 100% 100%; */
     background-position: top center;
     background-repeat: no-repeat;
-    overflow-x: auto;
+    overflow: hidden;
   }

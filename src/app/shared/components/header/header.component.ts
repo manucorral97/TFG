@@ -10,6 +10,7 @@ import { Subscription } from 'rxjs';
 export class HeaderComponent implements OnInit, OnDestroy {
   userRol = "";
   isLogged = false;
+  show = false;
   
   //Generamos un objeto de tipo Subscription que nos ayadará con la perfomance de la aplicacion, 
   // ya que no dejaremos abiertos objetos de tipo Observable que consuman memoria de la aplicacion
@@ -36,11 +37,18 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   onToggleSidenav(): void{
+    this.show = true;
     this.toggleSidenav.emit();
   }
 
   onLogout():void{
     this.authSvc.logout();
+    console.log(this.show);
+    //Si la sidebar esta expuesta, al deslogarse la cerramos
+    if(this.show == true){
+      this.toggleSidenav.emit();
+    }
+
   }
 
 }
