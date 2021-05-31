@@ -12,4 +12,22 @@
         </mat-icon>
         <span class="nav-link">Usuarios</span>
     </a>
+    <a mat-list-item *ngIf="isLogged && userRol == '0' " routerLink="admin/users" >
+        <mat-icon>
+            agriculture
+        </mat-icon>
+        <span class="nav-link">Granjas</span>
+    </a>
+    <a mat-list-item *ngIf="isLogged && userRol == '1' " routerLink="admin/users" >
+        <mat-icon>
+            agriculture
+        </mat-icon>
+        <span class="nav-link">Mi granja</span>
+    </a>
+    <a mat-list-item *ngIf="isLogged && userRol == '0'||'1'||'2' " routerLink="" >
+        <mat-icon>
+            sensors
+        </mat-icon>
+        <span class="nav-link">Componentes</span>
+    </a>
 </mat-nav-list>

@@ -1,0 +1,15 @@
+.container-center{
+    text-align: center;
+}
+
+input[type="file"]{
+    display: block;
+    margin: auto;
+    height: 90% !important;
+}
+
+form{
+    width: 100%;
+    margin: auto;
+
+}
