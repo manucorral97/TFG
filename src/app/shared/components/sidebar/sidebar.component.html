@@ -35,11 +35,27 @@
     <mat-expansion-panel hideToggle>
         <mat-expansion-panel-header>
           <mat-panel-title>
-            <mat-icon>sensors</mat-icon>
-        Componentes
+            <mat-icon>
+                sensors
+            </mat-icon>
+            Componentes
           </mat-panel-title>
-        </mat-expansion-panel-header>
-        <p>Humedad</p>
-        <p>Temperatura</p>
+    </mat-expansion-panel-header>
+    <div class="example-box" *ngFor="let c of components" cdkDrag>
+        <mat-card>
+            <mat-icon>
+                {{c.icon}}
+            </mat-icon>
+            <mat-card-header>
+                {{c.name}}
+            </mat-card-header>
+        </mat-card>
+    </div>
+            
+<!--             <p cdkDrag>Humedad</p>
+            <p cdkDrag>Temperatura</p> -->
+
       </mat-expansion-panel>
 </mat-nav-list>
+
+<div class="example-boundary"></div>

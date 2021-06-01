@@ -37,7 +37,7 @@ const routes: Routes = [
     loadChildren: () => 
       import('./pages/auth/register/register.module').then(m => m.RegisterModule),
       data:{
-        allowRol : '0'
+        allowRol : ['0','1']
       },
       //Comporbamos si ya esta logeado para que no pueda acceder a la ruta y que tenga los permisos
       canActivate:[CheckRolGuard]

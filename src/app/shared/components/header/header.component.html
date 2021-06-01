@@ -13,8 +13,8 @@
     <!-- Dejamos hueco para las opciones -->
     <span class="spacer"></span>    
     <div>
-        <!-- Si esta logado y es superAdmin que pueda registrar a gente -->
-        <a mat-button *ngIf="isLogged && userRol == '0' " routerLink="/register">Registro</a>
+        <!-- Si esta logado y es superAdmin o admin que pueda registrar a gente -->
+        <a mat-button *ngIf="isLogged && (['0','1'].includes(userRol)) " routerLink="/register">Registro</a>
         <!-- Si no esta logado que aparezca login -->
         <a mat-button *ngIf="!isLogged; else viewLogout" routerLink="/login">Login</a>
     </div>

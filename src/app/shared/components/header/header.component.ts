@@ -37,7 +37,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   onToggleSidenav(): void{
-    this.show = true;
+    //Cada vez que pulsemos en ella cambiamos su estado (open -> close -> open)
+    this.show = !this.show;
     this.toggleSidenav.emit();
   }
 
