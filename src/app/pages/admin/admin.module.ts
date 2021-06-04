@@ -7,6 +7,8 @@ import { AdminComponent } from './admin.component';
 import { MaterialModule } from '@app/material.module'
 import { RouterModule } from '@angular/router';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { MainPipe } from '@app/shared/pipes/pipes.module';
+
 
 
 @NgModule({
@@ -18,7 +20,8 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     AdminRoutingModule,
     MaterialModule,
     RouterModule,
-    DragDropModule
+    DragDropModule,
+    MainPipe
   ],
   exports:[
     AdminComponent

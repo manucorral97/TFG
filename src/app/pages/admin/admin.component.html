@@ -11,9 +11,11 @@
     </label>
     </div>
     <span>Seleccione una imagen</span>
-    {{getAGM}}
-    <div [innerHTML]="getAGM" class="respuestaHTML">
-        
+    <br>
+    {{untrustHTML}}
+    <br>
+    <div [innerHTML]="trustHTML | SafePipe : 'html' ">
+
 
     </div>
 
