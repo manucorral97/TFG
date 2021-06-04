@@ -6,19 +6,19 @@
         <span class="nav-link">Dashboard</span>
     </a>
     <!-- SOLO SI ES SUPERADMIN (entiendo) -->
-    <a mat-list-item *ngIf="isLogged && userRol == '0'||'1' " routerLink="admin/users" >
+    <a mat-list-item *ngIf="isLogged && userRol == '0'||'1' " routerLink="admin/users">
         <mat-icon>
             people
         </mat-icon>
         <span class="nav-link">Usuarios</span>
     </a>
-    <a mat-list-item *ngIf="isLogged && userRol == '0' " routerLink="admin/users" >
+    <a mat-list-item *ngIf="isLogged && userRol == '0' " routerLink="admin/users">
         <mat-icon>
             agriculture
         </mat-icon>
         <span class="nav-link">Granjas</span>
     </a>
-    <a mat-list-item *ngIf="isLogged && userRol == '1' " routerLink="admin/users" >
+    <a mat-list-item *ngIf="isLogged && userRol == '1' " routerLink="admin/users">
         <mat-icon>
             agriculture
         </mat-icon>
@@ -34,28 +34,24 @@
     -->
     <mat-expansion-panel hideToggle>
         <mat-expansion-panel-header>
-          <mat-panel-title>
-            <mat-icon>
-                sensors
-            </mat-icon>
-            Componentes
-          </mat-panel-title>
-    </mat-expansion-panel-header>
-    <div class="example-box" *ngFor="let c of components" cdkDrag>
-        <mat-card>
-            <mat-icon>
-                {{c.icon}}
-            </mat-icon>
-            <mat-card-header>
-                {{c.name}}
-            </mat-card-header>
-        </mat-card>
-    </div>
-            
-<!--             <p cdkDrag>Humedad</p>
-            <p cdkDrag>Temperatura</p> -->
-
-      </mat-expansion-panel>
+            <mat-panel-title>
+                <mat-icon>
+                    sensors
+                </mat-icon>
+                Componentes
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="example-box" *ngFor="let c of components" cdkDrag>
+            <mat-card>
+                <mat-icon>
+                    {{c.icon}}
+                </mat-icon>
+                <mat-card-header>
+                    {{c.name}}
+                </mat-card-header>
+            </mat-card>
+        </div>
+    </mat-expansion-panel>
 </mat-nav-list>
 
 <div class="example-boundary"></div>

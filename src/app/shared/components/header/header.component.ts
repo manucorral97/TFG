@@ -26,6 +26,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     //Comprobamos el rol que tiene 
     this.subscription.add(
       this.authSvc.userRol.subscribe( (res) => (this.userRol = res)));
+  
+    this.show=false;
     
 
     //Comprobamos si esta logado y asignamos la respuesta a la varibale isLogged, que cambiara los botones del html
@@ -33,6 +35,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
   //Eliminara el subscrible (suelen ser Observable) añadido en init
   ngOnDestroy(): void {
+    this.show=false;
     this.subscription.unsubscribe();
   }
 
@@ -48,6 +51,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     //Si la sidebar esta expuesta, al deslogarse la cerramos
     if(this.show == true){
       this.toggleSidenav.emit();
+      this.show=false;
     }
 
   }

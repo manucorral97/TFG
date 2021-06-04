@@ -3,6 +3,7 @@ import { AuthService } from '../auth.service';
 import { FormBuilder, Validator} from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import * as bcrypt from 'bcryptjs';
 
 @Component({
   selector: 'app-login',
@@ -14,6 +15,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     username:[""],
     password: [""]
   });
+
 
   //Generamos un objeto de tipo Subscription que nos ayadará con la perfomance de la aplicacion
   private subscription: Subscription = new Subscription;
@@ -39,13 +41,17 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.authSvc.statusLogin.subscribe( (res) => (this.statusLogin = res));
 
     const formValue = this.loginForm.value;
+
+    //formValue.password = bcrypt.hashSync(formValue.password);
+
+    //console.log("En en login pasamos:", formValue.password);
     //No es necesario pasarlo a JSON para que las keys tengan ""
     //var form = JSON.stringify(formValue);
     this.subscription.add(
       this.authSvc.login(formValue).subscribe( (res) => {
-        console.log(res)
+        //console.log(res)
         if (res){
-          console.log(res)
+          //console.log(res)
           this.router.navigate([""]);
         }
         else{

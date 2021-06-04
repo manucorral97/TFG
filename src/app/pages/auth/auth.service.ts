@@ -6,6 +6,8 @@ import { UserResponse, User, Roles } from '@app/shared/models/user.interface';
 import { catchError, map } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Router } from '@angular/router';
+import * as bcrypt from 'bcryptjs';
+
 
 const helper = new JwtHelperService;
 
@@ -16,7 +18,8 @@ export class AuthService {
   private loggedIn = new BehaviorSubject<boolean>(false);
   //Creamos una varibale donde almacenar el rol del usuario, por defecto sera nulo
   private rol = new BehaviorSubject<string>("");
-
+  //Hasheamos la contraseña para consultra la BBDD
+  private salt = 10
   private statLogin = new BehaviorSubject<boolean>(true);
   
   constructor(private http:HttpClient, private router: Router) { 
@@ -37,14 +40,13 @@ export class AuthService {
   }
 
   /* Recibimos un authUser de tipo User (lo hemos creado nosotros en user.interface y se pueden añadir mas registros) */
-  login(authData:string): Observable < UserResponse | void | any > {
-    //console.log("En auth.service enviamos la peticion a la BD ->", authData)
+  login(authData:any): Observable < any > {
+    //authData.password = bcrypt.hashSync(authData.password, this.salt);
+    console.log("Logamos con esta password ->", authData.password)
     /* A la general del servidor habra que acceder al regustro de login */
     return this.http.post<UserResponse | any >(`${environment.API_URL}/login`, authData).pipe(
       map( (res: any) => {
-        console.log("Respuesta de la BD ->", res)
         if (res != "Usuario o contraseña incorrecto"){
-          
           /* Guardamos el token. En la respuesta tiene que venir un campo llamado token */
           this.saveToken(res.token);
           this.saveRol(res.rol);
@@ -97,7 +99,8 @@ export class AuthService {
 
   //Aqui enviamos la peticion de registro al server
   register(authData:any): Observable < any > {
-    //console.log("En authService ->", authData)
+    //authData.password = bcrypt.hashSync(authData.password, this.salt);
+    
     /* A la general del servidor habra que acceder al regustro de usuarios */
     return this.http.post(`${environment.API_URL}/register`, authData, {responseType: 'text'}).pipe(
       map( (res: any) => {

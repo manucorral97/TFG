@@ -24,7 +24,12 @@
                 </mat-error>
             </mat-form-field>
             <mat-form-field class="full-width-input">
-                <input matInput formControlName="rol" type="text" placeholder="Rol" required>
+                <mat-label>Rol</mat-label>
+                <mat-select formControlName="rol">
+                    <mat-option value="0">Super Admin</mat-option>
+                    <mat-option value="1">Administrador</mat-option>
+                    <mat-option value="2">Usuario</mat-option>
+                </mat-select>
             </mat-form-field>
             <button mat-raised-button color="primary">Registrarse</button>
         </form>

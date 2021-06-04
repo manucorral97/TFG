@@ -3,6 +3,8 @@ import { AuthService } from '../auth.service';
 import { FormBuilder, Validator, Validators} from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+/* import  *  as crypto from 'crypto-js'; */
+import * as bcrypt from 'bcryptjs';
 
 @Component({
   selector: 'app-register',
@@ -12,14 +14,13 @@ import { Subscription } from 'rxjs';
 export class RegisterComponent implements OnInit, OnDestroy {
   //Generamos un objeto de tipo Subscription que nos ayadará con la perfomance de la aplicacion
   private subscription: Subscription = new Subscription;
-/*   private subscription: Subscription = new Subscription(); */  
 registerForm = this.fb.group({
     name:[""],
     lastname:[""],
     username:[""],
     //Ejemplo de validaciones en formularios, pasamos longitud minima
     password:["", [Validators.required, Validators.minLength(5)]],
-    rol: [""]
+    rol: ["", Validators.required]
   });
 
   hide = true;
@@ -37,14 +38,16 @@ registerForm = this.fb.group({
     }
     //Recogemos el formulario del html
     const formValue = this.registerForm.value;
-    //var form = JSON.stringify(formValue);
-    console.log("Desde register.component enviamos este cuerpo -> ", formValue);
-    //Llamaos a funcion register del auth.service
+    //Hasheamos la password
+    /* const salt = bcrypt.genSaltSync(10); */
+    //formValue.password = bcrypt.hashSync(formValue.password);
+    
+    //Llamamos a funcion register del auth.service
     this.subscription.add(
       this.authSvc.register(formValue).subscribe((res) => {
         if (res){
-          console.log(res)
-          this.router.navigate(["/login"]);
+          //console.log(res)
+          this.router.navigate(["/admin/users"]);
         }
       })
     )

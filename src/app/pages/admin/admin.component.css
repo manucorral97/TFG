@@ -9,8 +9,8 @@ input[type="file"]{
 }
 img{
     margin-top: 1rem;
-    width: 1024px;
-    height: 508px;
+    width: 80%;
+    height: 60%;
 }
 .icon{
     padding: 5px;

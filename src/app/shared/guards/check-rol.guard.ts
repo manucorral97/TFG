@@ -20,15 +20,15 @@ export class CheckRolGuard implements CanActivate {
   }
   checkUserRol(route: ActivatedRouteSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
     const rol = localStorage.getItem('rol')
-    console.log("Desde el auth service obtenemos este rol del usuario -> ", rol);
+    //console.log("Desde el auth service obtenemos este rol del usuario -> ", rol);
     if (rol){
-      console.log("Tenemos este rol", rol);
-      console.log("Se permiten estos roles para esta ruta,", route.data.allowRol);
+      //console.log("Tenemos este rol", rol);
+      //console.log("Se permiten estos roles para esta ruta,", route.data.allowRol);
       if (route.data.allowRol.includes(rol)){
-        console.log("Se incluye! ", rol);
+        //console.log("Se incluye! ", rol);
         return true;
       } else{
-        console.log("No se incluye...", rol);
+        //console.log("No se incluye...", rol);
         this.router.navigate([]);
         return false;
       }
