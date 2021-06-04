@@ -18,9 +18,10 @@ export class AuthService {
   private loggedIn = new BehaviorSubject<boolean>(false);
   //Creamos una varibale donde almacenar el rol del usuario, por defecto sera nulo
   private rol = new BehaviorSubject<string>("");
-  //Hasheamos la contraseña para consultra la BBDD
-  private salt = 10
+
   private statLogin = new BehaviorSubject<boolean>(true);
+  //Queremos obtener el token del usuario para el interceptor
+  private token = new BehaviorSubject<string>("");
   
   constructor(private http:HttpClient, private router: Router) { 
     this.checkToken();
@@ -35,8 +36,17 @@ export class AuthService {
     return this.rol.asObservable();
   }
 
+  //Necesario para pasarlo en el header de las peticiones
+  get rol_():string{
+    return this.rol.getValue();
+  }
+
   get statusLogin():Observable <boolean>{
     return this.statLogin.asObservable();
+  }
+
+  get userToken(): string{
+    return this.token.getValue();
   }
 
   /* Recibimos un authUser de tipo User (lo hemos creado nosotros en user.interface y se pueden añadir mas registros) */
@@ -45,15 +55,16 @@ export class AuthService {
     console.log("Logamos con esta password ->", authData.password)
     /* A la general del servidor habra que acceder al regustro de login */
     return this.http.post<UserResponse | any >(`${environment.API_URL}/login`, authData).pipe(
-      map( (res: any) => {
-        if (res != "Usuario o contraseña incorrecto"){
+      map( (user: any) => {
+        if (user != "Usuario o contraseña incorrecto"){
           /* Guardamos el token. En la respuesta tiene que venir un campo llamado token */
-          this.saveToken(res.token);
-          this.saveRol(res.rol);
+          this.saveToken(user.token);
+          this.saveRol(user.rol);
           //Guardamos que esta logado y el tipo de usuario que es
-          this.rol.next(res.rol);
+          this.rol.next(user.rol);
           this.loggedIn.next(true);
-          return res;
+          this.token.next(user.token);
+          return user;
         } else {
           console.log("MALLLLLL");
         }
@@ -68,6 +79,7 @@ export class AuthService {
     //Al deslogarse, cambiamos el rol de nuevo a nulo
     this.loggedIn.next(false);
     this.rol.next("");
+    this.token.next("");
     //Le decimos que cuando nos desloguemos nos lleve a login de nuevo
     this.router.navigate(['/login']);
   }
@@ -84,6 +96,7 @@ export class AuthService {
       } else {
         this.loggedIn.next(true);
         this.rol.next(userRol);
+        this.token.next(userToken);
       }
     }
   }

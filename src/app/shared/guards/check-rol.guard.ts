@@ -15,7 +15,7 @@ export class CheckRolGuard implements CanActivate {
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    console.log("Por ultimo, retornamos un...", this.checkUserRol(route));
+    //console.log("Por ultimo, retornamos un...", this.checkUserRol(route));
     return this.checkUserRol(route);
   }
   checkUserRol(route: ActivatedRouteSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
