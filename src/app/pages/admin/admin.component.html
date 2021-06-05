@@ -12,13 +12,12 @@
     </div>
     <span>Seleccione una imagen</span>
     <br>
-    {{untrustHTML}}
-    <br>
-    <div [innerHTML]="trustHTML | SafePipe : 'html' ">
+    {{trustHTML}}
+    <iframe [innerHTML]= "trustHTML | SafePipe : 'html' " class="respuestaHTML" width="100%" height="450">
+    </iframe>
 
-
-    </div>
-
+<!--     <div [innerHTML]= "trustHTML | SafePipe : 'html' " runScripts></div>
+ -->
 </div>
 
 
