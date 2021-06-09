@@ -11,7 +11,7 @@ import { SidebarModule } from './shared/components/sidebar/sidebar.module';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { Interceptor } from '@shared/interceptors/admin-interceptors'
+import { Interceptor } from '@shared/interceptors/admin-interceptors';
 
 
 @NgModule({

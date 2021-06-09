@@ -10,11 +10,14 @@
     
     </label>
     </div>
+    <div [innerHTML]= "this.ejemplo | SafePipe : 'html' " runScripts></div>
     <span>Seleccione una imagen</span>
     <br>
-    {{trustHTML}}
-    <iframe [innerHTML]= "trustHTML | SafePipe : 'html' " class="respuestaHTML" width="100%" height="450">
-    </iframe>
+     {{this.trustHTML}}
+
+    <div [innerHTML]="this.trustHTML | SafePipe : 'html'"></div>
+    <!-- <iframe [innerHTML]= "trustHTML" class="respuestaHTML" width="100%" height="450"></iframe>
+    <iframe [innerHTML]= "trustHTML" class="respuestaHTML" width="100%" height="450"></iframe> -->
 
 <!--     <div [innerHTML]= "trustHTML | SafePipe : 'html' " runScripts></div>
  -->

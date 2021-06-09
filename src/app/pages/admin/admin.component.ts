@@ -4,28 +4,32 @@ import { Component, OnInit, SecurityContext, ViewChild } from '@angular/core';
 import { Pipe, PipeTransform } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
+//NO FUNCIONA EL BYPPAS NI LA DIRECTIVA NI NADA
+
+
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css'],
 })
 export class AdminComponent implements OnInit {
-  private urlGET = 'http://13.80.8.137/agm';
+  private urlGET: any = 'http://13.80.8.137/agm';
+  
   trustHTML: string | null;
+  ejemplo: any = "<script>console.log('Hello! I am an alert box!');</script>";
 
   constructor(private http: HttpClient, private sanitizer: DomSanitizer) {
     this.trustHTML = '';
+    this.urlGET = this.sanitizer.sanitize(SecurityContext.URL, this.sanitizer.bypassSecurityTrustUrl(this.urlGET));
+    this.ejemplo = this.sanitizer.bypassSecurityTrustScript(this.ejemplo);
     this.http
       .get(this.urlGET, { responseType: 'text' })
-      .subscribe(
-        (data) =>
-          (this.trustHTML = this.sanitizer.sanitize(
-            SecurityContext.HTML,
-            this.sanitizer.bypassSecurityTrustHtml(data)
-          ))
+      .subscribe((data) =>
+          (this.trustHTML = this.sanitizer.sanitize(SecurityContext.URL, this.sanitizer.bypassSecurityTrustUrl(data)))
       );
-    console.log('HTML sanitizado => ', this.trustHTML);
+    //console.log('HTML sanitizado => ', this.trustHTML);
   }
+  
 
   ngOnInit(): void {
     
