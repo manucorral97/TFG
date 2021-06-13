@@ -10,17 +10,14 @@
     
     </label>
     </div>
-    <div [innerHTML]= "this.ejemplo | SafePipe : 'html' " runScripts></div>
+     <!--<div [innerHTML]= "this.ejemplo | SafePipe:'html' " runScripts  width="100%" heigth="100%"></div>-->
     <span>Seleccione una imagen</span>
     <br>
-     {{this.trustHTML}}
-
-    <div [innerHTML]="this.trustHTML | SafePipe : 'html'"></div>
-    <!-- <iframe [innerHTML]= "trustHTML" class="respuestaHTML" width="100%" height="450"></iframe>
-    <iframe [innerHTML]= "trustHTML" class="respuestaHTML" width="100%" height="450"></iframe> -->
-
-<!--     <div [innerHTML]= "trustHTML | SafePipe : 'html' " runScripts></div>
+<!--      {{this.trustHTML}}
  -->
+    <!-- Funciona, pero por la pipe me lleva a la pagina /admin cada 10 segundos este donde este -->
+    <div [innerHtml]="this.trustHTML | SafePipe:'html' " runScripts class="url"></div>
+
 </div>
 
 
