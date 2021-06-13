@@ -15,7 +15,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   
   private subscription: Subscription = new Subscription;
 
-  components = [
+  /* components = [
     {
       name: "Humedad",
       icon: "thermostat"
@@ -24,7 +24,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
       name: "Temperatura",
       icon: "water"
     }
-  ];
+  ]; */
 
   constructor(public authSvc:AuthService) { }
 
@@ -39,6 +39,16 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+  }
+
+  onDragStart():void{
+    console.log('got drag start');
+  }
+  onDragMove(event: PointerEvent):void{
+    console.log(`got drag move ${Math.round(event.clientX)} ${Math.round(event.clientY)}`);
+  }
+  onDragEnd():void{
+    console.log('got drag end');
   }
 
 }

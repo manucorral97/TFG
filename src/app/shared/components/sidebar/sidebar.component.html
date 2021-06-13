@@ -24,15 +24,8 @@
         </mat-icon>
         <span class="nav-link">Mi granja</span>
     </a>
-    <!-- 
-    <a mat-extension-panel *ngIf="isLogged && userRol == '0'||'1'||'2' " routerLink="" >
-        <mat-icon>
-            sensors
-        </mat-icon>
-        <span class="nav-link">Componentes</span>
-    </a> 
-    -->
-    <mat-expansion-panel hideToggle>
+
+<!--     <mat-expansion-panel hideToggle>
         <mat-expansion-panel-header>
             <mat-panel-title>
                 <mat-icon>
@@ -41,6 +34,7 @@
                 Componentes
             </mat-panel-title>
         </mat-expansion-panel-header>
+        
         <div class="example-box" *ngFor="let c of components" cdkDrag>
             <mat-card>
                 <mat-icon>
@@ -52,6 +46,28 @@
             </mat-card>
         </div>
     </mat-expansion-panel>
-</mat-nav-list>
+</mat-nav-list> -->
+<!-- <mat-expansion-panel hideToggle appMovableArea>
+    <mat-expansion-panel-header>
+        <mat-panel-title>
+            <mat-icon>
+                sensors
+            </mat-icon>
+            Componentes
+        </mat-panel-title>
+    </mat-expansion-panel-header>
+    
+    <div class="box" *ngFor="let c of components" appMovable [appMovableReset]="true">
+        <mat-card>
+            <mat-icon>
+                {{c.icon}}
+            </mat-icon>
+            <mat-card-header>
+                {{c.name}}
+            </mat-card-header>
+        </mat-card>
+    </div>
+</mat-expansion-panel>
+</mat-nav-list> -->
 
-<div class="example-boundary"></div>
+<!-- <div class="example-boundary"></div> -->

@@ -1,3 +1,4 @@
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, SecurityContext, ViewChild } from '@angular/core';
 
@@ -12,6 +13,19 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
   styleUrls: ['./admin.component.css'],
 })
 export class AdminComponent implements OnInit {
+  components = [
+    {
+      name: "Humedad",
+      icon: "water"
+    },
+    {
+      name: "Temperatura",
+      icon: "thermostat"
+    }
+  ];
+
+  container=[];
+
   private urlGET: any = 'http://13.80.8.137/agm';
   
   trustHTML: string | null;
@@ -46,5 +60,18 @@ export class AdminComponent implements OnInit {
         this.url = event.target.result;
       };
     }
+  }
+  onDrop(event: CdkDragDrop<string[] | any>){
+    if(event.previousContainer === event.container){
+      moveItemInArray(event.container.data,
+        event.previousIndex,
+        event.currentIndex);
+    }
+    else{
+      transferArrayItem(event.previousContainer.data,
+        event.container.data,
+        event.previousIndex, event.currentIndex);
+    }
+
   }
 }

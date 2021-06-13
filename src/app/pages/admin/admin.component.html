@@ -1,23 +1,69 @@
-<div class="container-center">
-    <img [src]="url"><br>
+<div class="container-center" >
+    <img [src]="url" >
+    
+    
+    
+    <br>
 
     <div class="container-file">
         <label class="custom-file">
-    <mat-icon class="icon">
-        file_upload
-        <input type="file" (change)="onSelectFile($event)">
-    </mat-icon>
+            <mat-icon class="icon">
+                file_upload
+                <input type="file" (change)="onSelectFile($event)">
+            </mat-icon>
+         </label>
     
-    </label>
     </div>
-     <!--<div [innerHTML]= "this.ejemplo | SafePipe:'html' " runScripts  width="100%" heigth="100%"></div>-->
     <span>Seleccione una imagen</span>
+     <!--<div [innerHTML]= "this.ejemplo | SafePipe:'html' " runScripts  width="100%" heigth="100%"></div>-->
     <br>
-<!--      {{this.trustHTML}}
- -->
+    <!--{{this.trustHTML}}-->
     <!-- Funciona, pero por la pipe me lleva a la pagina /admin cada 10 segundos este donde este -->
-    <div [innerHtml]="this.trustHTML | SafePipe:'html' " runScripts class="url"></div>
+    <div [innerHtml]="this.trustHTML " runScripts class="url" style="margin-left: auto; margin-right: auto;"></div>
+
+    <div class="box-container">
+        <div class="box" *ngFor="let c of components" cdkDrag >
+            <mat-card>
+                <mat-icon>
+                    {{c.icon}}
+                </mat-icon>
+                <div class="title">
+                    {{c.name}}
+                </div>
+            </mat-card>
+        </div>
+    </div>
+    
+
+<!--     <mat-expansion-panel hideToggle class="container_box"
+    cdkDropList
+    #component="cdkDropList"  
+    [cdkDropListData]="components"
+    
+    (cdkDropListDropped)='onDrop($event)'
+    >
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                <mat-icon>
+                    sensors
+                </mat-icon>
+                Componentes
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        
+        <div class="box" *ngFor="let c of components" cdkDrag >
+            <mat-card>
+                <mat-icon>
+                    {{c.icon}}
+                </mat-icon>
+                <mat-card-header>
+                    {{c.name}}
+                </mat-card-header>
+            </mat-card>
+        </div>
+    </mat-expansion-panel> -->
 
 </div>
+
 
 

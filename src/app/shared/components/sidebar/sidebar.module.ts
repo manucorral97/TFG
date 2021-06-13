@@ -15,7 +15,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     CommonModule,
     MaterialModule,
     RouterModule,
-    DragDropModule
+    DragDropModule,
   ],
   exports:[
     SidebarComponent

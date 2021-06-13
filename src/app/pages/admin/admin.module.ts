@@ -23,7 +23,7 @@ import { Directive } from '@shared/directives/directive.module';
     RouterModule,
     DragDropModule,
     MainPipe,
-    Directive
+    Directive,
   ],
   exports:[
     AdminComponent
