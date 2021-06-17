@@ -1,0 +1,20 @@
+.date_select{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    border: 1px solid black;
+}
+
+button{
+    text-decoration: none;
+    color: black;
+    font-size: x-large;
+    text-align: center;
+    margin-right: 2px;
+    height: fit-content;
+    margin-top: 10px;
+}
+
+button:hover{
+    color: darkred;
+}

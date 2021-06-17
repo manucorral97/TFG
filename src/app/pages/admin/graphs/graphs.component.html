@@ -1,8 +1,28 @@
-<p>graphs works!</p>
+<p>Elige unas fechas...</p>
 
-<mat-form-field class="example-full-width" appearance="fill">
-    <mat-label>Choose a date</mat-label>
-    <input matInput [matDatepicker]="picker">
-    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker touchUi #picker></mat-datepicker>
-  </mat-form-field>
+<div class="date_select">
+    <button (click)="oneHour()">Una hora</button>
+    <button (click)="oneDay()">Un día</button>
+    <button (click)="oneWeek()">Una semana</button>
+    
+    <mat-form-field appearance="fill" class="range_picker">
+        <mat-label>Rango de fechas</mat-label>
+        <mat-date-range-input [rangePicker]="picker" [max]="maxTime">
+          <input matStartDate placeholder="Start date">
+          <input matEndDate placeholder="End date">
+        </mat-date-range-input>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker touchUi #picker color="accent" >
+            <mat-date-range-picker-actions>
+                <button mat-button matDateRangePickerCancel>Cancelar</button>
+                <button mat-raised-button color="primary" matDateRangePickerApply (click)="fechas()">Confirmar</button>
+              </mat-date-range-picker-actions>
+        </mat-date-range-picker>
+       
+    </mat-form-field>
+
+</div>
+
+<div class="results">
+
+</div>
