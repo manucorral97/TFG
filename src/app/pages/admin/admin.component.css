@@ -58,6 +58,7 @@ img{
                 0 1px 5px 0 rgba(0, 0, 0, 0.12);
     margin-left: 1px;
     margin-right: 1px;
+    margin-bottom: 10px;
   }
   
 .box:active {
@@ -75,4 +76,22 @@ mat-card{
 .title{
     margin: 3px;
     
+}
+
+.box-container{
+    border-top: 1px solid black;
+    background-color: #ccc;
+    padding-top: 10px;
+    width: 100%;
+    position: absolute;
+    bottom: 0px;
+}
+
+h6{
+    width: auto !important;
+    background-color: aqua;
+}
+
+#fullscreen{
+    cursor: pointer;
 }

@@ -4,6 +4,7 @@
 
 export const environment = {
   production: false,
+  googleAnalyticsID: '199764043',
   API_URL:'http://13.80.8.137/api/1'
 };
 

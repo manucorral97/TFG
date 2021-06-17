@@ -13,8 +13,8 @@ export class Interceptor implements HttpInterceptor{
 
     //La req es la URL
     intercept(req:HttpRequest<any>, next: HttpHandler):Observable<any>{
-    //Solo queremos que se ejecute cuando haga la peticion a agm
-    if (req.url.includes('agm')){
+    //Solo queremos que se ejecute cuando haga la peticion a agm o last
+    if (req.url.includes('agm' || 'last')){
         const authToken = this.authSvc.userToken;
         const authRol = this.authSvc.rol_;
         const authReq = req.clone({
