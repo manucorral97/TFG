@@ -1,21 +1,21 @@
 <p>Elige unas fechas...</p>
 
 <div class="date_select">
-    <button (click)="oneHour()">Una hora</button>
-    <button (click)="oneDay()">Un día</button>
-    <button (click)="oneWeek()">Una semana</button>
+    <button (click)="oneHour()" class="ask">Una hora</button>
+    <button (click)="oneDay()" class="ask">Un día</button>
+    <button (click)="oneWeek()" class="ask">Una semana</button>
     
-    <mat-form-field appearance="fill" class="range_picker">
+    <mat-form-field appearance="standard" class="range_picker">
         <mat-label>Rango de fechas</mat-label>
         <mat-date-range-input [rangePicker]="picker" [max]="maxTime">
-          <input matStartDate placeholder="Start date">
-          <input matEndDate placeholder="End date">
+          <input matStartDate placeholder="Start date" #dateRangeEnd>
+          <input matEndDate placeholder="End date" #dateRangeStart>
         </mat-date-range-input>
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-date-range-picker touchUi #picker color="accent" >
             <mat-date-range-picker-actions>
                 <button mat-button matDateRangePickerCancel>Cancelar</button>
-                <button mat-raised-button color="primary" matDateRangePickerApply (click)="fechas()">Confirmar</button>
+                <button mat-raised-button color="primary" matDateRangePickerApply (click)="fechas(dateRangeEnd, dateRangeStart)">Confirmar</button>
               </mat-date-range-picker-actions>
         </mat-date-range-picker>
        
@@ -24,5 +24,6 @@
 </div>
 
 <div class="results">
+    {{minTime}} - {{maxTime}}
 
 </div>

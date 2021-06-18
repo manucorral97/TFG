@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
+import * as bcrypt from 'bcryptjs';
+import {Md5} from 'ts-md5/dist/md5';
 
 @Component({
   selector: 'app-home',
@@ -8,9 +10,15 @@ import { AuthService } from '../auth/auth.service';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(public authSvc:AuthService) { }
+  constructor(public authSvc:AuthService) { 
+
+  }
+
+
 
   ngOnInit(): void {
+
+
   }
 
 }

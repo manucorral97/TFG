@@ -8,8 +8,8 @@ import {formatDate} from '@angular/common';
 })
 export class GraphsComponent implements OnInit {
 
-  maxTime: Date;
-  minTime: Date;
+  maxTime: Date | string;
+  minTime: Date | string;
   constructor() {
     this.maxTime = new Date();
     this.minTime = new Date();
@@ -19,43 +19,36 @@ export class GraphsComponent implements OnInit {
   }
 
   oneHour(){
-    console.log("Una hora");
     var time = new Date();
-    const maxTime = formatDate(time, 'yyyy/MM/dd HH:mm:ss', 'en');
-    const minTime = formatDate(time.setHours(time.getHours()-1), 'yyyy/MM/dd HH:mm:ss', 'en');
-    this.peticion(maxTime,minTime);
+    this.maxTime = formatDate(time, 'yyyy/MM/dd HH:mm:ss', 'en');
+    this.minTime = formatDate(time.setHours(time.getHours()-1), 'yyyy/MM/dd HH:mm:ss', 'en');
+    this.peticion(this.minTime,this.maxTime);
   }
 
   oneDay(){
-    console.log("Un dia");
     var time = new Date();
-    const maxTime = formatDate(time, 'yyyy/MM/dd HH:mm:ss', 'en');
-    const minTime = formatDate(time.setHours(time.getHours()-24), 'yyyy/MM/dd HH:mm:ss', 'en');
-    this.peticion(maxTime,minTime);
+    this.maxTime = formatDate(time, 'yyyy/MM/dd HH:mm:ss', 'en');
+    this.minTime = formatDate(time.setHours(time.getHours()-24), 'yyyy/MM/dd HH:mm:ss', 'en');
+    this.peticion(this.minTime,this.maxTime);
   }
 
   oneWeek(){
-    console.log("Una semana");
     var time = new Date();
-    const maxTime = formatDate(time, 'yyyy/MM/dd HH:mm:ss', 'en');
-    const minTime = formatDate(time.setHours(time.getHours()-(24*7)), 'yyyy/MM/dd HH:mm:ss', 'en');
-    this.peticion(maxTime,minTime);
+    this.maxTime = formatDate(time, 'yyyy/MM/dd HH:mm:ss', 'en');
+    this.minTime = formatDate(time.setHours(time.getHours()-(24*7)), 'yyyy/MM/dd HH:mm:ss', 'en');
+    this.peticion(this.minTime,this.maxTime);
   }
 
-  fechas(){
-    console.log("Rango de fechas");
-    var time = new Date();
-    const maxTime = ""
-    const minTime = ""
-    this.peticion(maxTime,minTime);
+  fechas(minTime: any, maxTime: any){
+    this.maxTime = formatDate(maxTime.value, 'yyyy/MM/dd', 'en')
+    this.minTime = formatDate(minTime.value, 'yyyy/MM/dd', 'en')
+
+    this.peticion(this.minTime,this.maxTime);
   }
 
   peticion(minTime: string, maxTime: string){
-    console.log(maxTime, minTime);
+    console.log(minTime, maxTime);
 
-  }
-
-
-  
+  }  
 
 }

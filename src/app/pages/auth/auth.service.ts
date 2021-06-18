@@ -7,6 +7,7 @@ import { catchError, map } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Router } from '@angular/router';
 import * as bcrypt from 'bcryptjs';
+import { Md5 } from 'ts-md5/dist/md5';
 
 
 const helper = new JwtHelperService;
@@ -51,7 +52,9 @@ export class AuthService {
 
   /* Recibimos un authUser de tipo User (lo hemos creado nosotros en user.interface y se pueden añadir mas registros) */
   login(authData:any): Observable < any > {
-    //authData.password = bcrypt.hashSync(authData.password, this.salt);
+    //ACTIVAR PARA PERMITIR EL LOGIN DE LOS NUEVOS USUARIOS
+    authData.password = Md5.hashStr(authData.password);
+    
     console.log("Logamos con esta password ->", authData.password)
     /* A la general del servidor habra que acceder al regustro de login */
     return this.http.post<UserResponse | any >(`${environment.API_URL}/login`, authData).pipe(
@@ -113,6 +116,9 @@ export class AuthService {
   //Aqui enviamos la peticion de registro al server
   register(authData:any): Observable < any > {
     //authData.password = bcrypt.hashSync(authData.password, this.salt);
+    authData.password = Md5.hashStr(authData.password);
+
+    console.log(authData.password);
     
     /* A la general del servidor habra que acceder al regustro de usuarios */
     return this.http.post(`${environment.API_URL}/register`, authData, {responseType: 'text'}).pipe(

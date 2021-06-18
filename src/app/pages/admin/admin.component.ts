@@ -22,16 +22,21 @@ import { DOCUMENT } from '@angular/common';
 export class AdminComponent implements OnInit {
   components = [
     {
-      name: "Humedad",
-      icon: "water"
+      name: "Sensor 1",
+      icon: "sensors"
     },
     {
-      name: "Temperatura",
-      icon: "thermostat"
+      name: "Sensor 2",
+      icon: "sensors"
     }
   ];
 
-  container=[];
+  //Posicion de reset de las cajas
+  dragPositionReset = {x: 0, y: 0};
+  //Posicion actual de las cajas
+  dragPositionState = {x: 0, y: 0};
+  //Posicion de inicio de las cajas
+  dragPositionInit = {x: 0, y: 0};
 
   private urlGET: any = 'http://13.80.8.137/agm';
   
@@ -54,6 +59,9 @@ export class AdminComponent implements OnInit {
       );
 
       this.elem = document.getElementById("img");
+
+      this.dragPositionInit.x = this.dragPositionState.x;
+      this.dragPositionInit.y = this.dragPositionState.y;
   }
 
   ngOnDestroy(){
@@ -102,6 +110,18 @@ export class AdminComponent implements OnInit {
       /* IE/Edge */
       this.document.msExitFullscreen();
     }
+  }
+
+  returnHome(){
+    this.dragPositionReset = {x: this.dragPositionReset.x, y: this.dragPositionReset.y};
+  }
+
+  savePosition($event: { source: { getFreeDragPosition: () => any; }; }){
+    this.dragPositionState.x = $event.source.getFreeDragPosition().x
+    this.dragPositionState.y = $event.source.getFreeDragPosition().y
+    console.log(this.dragPositionState.x, this.dragPositionState.y)
+
+    //Guardar en un drgposition
   }
 
 
