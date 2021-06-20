@@ -37,10 +37,7 @@ th.mat-sort-header-sorted{
     color: black;
 }
 
-mat-paginator{
-    width: 80%;
-    margin: 0 auto;
-}
+
 
 .mat-row:hover {
     background-color: rgba(97, 97, 97, 0.479);
@@ -51,6 +48,18 @@ mat-paginator{
     margin: 0 auto;
     font-size: large;
     
+}
+.download{
+    font-size: xx-large;
+    cursor: pointer;
+}
+
+.footer_table{
+    width: 80%;
+    margin:0 auto;
+    display: flex;
+    background-color: white;
+    justify-content: space-between;
 }
 
 

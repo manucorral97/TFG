@@ -26,9 +26,11 @@
     "bcryptjs": "^2.4.3",
     "crypto-js": "^4.0.0",
     "dompurify": "^2.2.9",
+    "file-saver": "^2.0.5",
     "rxjs": "~6.6.0",
     "ts-md5": "^1.2.8",
     "tslib": "^2.1.0",
+    "xlsx": "^0.17.0",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {

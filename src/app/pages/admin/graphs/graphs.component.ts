@@ -6,6 +6,7 @@ import { AfterViewInit, ViewChild } from '@angular/core';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import * as XLSX from 'xlsx';
 
 const initial_data = [null];
 
@@ -25,12 +26,17 @@ export class GraphsComponent implements OnInit, AfterViewInit {
   filas: any;
   action:boolean;
 
+  fileName:string;
+  historico:Object[] | any;
+
   constructor(private http: HttpClient) {
     this.maxTime = new Date();
     this.minTime = new Date();
     this.filas = new Number;
     this.action = false;
     this.dataSource.sort = this.sort;
+    this.fileName = "Datos.xlsx";
+    this.historico = [];
 
   }
   @ViewChild(MatSort, { static: false}) 
@@ -92,6 +98,7 @@ export class GraphsComponent implements OnInit, AfterViewInit {
 
   printData(historico: Object | any){
     this.action=true;
+    this.historico = historico;
     var error = {
       "no_data": true
     };
@@ -103,7 +110,8 @@ export class GraphsComponent implements OnInit, AfterViewInit {
     }else{
       //Eliminamos el ultimo (no_data = false)
       //historico.splice(-1,1);
-      historico.splice(20,100000);
+
+      //historico.splice(20,100000);
       this.dataSource.sort = this.sort;
       this.dataSource.data = historico;
       this.dataSource.sort = this.sort;
@@ -111,7 +119,47 @@ export class GraphsComponent implements OnInit, AfterViewInit {
       
     }
     
+  }
+  
 
+  getType(typeFilter: string|any){
+
+    function getFilteredByKey(array: any[], key: string, value: any) {
+      return array.filter(function(e) {
+        return e[key] == value;
+      });
+    }
+    
+    console.log(typeFilter);
+    var hist = this.historico;
+    var new_hist = "";
+    var retotrno = getFilteredByKey (hist, "type", typeFilter);
+
+  
+    console.log(retotrno);
+
+    //filtrar hist!!!! No consigo acceder a la key de type
+    for (var data in hist){
+      if (hist[data].type == typeFilter){
+        hist = this.historico.filte
+
+      }
+    }
+    console.log(hist[0].temperatura);
+
+    this.dataSource.data = hist;
+    this.filas = hist.length;
+      
+  }
+
+
+  exportexcel(): void {  
+    let element = document.getElementById('data'); 
+    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Datos');
+    XLSX.writeFile(wb, this.fileName);
+    
   }
 
 }

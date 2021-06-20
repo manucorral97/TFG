@@ -31,7 +31,11 @@
 </div>
 
 
-<div class="table" *ngIf="filas != 0">
+
+<div class="table" *ngIf="filas != 0" id="data">
+    <button (click)="getType('humedad')" class="ask">Humedad</button>
+    <button (click)="getType('temperatura')" class="ask">Temperatura</button>
+
     <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
 
         <!-- Tipo Column -->
@@ -56,5 +60,13 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
     </table>
-    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    <div class="footer_table">
+        <a (click)="exportexcel()">
+            <mat-icon class="download" > file_download</mat-icon>
+        </a>
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </div>
+
+
 </div>
+
