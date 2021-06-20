@@ -24,7 +24,7 @@
     <div class="box-container">
         <div class="box" *ngFor="let c of components" cdkDrag [cdkDragFreeDragPosition]="dragPositionReset" (cdkDragEnded)="savePosition($event)">
             <mat-card>
-                <mat-icon>
+                <mat-icon (click)="showInfo(c.name)">
                     {{c.icon}}
                 </mat-icon>
                 <div class="title">

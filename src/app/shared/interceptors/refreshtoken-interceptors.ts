@@ -12,8 +12,8 @@ export class RefreshTokenInterceptor implements HttpInterceptor
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>>
     {
-        console.log("Ha saltado el interceptor de refreshtoken!!!")
-        console.log("COMPRUEBA DE DONDE VIENE ESE MENSAJE!!!")
+        //console.log("Ha saltado el interceptor de refreshtoken!!!")
+        //console.log("COMPRUEBA DE DONDE VIENE ESE MENSAJE!!!")
         let token = localStorage.getItem('token');
         let rol = localStorage.getItem('rol');
 
@@ -28,7 +28,7 @@ export class RefreshTokenInterceptor implements HttpInterceptor
         //Tiene que haber una peticion a una URL que enviando el token y el rol te devuelva otra vez el token actualizado
 
         return next.handle(req).pipe(err => {
-            console.log(err);
+            //console.log(err);
             if (err == err) {
                 if (1 == 1) {
                     //TODO: Token refreshing

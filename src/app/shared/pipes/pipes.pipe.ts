@@ -13,7 +13,7 @@ export class SafePipe implements PipeTransform {
  public transform(value: any, type: string): SafeHtml | SafeStyle | SafeScript | SafeUrl | SafeResourceUrl {
 	//const sanitizedContent = DOMPurify.sanitize(value);
 	//console.log(value);
-	console.log("Nos vamos a la pipe")
+	//console.log("Nos vamos a la pipe")
     switch (type) {
 			case 'html': return this.sanitizer.bypassSecurityTrustHtml(value);
 			case 'style': return this.sanitizer.bypassSecurityTrustStyle(value);

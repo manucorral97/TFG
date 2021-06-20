@@ -32,6 +32,10 @@ img{
 
 }
 
+mat-icon{
+    cursor: pointer;
+}
+
 
 .box-container{
     margin-top: -20px;

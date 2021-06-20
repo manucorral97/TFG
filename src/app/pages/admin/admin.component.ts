@@ -31,15 +31,16 @@ export class AdminComponent implements OnInit {
     }
   ];
 
-  //Posicion de reset de las cajas
-  dragPositionReset = {x: 0, y: 0};
+  //Posicion de reset de las cajas (y de inicio...)
+  dragPositionReset = {x: 10, y: 0};
   //Posicion actual de las cajas
   dragPositionState = {x: 0, y: 0};
   //Posicion de inicio de las cajas
   dragPositionInit = {x: 0, y: 0};
 
   private urlGET: any = 'http://13.80.8.137/agm';
-  
+  url = 'https://www.elegantthemes.com/blog/wp-content/uploads/2014/01/import-export-wordpress-content.png';
+
   trustHTML: string | null;
   //ejemplo: any = "<h1>Hola</h1><script>console.log('Hello! I am an alert box!');</script>";
   elem: any;
@@ -68,8 +69,7 @@ export class AdminComponent implements OnInit {
     
   }
 
-  url = 'https://www.elegantthemes.com/blog/wp-content/uploads/2014/01/import-export-wordpress-content.png';
-
+  
   onSelectFile(e: any) {
     if (e.target.files) {
       var reader = new FileReader();
@@ -119,23 +119,13 @@ export class AdminComponent implements OnInit {
   savePosition($event: { source: { getFreeDragPosition: () => any; }; }){
     this.dragPositionState.x = $event.source.getFreeDragPosition().x
     this.dragPositionState.y = $event.source.getFreeDragPosition().y
-    console.log(this.dragPositionState.x, this.dragPositionState.y)
+    console.log("Posiciones a guardar: ",this.dragPositionState.x, this.dragPositionState.y)
 
     //Guardar en un drgposition
   }
 
-
-  onDrop(event: CdkDragDrop<string[] | any>){
-    if(event.previousContainer === event.container){
-      moveItemInArray(event.container.data,
-        event.previousIndex,
-        event.currentIndex);
-    }
-    else{
-      transferArrayItem(event.previousContainer.data,
-        event.container.data,
-        event.previousIndex, event.currentIndex);
-    }
-
+  showInfo(component: any){
+    alert(component);
   }
+
 }

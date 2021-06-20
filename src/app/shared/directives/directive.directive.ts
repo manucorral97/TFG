@@ -9,7 +9,7 @@ export class RunScriptsDirective implements OnInit {
         });
     }
     reinsertScripts(): void {
-        console.log("Directiva");
+        //console.log("Directiva");
         const scripts = <HTMLScriptElement[] | any >this.elementRef.nativeElement.getElementsByTagName('script');
         const scriptsInitialLength = scripts.length;
         for (let i = 0; i < scriptsInitialLength; i++) {
@@ -23,7 +23,7 @@ export class RunScriptsDirective implements OnInit {
             }
             scriptCopy.async = false;
             script.parentNode.replaceChild(scriptCopy, script);
-            console.log(script, scriptCopy);
+            //console.log(script, scriptCopy);
         }
     }
 }

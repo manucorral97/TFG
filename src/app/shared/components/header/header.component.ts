@@ -47,7 +47,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   onLogout():void{
     this.authSvc.logout();
-    console.log(this.show);
     //Si la sidebar esta expuesta, al deslogarse la cerramos
     if(this.show == true){
       this.toggleSidenav.emit();

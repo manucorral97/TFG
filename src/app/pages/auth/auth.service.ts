@@ -55,7 +55,7 @@ export class AuthService {
     //ACTIVAR PARA PERMITIR EL LOGIN DE LOS NUEVOS USUARIOS
     authData.password = Md5.hashStr(authData.password);
     
-    console.log("Logamos con esta password ->", authData.password)
+    //console.log("Logamos con esta password ->", authData.password)
     /* A la general del servidor habra que acceder al regustro de login */
     return this.http.post<UserResponse | any >(`${environment.API_URL}/login`, authData).pipe(
       map( (user: any) => {
@@ -93,7 +93,7 @@ export class AuthService {
     //Si tenemos un token comprobamos si ha expirado
     if (userToken && userRol){
       const isExpired = helper.isTokenExpired(userToken);
-      console.log('isExpired ->', isExpired)
+      //console.log('isExpired ->', isExpired)
       if (isExpired){
         this.logout()
       } else {
