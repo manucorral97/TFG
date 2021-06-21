@@ -43,23 +43,18 @@ export class GraphsComponent implements OnInit, AfterViewInit {
     this.grafica = false
   }
 
-  @ViewChild(MatSort, { static: false, read: true}) sort: MatSort = new MatSort;
-  @ViewChild(MatPaginator, { static: true, read: true }) paginator: MatPaginator = new MatPaginator(new MatPaginatorIntl(), ChangeDetectorRef.prototype);
+  @ViewChild(MatSort) sort: MatSort = new MatSort;
+  @ViewChild(MatPaginator, { static: true}) paginator: MatPaginator = new MatPaginator(new MatPaginatorIntl(), ChangeDetectorRef.prototype);
 
   ngOnInit() {
-    //this.dataSource.sort = this.sort;
-    //this.dataSource.paginator = this.paginator;
-    console.log("INIT");
+  
   }
-
 
   ngAfterViewInit():void {
-    //this.dataSource.sort = this.sort;
-    //this.dataSource.paginator = this.paginator;
-    console.log("AfterView");
-
+    this.dataSource.data = [null];
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
   }
-
 
   oneHour(){
     var time = new Date();
@@ -113,8 +108,8 @@ export class GraphsComponent implements OnInit, AfterViewInit {
       this.filas = 0
     }else{
       //Eliminamos el ultimo (no_data = false)
-      //historico.splice(-1,1);
-      historico.splice(20,100000);
+      historico.splice(-1,1);
+      //historico.splice(20,100000);
       this.dataSource.data = historico;
       console.log("Tengo los datos");
       this.filas = historico.length;

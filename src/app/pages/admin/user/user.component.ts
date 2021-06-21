@@ -16,8 +16,11 @@ import { FormBuilder} from '@angular/forms';
 export class UserComponent implements AfterViewInit, OnInit {
   displayedColumns: string[] = ['name', 'lastname', 'username', 'rol', 'actions'];
   dataSource = new MatTableDataSource();
+  statusDelete:boolean;
 
-  constructor(private http: HttpClient,) { }
+  constructor(private http: HttpClient,) {
+    this.statusDelete=false;
+   }
 
   @ViewChild(MatSort) sort: MatSort = new MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator = new MatPaginator(new MatPaginatorIntl(), ChangeDetectorRef.prototype);
@@ -45,6 +48,7 @@ export class UserComponent implements AfterViewInit, OnInit {
       (err) => {
         if(err.error.text == "Usuario eliminado satisfactoriamente"){
           alert("Usuario eliminado satisfactoriamente");
+          this.statusDelete = true
           this.ngOnInit();
         }
       });

@@ -30,7 +30,7 @@
 
 </div>
 
-<div class="table" *ngIf="filas != 0" id="data">
+<div class="table" [hidden]="filas == 0" id="data">
     <div class="filters">
         <button (click)="getType('humedad')" class="ask">Humedad</button>
         <button (click)="getType('temperatura')" class="ask">Temperatura</button>
@@ -64,13 +64,12 @@
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
         </table>
-        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
         <div class="footer_table">
             <a (click)="exportExcel()">
                 <mat-icon class="download" > file_download</mat-icon>
             </a>
-<!--             <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
- -->        </div>
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+       </div>
     </div> 
 
 </div>

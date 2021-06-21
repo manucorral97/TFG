@@ -14,5 +14,12 @@ th.mat-sort-header-sorted {
 }
 .button-delete{
     width: 20%;
+}
 
+p{
+    margin-top: 5px;
+    margin: 0 auto;
+    color: red;
+    text-align: center;
+    line-height: 100px;
 }

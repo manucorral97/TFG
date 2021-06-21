@@ -6,7 +6,7 @@
         <span class="nav-link">Dashboard</span>
     </a>
     <!-- SOLO SI ES SUPERADMIN (entiendo) -->
-    <a mat-list-item *ngIf="isLogged && userRol == '0'||'1' " routerLink="admin/users">
+    <a mat-list-item *ngIf="isLogged && userRol == '1'||'0' " routerLink="admin/users">
         <mat-icon>
             people
         </mat-icon>
