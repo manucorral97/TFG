@@ -12,7 +12,7 @@ export class UsersService {
   constructor(private http:HttpClient) { }
 
   getAll():Observable<any>{
-    return this.http.get<any>(`environment.API_URL`)
+    return this.http.get<any>("http://13.80.8.137/api/1/showusers")
     .pipe(catchError(this.handlerError));
   }
 

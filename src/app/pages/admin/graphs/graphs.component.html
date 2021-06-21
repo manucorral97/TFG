@@ -30,43 +30,56 @@
 
 </div>
 
-
-
 <div class="table" *ngIf="filas != 0" id="data">
-    <button (click)="getType('humedad')" class="ask">Humedad</button>
-    <button (click)="getType('temperatura')" class="ask">Temperatura</button>
-
-    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
-
-        <!-- Tipo Column -->
-        <ng-container matColumnDef="type">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipo </th>
-        <td mat-cell *matCellDef="let element"> {{element.type}} </td>
-        </ng-container>
-    
-        <!-- Valor Column -->
-        <ng-container matColumnDef="temperatura">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Valor </th>
-        <td mat-cell *matCellDef="let element"> {{element.temperatura}} </td>
-        </ng-container>
-    
-        <!-- Fecha Column -->
-        <ng-container matColumnDef="time_stamp">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha </th>
-        <td mat-cell *matCellDef="let element"> {{element.time_stamp}} </td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
-    </table>
-    <div class="footer_table">
-        <a (click)="exportexcel()">
-            <mat-icon class="download" > file_download</mat-icon>
-        </a>
-        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    <div class="filters">
+        <button (click)="getType('humedad')" class="ask">Humedad</button>
+        <button (click)="getType('temperatura')" class="ask">Temperatura</button>
+        <button (click)="getType('luminosidad')" class="ask">Luminosidad</button>
+        <button (click)="getType('')" class="ask">All</button>
+        <mat-slide-toggle (click)="graficar()">Grafica</mat-slide-toggle>
     </div>
 
+    <div>
+        <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+            <!-- Tipo Column -->
+            <ng-container matColumnDef="type">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipo </th>
+            <td mat-cell *matCellDef="let element"> {{element.type}} </td>
+            </ng-container>
+        
+            <!-- Valor Column -->
+            <ng-container matColumnDef="valor">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Valor </th>
+            <td mat-cell *matCellDef="let element"> {{element.valor}} </td>
+            </ng-container>
+        
+            <!-- Fecha Column -->
+            <ng-container matColumnDef="time_stamp">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha </th>
+            <td mat-cell *matCellDef="let element"> {{element.time_stamp}} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+        </table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+        <div class="footer_table">
+            <a (click)="exportExcel()">
+                <mat-icon class="download" > file_download</mat-icon>
+            </a>
+<!--             <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+ -->        </div>
+    </div> 
 
 </div>
+
+<div *ngIf="this.grafica">
+    <canvas id="canvas">{{chart}}</canvas>
+</div>
+
+<div class="chart-container">
+    <canvas id="chart"></canvas>
+ </div>
 

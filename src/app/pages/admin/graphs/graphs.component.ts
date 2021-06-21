@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { formatDate } from '@angular/common';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { MatSort } from '@angular/material/sort';
 import { AfterViewInit, ViewChild } from '@angular/core';
-import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { Chart } from 'chart.js';
 import * as XLSX from 'xlsx';
+import { MatPaginatorIntl } from '@angular/material/paginator';
 
 const initial_data = [null];
 
@@ -16,18 +17,20 @@ const initial_data = [null];
   styleUrls: ['./graphs.component.css']
 })
 export class GraphsComponent implements OnInit, AfterViewInit {
-  displayedColumns: string[] = ['type', 'temperatura', 'time_stamp'];
-  dataSource = new MatTableDataSource(initial_data);
-
+  displayedColumns: string[] = ['type', 'valor', 'time_stamp'];
+  dataSource = new MatTableDataSource();
+  chart:any;
 
   maxTime: Date | string;
   minTime: Date | string;
-  urlHistorical: any = "http://13.80.8.137:80/api/1/graficar/1/1";
+  urlHistorical: any = "http://13.80.8.137:80/api/1/graficar/1/1/1";
   filas: any;
   action:boolean;
 
   fileName:string;
   historico:Object[] | any;
+
+  grafica: boolean
 
   constructor(private http: HttpClient) {
     this.maxTime = new Date();
@@ -37,21 +40,26 @@ export class GraphsComponent implements OnInit, AfterViewInit {
     this.dataSource.sort = this.sort;
     this.fileName = "Datos.xlsx";
     this.historico = [];
-
+    this.grafica = false
   }
-  @ViewChild(MatSort, { static: false}) 
-  sort: MatSort = new MatSort;
-  //@ViewChild(MatPaginator) paginator: MatPaginator = new MatPaginator;
+
+  @ViewChild(MatSort, { static: false, read: true}) sort: MatSort = new MatSort;
+  @ViewChild(MatPaginator, { static: true, read: true }) paginator: MatPaginator = new MatPaginator(new MatPaginatorIntl(), ChangeDetectorRef.prototype);
+
+  ngOnInit() {
+    //this.dataSource.sort = this.sort;
+    //this.dataSource.paginator = this.paginator;
+    console.log("INIT");
+  }
+
 
   ngAfterViewInit():void {
-    this.dataSource.sort = this.sort;
+    //this.dataSource.sort = this.sort;
     //this.dataSource.paginator = this.paginator;
-  }
-
-  ngOnInit(): void {
-    this.dataSource.sort = this.sort;
+    console.log("AfterView");
 
   }
+
 
   oneHour(){
     var time = new Date();
@@ -88,11 +96,9 @@ export class GraphsComponent implements OnInit, AfterViewInit {
     params = params.append('inicio', this.minTime);
     params = params.append('final', this.maxTime);
 
-    this.http.get(this.urlHistorical, {params:params}).subscribe((data) =>
+    this.http.get(this.urlHistorical, {params:params}).subscribe((data) => {
       this.printData(data)
-    );
-    
-
+    });
     console.log(minTime, maxTime);
   } 
 
@@ -103,63 +109,94 @@ export class GraphsComponent implements OnInit, AfterViewInit {
       "no_data": true
     };
 
-    //id_datahunter: 1 temperatura: 27.6 time_stamp: "2021-06-13T17:05:52Z" type: "temperatura"
-
     if (historico[0].no_data == error.no_data){
       this.filas = 0
     }else{
       //Eliminamos el ultimo (no_data = false)
       //historico.splice(-1,1);
-
-      //historico.splice(20,100000);
-      this.dataSource.sort = this.sort;
+      historico.splice(20,100000);
       this.dataSource.data = historico;
-      this.dataSource.sort = this.sort;
+      console.log("Tengo los datos");
       this.filas = historico.length;
-      
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
+      console.log("pagino");
     }
-    
   }
   
-
   getType(typeFilter: string|any){
-
-    function getFilteredByKey(array: any[], key: string, value: any) {
-      return array.filter(function(e) {
-        return e[key] == value;
-      });
+    var new_hist = this.historico;
+    if (typeFilter == ""){
+      this.dataSource.data = this.historico;
+      this.filas = this.historico.length;
+      return;
     }
-    
-    console.log(typeFilter);
-    var hist = this.historico;
-    var new_hist = "";
-    var retotrno = getFilteredByKey (hist, "type", typeFilter);
-
-  
-    console.log(retotrno);
-
-    //filtrar hist!!!! No consigo acceder a la key de type
-    for (var data in hist){
-      if (hist[data].type == typeFilter){
-        hist = this.historico.filte
-
-      }
-    }
-    console.log(hist[0].temperatura);
-
-    this.dataSource.data = hist;
-    this.filas = hist.length;
-      
+    if(typeFilter != ""){
+      const filt = (d: { type: string; }) => d.type === typeFilter;
+      this.dataSource.data = this.historico.filter(filt);
+      this.filas = new_hist.length;
+      return;
+    } 
   }
 
-
-  exportexcel(): void {  
+  exportExcel(): void {  
     let element = document.getElementById('data'); 
     const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Datos');
     XLSX.writeFile(wb, this.fileName);
     
+  }
+
+  graficar():void {
+    const data = {
+      labels: ["enero", "febrero"],
+      datasets: [
+        {
+          label: 'Dataset 1',
+          data: this.historico.valor
+        },
+        {
+          label: 'Dataset 2',
+          data: this.historico.type
+        }
+      ]
+    }
+    this.grafica = !this.grafica;
+    console.log("A graficar!");
+    this.chart = new Chart('canvas', {
+      type:'line',
+      data:data,
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+          title: {
+            display: true,
+            text: 'Chart.js Line Chart'
+          }
+        }
+      },
+      },
+    )
+
+    var hashtags = ["activewear", "adidas", "aloyoga", "batterseapark", "outdoors", "park", "training", "winter", "workout", "workoutwednesday"]
+    var avg_likes = [1185, 5311, 5521, 1713, 949, 321, 2860, 2661, 18899, 8108]
+
+    var chart:any = document.getElementById("chart");
+    var myBarChart = new Chart(chart, {
+      type: 'line',
+      data: {
+        labels: hashtags,
+        datasets: [{
+          data: avg_likes
+        }]
+      },
+      options: {}
+}); 
+
   }
 
 }

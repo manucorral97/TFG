@@ -61,5 +61,8 @@ th.mat-sort-header-sorted{
     background-color: white;
     justify-content: space-between;
 }
+.filters{
+    text-align: center;
+}
 
 

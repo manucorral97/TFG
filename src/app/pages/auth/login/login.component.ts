@@ -42,8 +42,6 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     const formValue = this.loginForm.value;
 
-    //formValue.password = bcrypt.hashSync(formValue.password);
-
     //console.log("En en login pasamos:", formValue.password);
     //No es necesario pasarlo a JSON para que las keys tengan ""
     //var form = JSON.stringify(formValue);
