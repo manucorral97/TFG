@@ -16,6 +16,27 @@ const routes: Routes = [
         (m) => m.NotFoundModule
       ),
   },
+  //Se pone delante la mas restrictiva!
+  {
+    path: 'admin/users',
+    loadChildren: () =>
+      import('./pages/admin/user/user.module').then(m => m.UserModule),
+      data:{
+        allowRol : ['0','1']
+      },
+      //Comporbamos si ya esta logeado para que no pueda acceder a la ruta y que tenga los permisos
+      canActivate:[CheckRolGuard]
+  },
+  {
+    path: 'admin/graphs',
+    loadChildren: () =>
+      import('./pages/admin/graphs/graphs.module').then(m => m.GraphsModule),
+      data:{
+        allowRol : ['0','1','2']
+      },
+      //Comporbamos si ya esta logeado para que no pueda acceder a la ruta y que tenga los permisos
+      canActivate:[CheckRolGuard]
+  },
   {
     path: 'admin',
     loadChildren: () =>
@@ -26,6 +47,7 @@ const routes: Routes = [
       //Comporbamos si ya esta logeado para que no pueda acceder a la ruta y que tenga los permisos
       canActivate:[CheckRolGuard]
   },
+  
   {
     path: 'login',
     loadChildren: () =>

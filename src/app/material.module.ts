@@ -16,11 +16,13 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule} from '@angular-material-components/datetime-picker';
 
 
 const myModules = [MatToolbarModule, MatSidenavModule, MatButtonModule, MatMenuModule, MatListModule, MatIconModule, MatInputModule,
                 MatCardModule, MatTableModule, MatSortModule, MatExpansionModule,MatFormFieldModule,MatSelectModule, MatDatepickerModule,
-                MatNativeDateModule, MatPaginatorModule, MatSlideToggleModule];
+                MatNativeDateModule, MatPaginatorModule, MatSlideToggleModule, NgxMatDatetimePickerModule,NgxMatNativeDateModule,NgxMatTimepickerModule
+            ];
 
 @NgModule({
     imports: [ ... myModules],

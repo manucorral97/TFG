@@ -5,7 +5,6 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { ChangeDetectorRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { FormBuilder} from '@angular/forms';
 
 
 @Component({
@@ -42,12 +41,12 @@ export class UserComponent implements AfterViewInit, OnInit {
       const body = JSON.stringify({username: user.username});
       console.log(JSON.parse(body));
       this.http.post<any>("http://13.80.8.137/api/1/dropuser", body).subscribe((res) =>{
-        alert(res);
+        //alert(res);
         this.ngOnInit();
       },
       (err) => {
         if(err.error.text == "Usuario eliminado satisfactoriamente"){
-          alert("Usuario eliminado satisfactoriamente");
+          //alert("Usuario eliminado satisfactoriamente");
           this.statusDelete = true
           this.ngOnInit();
         }

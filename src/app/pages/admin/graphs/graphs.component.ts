@@ -56,6 +56,7 @@ export class GraphsComponent implements OnInit, AfterViewInit {
 
   grafica: boolean
 
+
   constructor(private http: HttpClient) {
     this.maxTime = new Date();
     this.minTime = new Date();
@@ -67,7 +68,7 @@ export class GraphsComponent implements OnInit, AfterViewInit {
     this.grafica = false
   }
 
-  @ViewChild(MatSort) sort: MatSort = new MatSort;
+  @ViewChild(MatSort, { static: false}) sort: MatSort = new MatSort;
   @ViewChild(MatPaginator, { static: true}) paginator: MatPaginator = new MatPaginator(new MatPaginatorIntl(), ChangeDetectorRef.prototype);
 
   ngOnInit() {
@@ -76,6 +77,7 @@ export class GraphsComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit():void {
+    this.dataSource.sort = this.sort;
     this.dataSource.data = [null];
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
@@ -144,6 +146,7 @@ export class GraphsComponent implements OnInit, AfterViewInit {
       this.grafica = !this.grafica;
       this.graficar();
     }
+    this.dataSource.sort = this.sort;
   }
   
   getType(typeFilter: string|any){
@@ -170,6 +173,8 @@ export class GraphsComponent implements OnInit, AfterViewInit {
   }
 
   graficar():void {
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
     this.grafica = !this.grafica;
 
     let labels = [];

@@ -10,14 +10,17 @@
           <input matStartDate placeholder="Start date" #dateRangeEnd>
           <input matEndDate placeholder="End date" #dateRangeStart>
         </mat-date-range-input>
+        
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-date-range-picker touchUi #picker color="accent" >
+            <ngx-mat-datetime-picker #picker></ngx-mat-datetime-picker>  
             <mat-date-range-picker-actions>
                 <button mat-button matDateRangePickerCancel>Cancelar</button>
                 <button mat-raised-button color="primary" matDateRangePickerApply (click)="fechas(dateRangeEnd, dateRangeStart)">Confirmar</button>
               </mat-date-range-picker-actions>
+              <ngx-mat-datetime-picker #picker></ngx-mat-datetime-picker>  
         </mat-date-range-picker>
-       
+             
     </mat-form-field>
 
 </div>

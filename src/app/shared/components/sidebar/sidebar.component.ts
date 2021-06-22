@@ -15,17 +15,6 @@ export class SidebarComponent implements OnInit, OnDestroy {
   
   private subscription: Subscription = new Subscription;
 
-  /* components = [
-    {
-      name: "Humedad",
-      icon: "thermostat"
-    },
-    {
-      name: "Temperatura",
-      icon: "water"
-    }
-  ]; */
-
   constructor(public authSvc:AuthService) { }
 
   ngOnInit(): void {
