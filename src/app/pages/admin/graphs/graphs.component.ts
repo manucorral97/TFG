@@ -5,11 +5,11 @@ import { MatSort } from '@angular/material/sort';
 import { AfterViewInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { Chart } from 'chart.js';
 import * as XLSX from 'xlsx';
 import { MatPaginatorIntl } from '@angular/material/paginator';
-
-const initial_data = [null];
+import { Chart, ChartDataSets, ChartOptions, ChartType } from 'chart.js';
+import { Color, Label } from 'ng2-charts';
+/* import { zoom } from 'chartjs-plugin-zoom'; */
 
 @Component({
   selector: 'app-graphs',
@@ -17,6 +17,30 @@ const initial_data = [null];
   styleUrls: ['./graphs.component.css']
 })
 export class GraphsComponent implements OnInit, AfterViewInit {
+  //// To show example and initizalice (set to null)
+  lineChartData: ChartDataSets[] = [
+    { data: [85, 72, 78, 75, 77, 75], label: 'Crude oil prices' },
+  ];
+
+  lineChartLabels: Label[] = ['January', 'February', 'March', 'April', 'May', 'June'];
+
+  lineChartOptions = {
+    responsive: true,
+  };
+
+  lineChartColors: Color[] = [
+    {
+      borderColor: 'black',
+      backgroundColor: 'rgba(255,255,0,0.28)',
+    },
+  ];
+
+  lineChartLegend = true;
+  lineChartPlugins = [];
+  lineChartType = 'line' as ChartType;
+  ////
+
+
   displayedColumns: string[] = ['type', 'valor', 'time_stamp'];
   dataSource = new MatTableDataSource();
   chart:any;
@@ -47,7 +71,8 @@ export class GraphsComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator, { static: true}) paginator: MatPaginator = new MatPaginator(new MatPaginatorIntl(), ChangeDetectorRef.prototype);
 
   ngOnInit() {
-  
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
   }
 
   ngAfterViewInit():void {
@@ -94,7 +119,7 @@ export class GraphsComponent implements OnInit, AfterViewInit {
     this.http.get(this.urlHistorical, {params:params}).subscribe((data) => {
       this.printData(data)
     });
-    console.log(minTime, maxTime);
+    //console.log(minTime, maxTime);
   } 
 
   printData(historico: Object | any){
@@ -111,11 +136,13 @@ export class GraphsComponent implements OnInit, AfterViewInit {
       historico.splice(-1,1);
       //historico.splice(20,100000);
       this.dataSource.data = historico;
-      console.log("Tengo los datos");
       this.filas = historico.length;
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
-      console.log("pagino");
+    }
+    if (this.grafica == true){
+      this.grafica = !this.grafica;
+      this.graficar();
     }
   }
   
@@ -140,57 +167,74 @@ export class GraphsComponent implements OnInit, AfterViewInit {
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Datos');
     XLSX.writeFile(wb, this.fileName);
-    
   }
 
   graficar():void {
-    const data = {
-      labels: ["enero", "febrero"],
-      datasets: [
-        {
-          label: 'Dataset 1',
-          data: this.historico.valor
-        },
-        {
-          label: 'Dataset 2',
-          data: this.historico.type
-        }
-      ]
-    }
     this.grafica = !this.grafica;
-    console.log("A graficar!");
-    this.chart = new Chart('canvas', {
-      type:'line',
-      data:data,
-      options: {
-        responsive: true,
-        plugins: {
-          legend: {
-            position: 'top',
-          },
-          title: {
-            display: true,
-            text: 'Chart.js Line Chart'
-          }
-        }
-      },
-      },
-    )
 
-    var hashtags = ["activewear", "adidas", "aloyoga", "batterseapark", "outdoors", "park", "training", "winter", "workout", "workoutwednesday"]
-    var avg_likes = [1185, 5311, 5521, 1713, 949, 321, 2860, 2661, 18899, 8108]
+    let labels = [];
+    for (var i = 0; i < this.historico.length/3; i++) {
+      labels[i] = this.historico[i].time_stamp;
+    }
+    this.lineChartLabels = labels;
 
-    var chart:any = document.getElementById("chart");
-    var myBarChart = new Chart(chart, {
-      type: 'line',
-      data: {
-        labels: hashtags,
-        datasets: [{
-          data: avg_likes
-        }]
+    let data_temp = [];
+    const filt_temp = (d: { type: string; }) => d.type === "temperatura";
+    data_temp = this.historico.filter(filt_temp);
+
+    let data_hume = [];
+    const filt_hume = (d: { type: string; }) => d.type === "humedad";
+    data_hume = this.historico.filter(filt_hume);
+
+    let data_lumi = [];
+    const filt_lumi = (d: { type: string; }) => d.type === "luminosidad";
+    data_lumi = this.historico.filter(filt_lumi);
+
+    for (var i = 0; i<data_temp.length; i++){
+      data_temp[i] = data_temp[i].valor
+    }
+
+    for (var i = 0; i<data_hume.length; i++){
+      data_hume[i] = data_hume[i].valor
+    }
+
+    for (var i = 0; i<data_lumi.length; i++){
+      data_lumi[i] = data_lumi[i].valor
+    }
+
+
+    this.lineChartData = [
+      { data: data_temp, label: 'Temperatura' },
+      { data: data_hume, label: 'Humedad' },
+      { data: data_lumi, label: 'Luminosidad' },
+      //{ data: [85, 20, 78, 75, 13, 75], label: 'Crude oil pricessss' },
+    ];
+
+    this.lineChartPlugins = [
+      
+    ];
+
+    this.lineChartOptions = {
+      responsive: true,
+      
+    };
+
+    this.lineChartColors= [
+      {
+        borderColor: 'red',
+        backgroundColor: 'rgba(255, 0, 0, 0.301)',
       },
-      options: {}
-}); 
+      {
+        borderColor: 'blue',
+        backgroundColor: 'rgba(0, 0, 255, 0.397)',
+      },
+      {
+        borderColor: 'yellow',
+        backgroundColor: 'rgba(255, 255, 0, 0.363)',
+      },
+    ];
+    
+
 
   }
 

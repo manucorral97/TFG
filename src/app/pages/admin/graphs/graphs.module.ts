@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { GraphsRoutingModule } from './graphs-routing.module';
 import { GraphsComponent } from './graphs.component';
 import { MaterialModule } from '@app/material.module';
+import { ChartsModule } from 'ng2-charts';
 
 
 @NgModule({
@@ -13,7 +14,8 @@ import { MaterialModule } from '@app/material.module';
   imports: [
     CommonModule,
     GraphsRoutingModule,
-    MaterialModule
+    MaterialModule,
+    ChartsModule
   ]
 })
 export class GraphsModule { }

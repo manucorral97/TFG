@@ -65,4 +65,10 @@ th.mat-sort-header-sorted{
     text-align: center;
 }
 
+.graphs{
+    margin: 0 auto;
+    margin-top: 10px;
+    width: 90%;
+    height: 90%;
+}
 

@@ -40,7 +40,7 @@
     </div>
 
     <div>
-        <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+        <table *ngIf="filas!=0" mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
 
             <!-- Tipo Column -->
             <ng-container matColumnDef="type">
@@ -74,11 +74,17 @@
 
 </div>
 
-<div *ngIf="this.grafica">
-    <canvas id="canvas">{{chart}}</canvas>
+<div *ngIf="this.grafica && (filas != 0 && action==true)" class="graphs">
+    
+        <canvas baseChart [datasets]="lineChartData" 
+            [labels]="lineChartLabels" 
+            [options]="lineChartOptions"
+            [colors]="lineChartColors" 
+            [legend]="lineChartLegend" 
+            [chartType]="lineChartType" 
+            [plugins]="lineChartPlugins">
+        </canvas>
+
 </div>
 
-<div class="chart-container">
-    <canvas id="chart"></canvas>
- </div>
 
