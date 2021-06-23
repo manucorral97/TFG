@@ -4,7 +4,7 @@
             <h1>Login</h1>
             <form [formGroup] = "loginForm" (ngSubmit)="onLogin()">
             <mat-form-field class="full-width-input">
-                <input matInput formControlName="username" ype="text" placeholder="Usuario" required>
+                <input matInput formControlName="username" type="text" placeholder="Usuario" required>
             </mat-form-field>
             <mat-form-field class="full-width-input">
                 <input matInput formControlName="password" [type] = "hide ? 'password' : 'text'" placeholder="Contraseña" required>

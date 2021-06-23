@@ -9,7 +9,7 @@ import { FooterComponent } from './shared/components/footer/footer.component';
 import { MaterialModule } from './material.module';
 import { SidebarModule } from './shared/components/sidebar/sidebar.module';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule} from '@angular/forms';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { Interceptor } from '@app/shared/interceptors/admin-interceptor';
 import { RefreshTokenInterceptor } from './shared/interceptors/refreshtoken-interceptors';
@@ -29,7 +29,7 @@ import { RefreshTokenInterceptor } from './shared/interceptors/refreshtoken-inte
     SidebarModule,
     HttpClientModule,
     FormsModule,
-    DragDropModule,
+    DragDropModule
   ],
   providers: [
     {provide:HTTP_INTERCEPTORS, useClass:Interceptor, multi: true},

@@ -15,13 +15,14 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatDialogModule } from '@angular/material/dialog';
 import {NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule} from '@angular-material-components/datetime-picker';
 
 
 const myModules = [MatToolbarModule, MatSidenavModule, MatButtonModule, MatMenuModule, MatListModule, MatIconModule, MatInputModule,
                 MatCardModule, MatTableModule, MatSortModule, MatExpansionModule,MatFormFieldModule,MatSelectModule, MatDatepickerModule,
-                MatNativeDateModule, MatPaginatorModule, MatSlideToggleModule, NgxMatDatetimePickerModule,NgxMatNativeDateModule,NgxMatTimepickerModule
+                MatNativeDateModule, MatPaginatorModule, MatSlideToggleModule, MatDialogModule, NgxMatDatetimePickerModule,NgxMatNativeDateModule,NgxMatTimepickerModule
             ];
 
 @NgModule({

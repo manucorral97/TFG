@@ -5,6 +5,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { ChangeDetectorRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { MatDialog } from '@angular/material/dialog';
+import { ModalComponent } from '../components/modal/modal.component';
 
 
 @Component({
@@ -16,9 +18,11 @@ export class UserComponent implements AfterViewInit, OnInit {
   displayedColumns: string[] = ['name', 'lastname', 'username', 'rol', 'actions'];
   dataSource = new MatTableDataSource();
   statusDelete:boolean;
+  rol:any;
 
-  constructor(private http: HttpClient,) {
+  constructor(private http: HttpClient, private dialog: MatDialog) {
     this.statusDelete=false;
+    this.rol = "";
    }
 
   @ViewChild(MatSort) sort: MatSort = new MatSort;
@@ -29,6 +33,7 @@ export class UserComponent implements AfterViewInit, OnInit {
       this.dataSource.data = users;
     });
     //this.dataSource.paginator = this.paginator;
+    let rol = localStorage.getItem("rol");
   }
 
   ngAfterViewInit(): void{
@@ -52,6 +57,20 @@ export class UserComponent implements AfterViewInit, OnInit {
         }
       });
     }
+  }
+
+  onModify(user:any):void{
+    console.log(user);
+    const dialogRef = this.dialog.open(ModalComponent, {
+      hasBackdrop:true,
+      height:'500px',
+      width:'700px',
+      data: {
+        title: 'Modificar Usuario',
+        user: user
+        //User select
+      }
+    });
   }
 
 }

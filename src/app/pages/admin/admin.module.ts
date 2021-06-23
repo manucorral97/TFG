@@ -9,12 +9,16 @@ import { RouterModule } from '@angular/router';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MainPipe } from '@app/shared/pipes/pipes.module';
 import { Directive } from '@shared/directives/directive.module';
+import { ModalComponent } from './components/modal/modal.component';
+import { FormsModule, ReactiveFormsModule} from '@angular/forms';
+
 
 
 
 @NgModule({
   declarations: [
-    AdminComponent
+    AdminComponent,
+    ModalComponent
   ],
   imports: [
     CommonModule,
@@ -24,6 +28,8 @@ import { Directive } from '@shared/directives/directive.module';
     DragDropModule,
     MainPipe,
     Directive,
+    FormsModule,
+    ReactiveFormsModule
   ],
   exports:[
     AdminComponent

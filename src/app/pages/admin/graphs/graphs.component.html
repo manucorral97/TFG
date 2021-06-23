@@ -1,32 +1,29 @@
-
 <div class="date_select">
     <button (click)="oneHour()" class="ask">Una hora</button>
     <button (click)="oneDay()" class="ask">Un día</button>
     <button (click)="oneWeek()" class="ask">Una semana</button>
-    
+
     <mat-form-field appearance="standard" class="range_picker">
         <mat-label>Rango de fechas</mat-label>
         <mat-date-range-input [rangePicker]="picker" [max]="maxTime">
-          <input matStartDate placeholder="Start date" #dateRangeEnd>
-          <input matEndDate placeholder="End date" #dateRangeStart>
+            <input matStartDate placeholder="Start date" #dateRangeEnd>
+            <input matEndDate placeholder="End date" #dateRangeStart>
         </mat-date-range-input>
-        
+
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-date-range-picker touchUi #picker color="accent" >
-            <ngx-mat-datetime-picker #picker></ngx-mat-datetime-picker>  
+        <mat-date-range-picker touchUi #picker color="accent">
             <mat-date-range-picker-actions>
                 <button mat-button matDateRangePickerCancel>Cancelar</button>
-                <button mat-raised-button color="primary" matDateRangePickerApply (click)="fechas(dateRangeEnd, dateRangeStart)">Confirmar</button>
-              </mat-date-range-picker-actions>
-              <ngx-mat-datetime-picker #picker></ngx-mat-datetime-picker>  
+                <button mat-raised-button color="primary" matDateRangePickerApply
+                    (click)="fechas(dateRangeEnd, dateRangeStart)">Confirmar</button>
+            </mat-date-range-picker-actions>
+            <!-- <ngx-mat-datetime-picker #picker></ngx-mat-datetime-picker>  -->
         </mat-date-range-picker>
-             
     </mat-form-field>
-
 </div>
 
 <div class="results">
-<!--     {{minTime}} - {{maxTime}}-->    
+    <!--     {{minTime}} - {{maxTime}}-->
     <br>
     <p class="result_filas" *ngIf="filas != 0">Numero de valores: {{filas}}</p>
     <p class="result_filas" *ngIf="filas == 0 && action==true">No hay datos disponibles</p>
@@ -47,20 +44,20 @@
 
             <!-- Tipo Column -->
             <ng-container matColumnDef="type">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipo </th>
-            <td mat-cell *matCellDef="let element"> {{element.type}} </td>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipo </th>
+                <td mat-cell *matCellDef="let element"> {{element.type}} </td>
             </ng-container>
-        
+
             <!-- Valor Column -->
             <ng-container matColumnDef="valor">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Valor </th>
-            <td mat-cell *matCellDef="let element"> {{element.valor}} </td>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Valor </th>
+                <td mat-cell *matCellDef="let element"> {{element.valor}} </td>
             </ng-container>
-        
+
             <!-- Fecha Column -->
             <ng-container matColumnDef="time_stamp">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha </th>
-            <td mat-cell *matCellDef="let element"> {{element.time_stamp}} </td>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha </th>
+                <td mat-cell *matCellDef="let element"> {{element.time_stamp}} </td>
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -69,25 +66,18 @@
         </table>
         <div class="footer_table">
             <a (click)="exportExcel()">
-                <mat-icon class="download" > file_download</mat-icon>
+                <mat-icon class="download"> file_download</mat-icon>
             </a>
             <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
-       </div>
-    </div> 
+        </div>
+    </div>
 
 </div>
 
 <div *ngIf="this.grafica && (filas != 0 && action==true)" class="graphs">
-    
-        <canvas baseChart [datasets]="lineChartData" 
-            [labels]="lineChartLabels" 
-            [options]="lineChartOptions"
-            [colors]="lineChartColors" 
-            [legend]="lineChartLegend" 
-            [chartType]="lineChartType" 
-            [plugins]="lineChartPlugins">
-        </canvas>
+
+    <canvas baseChart [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions"
+        [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType" [plugins]="lineChartPlugins">
+    </canvas>
 
 </div>
-
-
