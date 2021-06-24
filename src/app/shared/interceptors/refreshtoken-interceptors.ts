@@ -9,7 +9,6 @@ export class RefreshTokenInterceptor implements HttpInterceptor
 
     constructor() { }
 
-
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>>
     {
         //console.log("Ha saltado el interceptor de refreshtoken!!!")
