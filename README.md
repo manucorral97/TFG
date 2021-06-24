@@ -4,9 +4,10 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 
 ## Development server
-Instalar antes Angular CLi mediante `npm install -g @angular/cli`
-
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+1. Instalar NodeJS (https://nodejs.org/es/download/)
+2. Instalar Angular CLi mediante `npm install -g @angular/cli`
+3. Ejecutar `ng serve` desde la carpeta root
+4. Navegar a `http://localhost:4200/`
 
 # Usuarios disponibles
 ## Super Admin
