@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { formatDate } from '@angular/common';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { MatSort } from '@angular/material/sort';
@@ -9,32 +9,31 @@ import * as XLSX from 'xlsx';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { Chart, ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import { Color, Label } from 'ng2-charts';
+import { Subscription } from 'rxjs';
+import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
+import { CustomDateAdapter } from './custom-date-adapter';
+
+
 /* import { zoom } from 'chartjs-plugin-zoom'; */
 
 @Component({
   selector: 'app-graphs',
   templateUrl: './graphs.component.html',
-  styleUrls: ['./graphs.component.css']
+  styleUrls: ['./graphs.component.css'],
+  providers: [
+    { provide: DateAdapter, useClass: CustomDateAdapter },
+  ]
 })
-export class GraphsComponent implements OnInit, AfterViewInit {
-  //// To show example and initizalice (set to null)
+export class GraphsComponent implements OnInit, AfterViewInit, OnDestroy {
+  ////
   lineChartData: ChartDataSets[] = [
-    { data: [85, 72, 78, 75, 77, 75], label: 'Crude oil prices' },
+    { data: [], label: '' },
   ];
-
-  lineChartLabels: Label[] = ['January', 'February', 'March', 'April', 'May', 'June'];
-
+  lineChartLabels: Label[] = [];
   lineChartOptions = {
     responsive: true,
   };
-
-  lineChartColors: Color[] = [
-    {
-      borderColor: 'black',
-      backgroundColor: 'rgba(255,255,0,0.28)',
-    },
-  ];
-
+  lineChartColors: Color[] = [];
   lineChartLegend = true;
   lineChartPlugins = [];
   lineChartType = 'line' as ChartType;
@@ -56,17 +55,19 @@ export class GraphsComponent implements OnInit, AfterViewInit {
 
   grafica: boolean
 
+  private subscriptionAsk:Subscription = new Subscription;
 
   constructor(private http: HttpClient) {
     this.maxTime = new Date();
     this.minTime = new Date();
     this.filas = new Number;
     this.action = false;
-    this.dataSource.sort = this.sort;
     this.fileName = "Datos.xlsx";
     this.historico = [];
+    this.dataSource.data = [null];
     this.grafica = false
   }
+
 
   @ViewChild(MatSort, { static: false}) sort: MatSort = new MatSort;
   @ViewChild(MatPaginator, { static: true}) paginator: MatPaginator = new MatPaginator(new MatPaginatorIntl(), ChangeDetectorRef.prototype);
@@ -77,10 +78,13 @@ export class GraphsComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit():void {
-    this.dataSource.sort = this.sort;
     this.dataSource.data = [null];
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptionAsk.unsubscribe();
   }
 
   oneHour(){
@@ -118,9 +122,11 @@ export class GraphsComponent implements OnInit, AfterViewInit {
     params = params.append('inicio', this.minTime);
     params = params.append('final', this.maxTime);
 
-    this.http.get(this.urlHistorical, {params:params}).subscribe((data) => {
-      this.printData(data)
-    });
+    this.subscriptionAsk.add(
+      this.http.get(this.urlHistorical, {params:params}).subscribe((data) => {
+        this.printData(data)
+      })
+    );
     //console.log(minTime, maxTime);
   } 
 
@@ -136,7 +142,6 @@ export class GraphsComponent implements OnInit, AfterViewInit {
     }else{
       //Eliminamos el ultimo (no_data = false)
       historico.splice(-1,1);
-      //historico.splice(20,100000);
       this.dataSource.data = historico;
       this.filas = historico.length;
       this.dataSource.sort = this.sort;

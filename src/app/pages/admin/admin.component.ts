@@ -32,7 +32,7 @@ export class AdminComponent implements OnInit {
   ];
 
   //Posicion de reset de las cajas (y de inicio...)
-  dragPositionReset = {x: 10, y: 0};
+  dragPositionReset = {x: 0, y: 0};
   //Posicion actual de las cajas
   dragPositionState = {x: 0, y: 0};
   //Posicion de inicio de las cajas

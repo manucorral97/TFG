@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
@@ -7,6 +7,7 @@ import { ChangeDetectorRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { ModalComponent } from '../components/modal/modal.component';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -14,26 +15,30 @@ import { ModalComponent } from '../components/modal/modal.component';
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.css']
 })
-export class UserComponent implements AfterViewInit, OnInit {
+export class UserComponent implements AfterViewInit, OnInit, OnDestroy {
   displayedColumns: string[] = ['name', 'lastname', 'username', 'rol', 'actions'];
   dataSource = new MatTableDataSource();
   statusDelete:boolean;
   rol:any;
+  private subscriptionInit: Subscription = new Subscription;
+  private subscriptionDelete: Subscription = new Subscription;
 
   constructor(private http: HttpClient, private dialog: MatDialog) {
     this.statusDelete=false;
-    this.rol = "";
+    this.rol = localStorage.getItem('rol');
    }
+
 
   @ViewChild(MatSort) sort: MatSort = new MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator = new MatPaginator(new MatPaginatorIntl(), ChangeDetectorRef.prototype);
 
   ngOnInit():void{
-    this.http.get<any>("http://13.80.8.137/api/1/showusers").subscribe((users) => {
+    this.subscriptionInit.add(
+      this.http.get<any>("http://13.80.8.137/api/1/showusers").subscribe((users) => {
       this.dataSource.data = users;
-    });
+      })
+    )
     //this.dataSource.paginator = this.paginator;
-    let rol = localStorage.getItem("rol");
   }
 
   ngAfterViewInit(): void{
@@ -41,21 +46,29 @@ export class UserComponent implements AfterViewInit, OnInit {
     this.dataSource.paginator = this.paginator;
   }
 
+  ngOnDestroy(): void {
+    this.subscriptionInit.unsubscribe();
+    this.subscriptionDelete.unsubscribe();
+  }
+
+
   onDelete(user: any):void{
     if(window.confirm("Desea eliminar?")){
       const body = JSON.stringify({username: user.username});
       console.log(JSON.parse(body));
-      this.http.post<any>("http://13.80.8.137/api/1/dropuser", body).subscribe((res) =>{
-        //alert(res);
-        this.ngOnInit();
-      },
-      (err) => {
-        if(err.error.text == "Usuario eliminado satisfactoriamente"){
-          //alert("Usuario eliminado satisfactoriamente");
-          this.statusDelete = true
+      this.subscriptionDelete.add(
+        this.http.post<any>("http://13.80.8.137/api/1/dropuser", body).subscribe((res) =>{
+          //alert(res);
           this.ngOnInit();
-        }
-      });
+        },
+        (err) => {
+          if(err.error.text == "Usuario eliminado satisfactoriamente"){
+            //alert("Usuario eliminado satisfactoriamente");
+            this.statusDelete = true
+            this.ngOnInit();
+          }
+        })
+      )
     }
   }
 

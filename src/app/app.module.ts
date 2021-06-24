@@ -34,6 +34,7 @@ import { RefreshTokenInterceptor } from './shared/interceptors/refreshtoken-inte
   providers: [
     {provide:HTTP_INTERCEPTORS, useClass:Interceptor, multi: true},
     {provide:HTTP_INTERCEPTORS, useClass:RefreshTokenInterceptor, multi: true},
+    
   ],
   bootstrap: [AppComponent]
 })
