@@ -31,7 +31,7 @@
                     <mat-option value="2">Usuario</mat-option>
                 </mat-select>
             </mat-form-field>
-            <button mat-raised-button color="primary">Registrarse</button>
+            <button [disabled]="registerForm.invalid" mat-raised-button color="primary">Registrarse</button>
         </form>
         </mat-card-content>
     </mat-card>

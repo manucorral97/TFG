@@ -20,3 +20,7 @@ p{
     margin-top: 5px;
     color: red;
 }
+
+input::placeholder{
+    content: "";
+}

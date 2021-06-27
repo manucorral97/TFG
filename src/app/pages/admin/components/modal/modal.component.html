@@ -14,7 +14,12 @@
                 <input matInput required placeholder="Username" formControlName="username">
             </mat-form-field>
             <mat-form-field class="full-width-input">
-                <input matInput required placeholder="Password" formControlName="password">
+                <input matInput required [type] = "hide ? 'password' : 'text'" placeholder="Password" formControlName="password">
+                <button mat-icon-button matSuffix (click)="hide = !hide">
+                    <mat-icon>
+                        {{ hide ? "visibility_off" : "visibility" }}
+                    </mat-icon>
+                </button>
             </mat-form-field>
             <mat-form-field class="full-width-input">
                 <mat-label >Rol</mat-label>

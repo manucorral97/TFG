@@ -25,6 +25,8 @@ export class ModalComponent implements OnInit, OnDestroy {
 
   statusModify:boolean;
 
+  hide = true;
+
   constructor(@Inject(MAT_DIALOG_DATA) public data:any, private fb:FormBuilder, private http:HttpClient, public router: Router) { 
     this.statusModify = false;
   }
@@ -41,10 +43,11 @@ export class ModalComponent implements OnInit, OnDestroy {
     user.password = Md5.hashStr(user.password);
     user.id = this.data.user.id;
 
-    this.subscriptionSave.add(
+    //this.subscriptionSave.add(
       this.http.post<any>("http://13.80.8.137/api/1/editusers", user).subscribe((res) =>{
-        this.router.navigate(["/admin/users"]);
-        this.ngOnInit();
+        //this.router.navigate(["/admin/users"]);
+        //this.ngOnInit();
+        console.log(res)
         console.log("BIEN");
         window.location.reload();
       },
@@ -55,7 +58,7 @@ export class ModalComponent implements OnInit, OnDestroy {
         this.ngOnInit();
         }
       )
-    )
+    //)
   }
 
 }
