@@ -68,16 +68,16 @@ export class UserComponent implements AfterViewInit, OnInit, OnDestroy {
   onDelete(user: any): void {
     Swal.fire({
       title: '¿Estas seguro?',
-      text: 'No podrás vovler atras...',
+      text: 'No podrás volver atras...',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Si, borrar definitivamente!',
-      cancelButtonText: 'No, volver atras',
+      cancelButtonText: 'No, parar borrado',
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire(
           '¡Borrado!',
-          'Your imaginary file has been deleted.',
+          'Un usuario menos...',
           'success'
         );
         const body = JSON.stringify({ username: user.username });
