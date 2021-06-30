@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { environment }from '@env/environment';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { UserResponse, User, Roles } from '@app/shared/models/user.interface';
@@ -15,7 +15,7 @@ const helper = new JwtHelperService;
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService {
+export class AuthService implements OnInit{
   private loggedIn = new BehaviorSubject<boolean>(false);
   //Creamos una varibale donde almacenar el rol del usuario, por defecto sera nulo
   private rol = new BehaviorSubject<string>("");
@@ -26,6 +26,11 @@ export class AuthService {
   
   constructor(private http:HttpClient, private router: Router) { 
     this.checkToken();
+    const timeout = 1*60;
+    setTimeout(() => this.refreshToken(), timeout);
+  }
+  ngOnInit(): void {
+    
   }
 
   get isLogged():Observable<boolean>{
@@ -140,6 +145,23 @@ export class AuthService {
     //Pasamos la variable a falsa, es decir, el usuario no existe y el servidor nso devuelve error
     this.statLogin.next(false);
     return throwError(errorMessage);
+  }
+
+
+  refreshToken():void {
+    console.log("Entro");
+    //Llamamos justo antes de que se caduque el token (30 min)
+    const timeout = 1000*60*29;
+    setTimeout(() => this.refreshToken(), timeout);
+
+    this.http.get<any>("http://13.80.8.137/api/1/refreshToken").subscribe((res) => {
+      console.log("RefreshToken");
+      localStorage.setItem('token', res.token)
+      //Añadir la supuesta respuesta al localStorage
+    },(err) =>{
+      console.log(err.message);
+    });
+
   }
 
 

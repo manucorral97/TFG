@@ -59,7 +59,7 @@ export class AdminComponent implements OnInit {
           (this.trustHTML = this.sanitizer.sanitize(SecurityContext.HTML, this.sanitizer.bypassSecurityTrustHtml(data)))
       );
 
-      this.elem = document.getElementById("img");
+      this.elem = document.getElementById("container-center");
 
       this.dragPositionInit.x = this.dragPositionState.x;
       this.dragPositionInit.y = this.dragPositionState.y;

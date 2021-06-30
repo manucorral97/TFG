@@ -24,8 +24,11 @@ registerForm = this.fb.group({
   });
 
   hide = true;
+  errorRegister: boolean;
 
-  constructor(private authSvc: AuthService, private fb:FormBuilder, private router: Router ) { }
+  constructor(private authSvc: AuthService, private fb:FormBuilder, private router: Router ) { 
+    this.errorRegister=false;
+  }
   ngOnInit(): void { }
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
@@ -46,10 +49,19 @@ registerForm = this.fb.group({
     this.subscription.add(
       this.authSvc.register(formValue).subscribe((res) => {
         if (res){
-          //console.log(res)
-          this.router.navigate(["/admin/users"]);
+          if(res == "El nombre de usuario no está disponible"){
+            this.errorRegister=true
+          }
+          else{
+            console.log(res)
+            this.router.navigate(["/admin/users"]);
+          }
+          
+        }},
+        (err)=>{
+          console.log(err);
         }
-      })
+      )
     )
   }
 

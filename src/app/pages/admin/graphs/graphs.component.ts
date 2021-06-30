@@ -11,7 +11,8 @@ import { Chart, ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import { Color, Label } from 'ng2-charts';
 import { Subscription } from 'rxjs';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
-import { CustomDateAdapter } from './custom-date-adapter';
+import { CustomDateAdapter , APP_DATE_FORMATS} from './custom-date-adapter';
+import * as moment from 'moment';
 
 
 /* import { zoom } from 'chartjs-plugin-zoom'; */
@@ -146,6 +147,9 @@ export class GraphsComponent implements OnInit, AfterViewInit, OnDestroy {
       this.filas = historico.length;
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
+      for (var i = 0; i < this.historico.length; i++) {
+        this.historico[i].time_stamp = moment(this.historico[i].time_stamp).format("DD/MM/yyyy HH:mm:ss");
+      }
     }
     if (this.grafica == true){
       this.grafica = !this.grafica;
@@ -170,8 +174,7 @@ export class GraphsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   exportExcel(): void {  
-    let element = document.getElementById('data'); 
-    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element);
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.dataSource.data);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Datos');
     XLSX.writeFile(wb, this.fileName);
@@ -181,7 +184,7 @@ export class GraphsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
     this.grafica = !this.grafica;
-
+    
     let labels = [];
     for (var i = 0; i < this.historico.length/3; i++) {
       labels[i] = this.historico[i].time_stamp;
@@ -221,12 +224,10 @@ export class GraphsComponent implements OnInit, AfterViewInit, OnDestroy {
     ];
 
     this.lineChartPlugins = [
-      
     ];
 
     this.lineChartOptions = {
       responsive: true,
-      
     };
 
     this.lineChartColors= [

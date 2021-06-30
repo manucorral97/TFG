@@ -25,7 +25,7 @@
 <div class="results">
     <!--     {{minTime}} - {{maxTime}}-->
     <br>
-    <p class="result_filas" *ngIf="filas != 0">Numero de valores: {{filas}}</p>
+    <!-- <p class="result_filas" *ngIf="filas != 0">Numero de valores: {{filas}}</p> -->
     <p class="result_filas" *ngIf="filas == 0 && action==true">No hay datos disponibles</p>
 
 </div>
@@ -36,7 +36,6 @@
         <button (click)="getType('temperatura')" class="ask">Temperatura</button>
         <button (click)="getType('luminosidad')" class="ask">Luminosidad</button>
         <button (click)="getType('')" class="ask">All</button>
-        <mat-slide-toggle (click)="graficar()">Grafica</mat-slide-toggle>
     </div>
 
     <div>
@@ -70,6 +69,11 @@
             </a>
             <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
         </div>
+        <br>
+        <div class="grafica_toggle">
+            <mat-slide-toggle (click)="graficar()" >Grafica</mat-slide-toggle>
+        </div>
+        
     </div>
 
 </div>

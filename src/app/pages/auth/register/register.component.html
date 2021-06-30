@@ -32,7 +32,9 @@
                 </mat-select>
             </mat-form-field>
             <button [disabled]="registerForm.invalid" mat-raised-button color="primary">Registrarse</button>
+            <p *ngIf="errorRegister">El nombre de usuario no está disponible</p>
         </form>
         </mat-card-content>
+        
     </mat-card>
 </div>
