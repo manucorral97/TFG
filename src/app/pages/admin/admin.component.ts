@@ -8,8 +8,6 @@ import { first } from 'rxjs/operators';
 import { DOCUMENT } from '@angular/common';
 
 
-
-
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
@@ -31,6 +29,8 @@ export class AdminComponent implements OnInit {
     }
   ];
 
+  granja:number;
+
   //Posicion de reset de las cajas (y de inicio...)
   dragPositionReset = {x: 0, y: 0};
   //Posicion actual de las cajas
@@ -40,12 +40,14 @@ export class AdminComponent implements OnInit {
 
   private urlGET: any = 'http://13.80.8.137/agm';
   url = 'https://www.elegantthemes.com/blog/wp-content/uploads/2014/01/import-export-wordpress-content.png';
+  url2 = 'https://wellaggio.com/wp-content/uploads/2015/09/la-importancia-de-las-imagenes-en-el-diseño-web1.jpg';
 
   trustHTML: string | null;
   //ejemplo: any = "<h1>Hola</h1><script>console.log('Hello! I am an alert box!');</script>";
   elem: any;
   constructor(private http: HttpClient, private sanitizer: DomSanitizer, @Inject(DOCUMENT) private document: any) {
-    this.trustHTML = ''
+    this.trustHTML = '';
+    this.granja = 0;
   }
 
   ngOnInit(): void {
@@ -79,7 +81,6 @@ export class AdminComponent implements OnInit {
       };
     }
   }
-  
 
   openFullScreen() {
 
@@ -126,6 +127,10 @@ export class AdminComponent implements OnInit {
 
   showInfo(component: any){
     alert(component);
+  }
+
+  selectGranja(number: number){
+    this.granja=number;
   }
 
 }

@@ -1,28 +1,41 @@
-<div class="container-center" id="container-center">
-    <img [src]="url" id="img">   
-    <mat-icon class="screen" (click)="openFullScreen()" id="fullscreen">fullscreen</mat-icon>
-    <br>
+<div class="container-file">
+    <div>
+        <mat-form-field appearance="fill" class="selectGranja">
+            <mat-label>Mis granjas</mat-label>
+            <mat-select>
+              <mat-option value="one" (click)="selectGranja(1)">Granja 1</mat-option>
+              <mat-option value="two" (click)="selectGranja(2)">Granja 2</mat-option>
+            </mat-select>
+          </mat-form-field>
 
-    <div class="container-file">
+    </div>
+
+    <div class="uploadFile" *ngIf="this.granja>0">
         <label class="custom-file">
             <mat-icon class="icon">
                 file_upload
                 <input type="file" (change)="onSelectFile($event)">
             </mat-icon>
-         </label>
-        
-    <!--<mat-icon class="screen" (click)="closeFullScreen()">fullscreen_exit</mat-icon> -->    
+        </label>
+        <br>
+        <span>Seleccione una imagen</span>
     </div>
-    <span>Seleccione una imagen</span>
     
-     <!--<div [innerHTML]= "this.ejemplo | SafePipe:'html' " runScripts  width="100%" heigth="100%"></div>-->
-    <br>
+</div>
+
+
+<mat-icon class="screen" (click)="openFullScreen()" id="fullscreen" *ngIf="this.granja>0">fullscreen</mat-icon>
+<div id="container-center">
+    <img [src]="url" id="img" *ngIf="this.granja==1">
+    <img [src]="url2" id="img" *ngIf="this.granja==2">
+    <!--<div [innerHTML]= "this.ejemplo | SafePipe:'html' " runScripts  width="100%" heigth="100%"></div>-->
     <!-- {{this.trustHTML}} -->
     <!-- Funciona, pero por la pipe me lleva a la pagina /admin cada 10 segundos este donde este -->
-    <div [innerHtml]="this.trustHTML " runScripts class="url" style="margin-left: auto; margin-right: auto;"></div>
+    <!-- <div [innerHtml]="this.trustHTML " runScripts class="url" style="margin-left: auto; margin-right: auto;"></div> -->
 
     <div class="box-container">
-        <div class="box" *ngFor="let c of components" cdkDrag [cdkDragFreeDragPosition]="dragPositionReset" (cdkDragEnded)="savePosition($event)">
+        <div class="box" *ngFor="let c of components" cdkDrag [cdkDragFreeDragPosition]="dragPositionReset"
+            (cdkDragEnded)="savePosition($event)">
             <mat-card>
                 <mat-icon (click)="showInfo(c.name)">
                     {{c.icon}}
@@ -31,24 +44,22 @@
                     {{c.name}}
                 </div>
             </mat-card>
-            
+
             <button (click)="returnHome()" class="return">
                 <mat-icon>
                     close
                 </mat-icon>
             </button>
-            
+
             <div class="example-handle" cdkDragHandle>
                 <svg width="20px" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z"></path>
-                  <path d="M0 0h24v24H0z" fill="none"></path>
+                    <path
+                        d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
+                    </path>
+                    <path d="M0 0h24v24H0z" fill="none"></path>
                 </svg>
-              </div>
+            </div>
         </div>
     </div>
-    
-    
+
 </div>
-
-
-

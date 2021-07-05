@@ -4,10 +4,10 @@
             <h1>Login</h1>
             <form [formGroup] = "loginForm" (ngSubmit)="onLogin()">
             <mat-form-field class="full-width-input">
-                <input matInput formControlName="username" type="text" placeholder="Usuario" required>
+                <input matInput formControlName="username" type="text" placeholder="Usuario" >
             </mat-form-field>
             <mat-form-field class="full-width-input">
-                <input matInput formControlName="password" [type] = "hide ? 'password' : 'text'" placeholder="Contraseña" required>
+                <input matInput formControlName="password" [type] = "hide ? 'password' : 'text'" placeholder="Contraseña" >
                 <button mat-icon-button matSuffix (click)="hide = !hide">
                     <mat-icon>
                         {{ hide ? "visibility_off" : "visibility" }}

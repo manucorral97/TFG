@@ -4,16 +4,16 @@
             <h1>Registro</h1>
             <form [formGroup] = "registerForm" (ngSubmit)="onRegister()">
             <mat-form-field class="full-width-input">
-                <input matInput formControlName="name" ype="text" placeholder="Nombre" required>
+                <input matInput formControlName="name" ype="text" placeholder="Nombre" >
             </mat-form-field>
             <mat-form-field class="full-width-input">
-                <input matInput formControlName="lastname" ype="text" placeholder="Apellidos" required>
+                <input matInput formControlName="lastname" ype="text" placeholder="Apellidos" >
             </mat-form-field>
             <mat-form-field class="full-width-input">
-                <input matInput formControlName="username" ype="text" placeholder="Usuario" required>
+                <input matInput formControlName="username" ype="text" placeholder="Usuario" >
             </mat-form-field>
             <mat-form-field class="full-width-input">
-                <input matInput formControlName="password" [type] = "hide ? 'password' : 'text'" placeholder="Contraseña" required>
+                <input matInput formControlName="password" [type] = "hide ? 'password' : 'text'" placeholder="Contraseña" >
                 <button mat-icon-button matSuffix (click)="hide = !hide">
                     <mat-icon>
                         {{ hide ? "visibility_off" : "visibility" }}

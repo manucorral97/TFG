@@ -10,8 +10,8 @@ import { MatPaginatorIntl } from '@angular/material/paginator';
 import { Chart, ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import { Color, Label } from 'ng2-charts';
 import { Subscription } from 'rxjs';
-import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
-import { CustomDateAdapter , APP_DATE_FORMATS} from './custom-date-adapter';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { CustomDateAdapter , APP_DATE_FORMATS } from './custom-date-adapter';
 import * as moment from 'moment';
 
 
@@ -54,7 +54,8 @@ export class GraphsComponent implements OnInit, AfterViewInit, OnDestroy {
   fileName:string;
   historico:Object[] | any;
 
-  grafica: boolean
+  grafica: boolean;
+  componente:number;
 
   private subscriptionAsk:Subscription = new Subscription;
 
@@ -67,6 +68,7 @@ export class GraphsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.historico = [];
     this.dataSource.data = [null];
     this.grafica = false
+    this.componente = 0;
   }
 
 
@@ -247,6 +249,10 @@ export class GraphsComponent implements OnInit, AfterViewInit, OnDestroy {
     
 
 
+  }
+
+  selectComponente(number:number){
+    this.componente=1;
   }
 
 }

@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
-import { FormBuilder, Validator} from '@angular/forms';
+import { FormBuilder, Validators} from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import * as bcrypt from 'bcryptjs';
@@ -12,8 +12,8 @@ import * as bcrypt from 'bcryptjs';
 })
 export class LoginComponent implements OnInit, OnDestroy {
   loginForm = this.fb.group({
-    username:[""],
-    password: [""]
+    username:["", [Validators.required]],
+    password: ["", [Validators.required]]
   });
 
 

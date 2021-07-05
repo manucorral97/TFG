@@ -1,9 +1,21 @@
-<div class="date_select">
-    <button (click)="oneHour()" class="ask">Una hora</button>
-    <button (click)="oneDay()" class="ask">Un día</button>
-    <button (click)="oneWeek()" class="ask">Una semana</button>
 
-    <mat-form-field appearance="standard" class="range_picker">
+
+<div class="date_select">
+    <div>
+        <mat-form-field appearance="fill" class="selectComponente">
+            <mat-label>Mis Componentes</mat-label>
+            <mat-select>
+              <mat-option value="one" (click)="selectComponente(1)">Componente 1</mat-option>
+              <mat-option value="two" (click)="selectComponente(2)">Componente 2</mat-option>
+            </mat-select>
+          </mat-form-field>
+    
+    </div>
+    <button (click)="oneHour()" class="ask" *ngIf="this.componente>0">Una hora</button>
+    <button (click)="oneDay()" class="ask" *ngIf="this.componente>0">Un día</button>
+    <button (click)="oneWeek()" class="ask" *ngIf="this.componente>0">Una semana</button>
+
+    <mat-form-field appearance="standard" class="range_picker" *ngIf="this.componente">
         <mat-label>Rango de fechas</mat-label>
         <mat-date-range-input [rangePicker]="picker" [max]="maxTime">
             <input matStartDate placeholder="Start date" #dateRangeEnd>

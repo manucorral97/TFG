@@ -8,7 +8,7 @@ input[type="file"]{
     height: 90% !important;
 }
 img{
-    margin-top: 1rem;
+    margin-left: 15% !important;
     width: 70%;
     height: 50%;
 }
@@ -87,7 +87,6 @@ mat-card{
     
 }
 
-
 h6{
     width: auto !important;
     background-color: aqua;
@@ -95,6 +94,9 @@ h6{
 
 #fullscreen{
     cursor: pointer;
+    margin: 0 auto;
+    text-align: center;
+    width: 100%;
 }
 
 .example-handle {
@@ -117,4 +119,23 @@ h6{
     cursor: pointer;
     width: 20px;
     height: 24px;
+}
+
+.container-file{
+    margin: 0 auto;
+    width: 100%;
+    text-align: center;
+    display: flex;
+}
+
+.selectGranja{
+    margin-top: 1rem;
+    margin-left: 1rem;
+}
+
+.uploadFile{
+    margin: 0 auto;
+    width: 100%;
+    position: absolute;
+
 }
