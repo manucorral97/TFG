@@ -20,14 +20,12 @@
         <br>
         <span>Seleccione una imagen</span>
     </div>
-    
 </div>
 
 
 <mat-icon class="screen" (click)="openFullScreen()" id="fullscreen" *ngIf="this.granja>0">fullscreen</mat-icon>
 <div id="container-center">
-    <img [src]="url" id="img" *ngIf="this.granja==1">
-    <img [src]="url2" id="img" *ngIf="this.granja==2">
+    <img src={{this.url}} id="img" *ngIf="this.done==true">
     <!--<div [innerHTML]= "this.ejemplo | SafePipe:'html' " runScripts  width="100%" heigth="100%"></div>-->
     <!-- {{this.trustHTML}} -->
     <!-- Funciona, pero por la pipe me lleva a la pagina /admin cada 10 segundos este donde este -->
