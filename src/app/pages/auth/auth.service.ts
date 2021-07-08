@@ -23,11 +23,13 @@ export class AuthService implements OnInit{
   private statLogin = new BehaviorSubject<boolean>(true);
   //Queremos obtener el token del usuario para el interceptor
   private token = new BehaviorSubject<string>("");
+
+  timer:any;
   
   constructor(private http:HttpClient, private router: Router) { 
     this.checkToken();
-    const timeout = 1*60;
-    setTimeout(() => this.refreshToken(), timeout);
+    /* const timeout = 1*60;
+    setTimeout(() => this.refreshToken(), timeout); */
   }
   ngOnInit(): void {
     
@@ -72,6 +74,9 @@ export class AuthService implements OnInit{
           this.rol.next(user.rol);
           this.loggedIn.next(true);
           this.token.next(user.token);
+          //Comenzamos con refreshtoken
+          const timeout = 1*60;
+          setTimeout(() => this.refreshToken(), timeout);
           return user;
         } else {
           console.log("MALLLLLL");
@@ -90,6 +95,9 @@ export class AuthService implements OnInit{
     this.token.next("");
     //Le decimos que cuando nos desloguemos nos lleve a login de nuevo
     this.router.navigate(['/login']);
+
+    clearTimeout(this.timer);
+    console.log("Cancelamos refresh");
   }
 
   private checkToken():void{
@@ -152,7 +160,7 @@ export class AuthService implements OnInit{
     console.log("Entro");
     //Llamamos justo antes de que se caduque el token (30 min)
     const timeout = 1000*60*29;
-    setTimeout(() => this.refreshToken(), timeout);
+    this.timer = setTimeout(() => this.refreshToken(), timeout);
 
     this.http.get<any>("http://13.80.8.137/api/1/refreshToken").subscribe((res) => {
       console.log("RefreshToken");

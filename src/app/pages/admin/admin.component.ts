@@ -48,7 +48,6 @@ export class AdminComponent implements OnInit {
   private urlGET: any = 'http://13.80.8.137/agm';
   //url = 'https://www.elegantthemes.com/blog/wp-content/uploads/2014/01/import-export-wordpress-content.png';
   url: string | any;
-  url2 = 'https://wellaggio.com/wp-content/uploads/2015/09/la-importancia-de-las-imagenes-en-el-diseño-web1.jpg';
 
   trustHTML: string | null;
   //ejemplo: any = "<h1>Hola</h1><script>console.log('Hello! I am an alert box!');</script>";
@@ -58,14 +57,12 @@ export class AdminComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private sanitizer: DomSanitizer,
-    @Inject(DOCUMENT) private document: any,
-    private user: AuthService
-  ) {
-    this.trustHTML = '';
-    this.granja = 0;
-    this.frame = '';
-    this.url = '';
-    this.done = false;
+    @Inject(DOCUMENT) private document: any) {
+      this.trustHTML = '';
+      this.granja = 0;
+      this.frame = '';
+      this.url = '';
+      this.done = false;
   }
 
   ngOnInit(): void {
@@ -158,7 +155,8 @@ export class AdminComponent implements OnInit {
     }
   }
 
-  returnHome() {
+  returnHome(sensor:any) {
+    console.log(sensor);
     this.dragPositionReset = {
       x: this.dragPositionReset.x,
       y: this.dragPositionReset.y,

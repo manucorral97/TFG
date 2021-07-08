@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { formatDate } from '@angular/common';
+import { DatePipe ,formatDate } from '@angular/common';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { MatSort } from '@angular/material/sort';
 import { AfterViewInit, ViewChild } from '@angular/core';
@@ -45,8 +45,9 @@ export class GraphsComponent implements OnInit, AfterViewInit, OnDestroy {
   dataSource = new MatTableDataSource();
   chart:any;
 
-  maxTime: Date | string;
-  minTime: Date | string;
+  actualTime: Date;
+  maxTime: Date | string | null | undefined;
+  minTime: Date | string | null | undefined;
   urlHistorical: any = "http://13.80.8.137:80/api/1/graficar/1/1/1";
   filas: any;
   action:boolean;
@@ -59,7 +60,7 @@ export class GraphsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private subscriptionAsk:Subscription = new Subscription;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private DatePipe: DatePipe) {
     this.maxTime = new Date();
     this.minTime = new Date();
     this.filas = new Number;
@@ -69,6 +70,7 @@ export class GraphsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.dataSource.data = [null];
     this.grafica = false
     this.componente = 0;
+    this.actualTime = new Date();
   }
 
 
@@ -76,14 +78,11 @@ export class GraphsComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(MatPaginator, { static: true}) paginator: MatPaginator = new MatPaginator(new MatPaginatorIntl(), ChangeDetectorRef.prototype);
 
   ngOnInit() {
-    this.dataSource.sort = this.sort;
+    this.dataSource.data = [null];
     this.dataSource.paginator = this.paginator;
   }
 
   ngAfterViewInit():void {
-    this.dataSource.data = [null];
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
   }
 
   ngOnDestroy(): void {
@@ -94,31 +93,52 @@ export class GraphsComponent implements OnInit, AfterViewInit, OnDestroy {
     var time = new Date();
     this.maxTime = formatDate(time, 'yyyy-MM-ddTHH:mm:ss','en');
     this.minTime = formatDate(time.setHours(time.getHours()-1), 'yyyy-MM-ddTHH:mm:ss', 'en');
-    this.peticion(this.minTime,this.maxTime);
+
+    var maxTime_ = this.DatePipe.transform(this.maxTime, "yyyy-MM-ddTHH:mm:SS", "GMT")
+    var minTime_ = this.DatePipe.transform(this.minTime, "yyyy-MM-ddTHH:mm:SS", "GMT")
+
+    this.peticion(minTime_,maxTime_);
   }
 
   oneDay(){
     var time = new Date();
     this.maxTime = formatDate(time, 'yyyy-MM-ddTHH:mm:ss', 'en');
     this.minTime = formatDate(time.setHours(time.getHours()-24), 'yyyy-MM-ddTHH:mm:ss', 'en');
-    this.peticion(this.minTime,this.maxTime);
+    
+    var maxTime_ = this.DatePipe.transform(this.maxTime, "yyyy-MM-ddTHH:mm:SS", "GMT")
+    var minTime_ = this.DatePipe.transform(this.minTime, "yyyy-MM-ddTHH:mm:SS", "GMT")
+
+    this.peticion(minTime_,maxTime_);
   }
 
   oneWeek(){
     var time = new Date();
     this.maxTime = formatDate(time, 'yyyy-MM-ddTHH:mm:ss', 'en');
     this.minTime = formatDate(time.setHours(time.getHours()-(24*7)), 'yyyy-MM-ddTHH:mm:ss', 'en');
-    this.peticion(this.minTime,this.maxTime);
+    
+    var maxTime_ = this.DatePipe.transform(this.maxTime, "yyyy-MM-ddTHH:mm:SS", "GMT")
+    var minTime_ = this.DatePipe.transform(this.minTime, "yyyy-MM-ddTHH:mm:SS", "GMT")
+
+    this.peticion(minTime_,maxTime_);
   }
 
   fechas(minTime: any, maxTime: any){
-    this.maxTime = formatDate(maxTime.value, 'yyyy-MM-ddT00:00:00', 'en')
-    this.minTime = formatDate(minTime.value, 'yyyy-MM-ddT00:00:00', 'en')
+    const fecha_max = maxTime.value;
+    const fecha_min = minTime.value;
+
+    var maxtime = new Date(fecha_max);
+    var mintime = new Date(fecha_min);
+
+    var maxTime_ = this.DatePipe.transform(maxtime, "yyyy-MM-ddTHH:mm:SS", "GMT");
+    var minTime_ = this.DatePipe.transform(mintime, "yyyy-MM-ddTHH:mm:SS", "GMT");
+
+    this.maxTime = maxTime_?.toString();
+    this.minTime = minTime_?.toString();
 
     this.peticion(this.minTime,this.maxTime);
   }
 
-  peticion(minTime: string, maxTime: string){
+  peticion(minTime: string|any, maxTime: string|any){
     this.maxTime = this.maxTime+'Z';
     this.minTime = this.minTime+'Z';
     let params = new HttpParams();
@@ -147,8 +167,7 @@ export class GraphsComponent implements OnInit, AfterViewInit, OnDestroy {
       historico.splice(-1,1);
       this.dataSource.data = historico;
       this.filas = historico.length;
-      this.dataSource.sort = this.sort;
-      this.dataSource.paginator = this.paginator;
+      
       for (var i = 0; i < this.historico.length; i++) {
         this.historico[i].time_stamp = moment(this.historico[i].time_stamp).format("DD/MM/yyyy HH:mm:ss");
       }
@@ -158,6 +177,9 @@ export class GraphsComponent implements OnInit, AfterViewInit, OnDestroy {
       this.graficar();
     }
     this.dataSource.sort = this.sort;
+    setTimeout(() =>{
+      this.dataSource.sort = this.sort;
+    });
   }
   
   getType(typeFilter: string|any){
@@ -183,71 +205,69 @@ export class GraphsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   graficar():void {
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
     this.grafica = !this.grafica;
-    
-    let labels = [];
-    for (var i = 0; i < this.historico.length/3; i++) {
-      labels[i] = this.historico[i].time_stamp;
+    if (this.grafica == true){
+      let labels = [];
+      for (var i = 0; i < this.historico.length/3; i++) {
+        labels[i] = this.historico[i].time_stamp;
+      }
+      this.lineChartLabels = labels;
+  
+      let data_temp = [];
+      const filt_temp = (d: { type: string; }) => d.type === "temperatura";
+      data_temp = this.historico.filter(filt_temp);
+  
+      let data_hume = [];
+      const filt_hume = (d: { type: string; }) => d.type === "humedad";
+      data_hume = this.historico.filter(filt_hume);
+  
+      let data_lumi = [];
+      const filt_lumi = (d: { type: string; }) => d.type === "luminosidad";
+      data_lumi = this.historico.filter(filt_lumi);
+  
+      for (var i = 0; i<data_temp.length; i++){
+        data_temp[i] = data_temp[i].valor
+      }
+  
+      for (var i = 0; i<data_hume.length; i++){
+        data_hume[i] = data_hume[i].valor
+      }
+  
+      for (var i = 0; i<data_lumi.length; i++){
+        data_lumi[i] = data_lumi[i].valor
+      }
+  
+  
+      this.lineChartData = [
+        { data: data_temp, label: 'Temperatura' },
+        { data: data_hume, label: 'Humedad' },
+        { data: data_lumi, label: 'Luminosidad' },
+        //{ data: [85, 20, 78, 75, 13, 75], label: 'Crude oil pricessss' },
+      ];
+  
+      this.lineChartPlugins = [
+      ];
+  
+      this.lineChartOptions = {
+        responsive: true,
+      };
+  
+      this.lineChartColors= [
+        {
+          borderColor: 'red',
+          backgroundColor: 'rgba(255, 0, 0, 0.301)',
+        },
+        {
+          borderColor: 'blue',
+          backgroundColor: 'rgba(0, 0, 255, 0.397)',
+        },
+        {
+          borderColor: 'yellow',
+          backgroundColor: 'rgba(255, 255, 0, 0.363)',
+        },
+      ];
+        
     }
-    this.lineChartLabels = labels;
-
-    let data_temp = [];
-    const filt_temp = (d: { type: string; }) => d.type === "temperatura";
-    data_temp = this.historico.filter(filt_temp);
-
-    let data_hume = [];
-    const filt_hume = (d: { type: string; }) => d.type === "humedad";
-    data_hume = this.historico.filter(filt_hume);
-
-    let data_lumi = [];
-    const filt_lumi = (d: { type: string; }) => d.type === "luminosidad";
-    data_lumi = this.historico.filter(filt_lumi);
-
-    for (var i = 0; i<data_temp.length; i++){
-      data_temp[i] = data_temp[i].valor
-    }
-
-    for (var i = 0; i<data_hume.length; i++){
-      data_hume[i] = data_hume[i].valor
-    }
-
-    for (var i = 0; i<data_lumi.length; i++){
-      data_lumi[i] = data_lumi[i].valor
-    }
-
-
-    this.lineChartData = [
-      { data: data_temp, label: 'Temperatura' },
-      { data: data_hume, label: 'Humedad' },
-      { data: data_lumi, label: 'Luminosidad' },
-      //{ data: [85, 20, 78, 75, 13, 75], label: 'Crude oil pricessss' },
-    ];
-
-    this.lineChartPlugins = [
-    ];
-
-    this.lineChartOptions = {
-      responsive: true,
-    };
-
-    this.lineChartColors= [
-      {
-        borderColor: 'red',
-        backgroundColor: 'rgba(255, 0, 0, 0.301)',
-      },
-      {
-        borderColor: 'blue',
-        backgroundColor: 'rgba(0, 0, 255, 0.397)',
-      },
-      {
-        borderColor: 'yellow',
-        backgroundColor: 'rgba(255, 255, 0, 0.363)',
-      },
-    ];
-    
-
 
   }
 

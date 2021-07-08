@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 
 import { GraphsRoutingModule } from './graphs-routing.module';
 import { GraphsComponent } from './graphs.component';
@@ -16,6 +16,9 @@ import { ChartsModule } from 'ng2-charts';
     GraphsRoutingModule,
     MaterialModule,
     ChartsModule
+  ],
+  providers:[
+    DatePipe
   ]
 })
 export class GraphsModule { }

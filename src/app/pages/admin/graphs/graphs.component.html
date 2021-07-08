@@ -1,5 +1,4 @@
 
-
 <div class="date_select">
     <div>
         <mat-form-field appearance="fill" class="selectComponente">
@@ -17,8 +16,9 @@
 
     <mat-form-field appearance="standard" class="range_picker" *ngIf="this.componente">
         <mat-label>Rango de fechas</mat-label>
-        <mat-date-range-input [rangePicker]="picker" [max]="maxTime">
+        <mat-date-range-input [rangePicker]="picker" [max]="this.actualTime">
             <input matStartDate placeholder="Start date" #dateRangeEnd>
+            
             <input matEndDate placeholder="End date" #dateRangeStart>
         </mat-date-range-input>
 
@@ -42,7 +42,7 @@
 
 </div>
 
-<div class="table" [hidden]="filas == 0" id="data">
+<div class="table" [hidden]="this.filas == 0" id="data">
     <div class="filters">
         <button (click)="getType('humedad')" class="ask">Humedad</button>
         <button (click)="getType('temperatura')" class="ask">Temperatura</button>
@@ -51,7 +51,7 @@
     </div>
 
     <div>
-        <table *ngIf="filas!=0" mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+        <table *ngIf="this.filas!=0" mat-table [dataSource]="dataSource" matSort matSortActive="time_stamp" matSortDirection="asc" class="mat-elevation-z8">
 
             <!-- Tipo Column -->
             <ng-container matColumnDef="type">
