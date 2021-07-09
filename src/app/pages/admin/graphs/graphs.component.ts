@@ -14,6 +14,9 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 import { CustomDateAdapter , APP_DATE_FORMATS } from './custom-date-adapter';
 import * as moment from 'moment';
 
+//npm install ng2-charts@2.2.3 --save --force
+//npm install chart.js@2.9.3 --save
+
 
 /* import { zoom } from 'chartjs-plugin-zoom'; */
 
