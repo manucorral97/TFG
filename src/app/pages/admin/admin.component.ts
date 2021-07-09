@@ -57,12 +57,13 @@ export class AdminComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private sanitizer: DomSanitizer,
-    @Inject(DOCUMENT) private document: any) {
-      this.trustHTML = '';
-      this.granja = 0;
-      this.frame = '';
-      this.url = '';
-      this.done = false;
+    @Inject(DOCUMENT) private document: any
+  ) {
+    this.trustHTML = '';
+    this.granja = 0;
+    this.frame = '';
+    this.url = '';
+    this.done = false;
   }
 
   ngOnInit(): void {
@@ -102,7 +103,7 @@ export class AdminComponent implements OnInit {
         //console.log('Imagen en base 64', reader.result);
         /* Ya hace base 64 de la imagen */
         this.frame = reader.result;
-    
+
         const body = JSON.stringify({
           id_instalacion: this.granja,
           frame: this.frame,
@@ -114,7 +115,10 @@ export class AdminComponent implements OnInit {
             this.done = true;
           },
           (err) => {
-            if ( err.error.text == 'Imagen de la instalación almacenada correctamente.'){
+            if (
+              err.error.text ==
+              'Imagen de la instalación almacenada correctamente.'
+            ) {
               this.done = true;
               this.url = this.frame;
               console.log(err.error.text);
@@ -126,6 +130,10 @@ export class AdminComponent implements OnInit {
   }
 
   openFullScreen() {
+    //Cambiar la imagen a 100%
+    const img = this.document.getElementById('img');
+    img.className += ' fulldisplay';
+
     if (this.elem.requestFullscreen) {
       this.elem.requestFullscreen();
     } else if (this.elem.mozRequestFullScreen) {
@@ -138,24 +146,38 @@ export class AdminComponent implements OnInit {
       /* IE/Edge */
       this.elem.msRequestFullscreen();
     }
+    //Manejar entrada de letra esc
+    document.addEventListener('fullscreenchange', exitHandler);
+    document.addEventListener('webkitfullscreenchange', exitHandler);
+    document.addEventListener('mozfullscreenchange', exitHandler);
+    document.addEventListener('MSFullscreenChange', exitHandler);
+    function exitHandler(this: any) {
+      if (!document.fullscreenElement) {
+        img.className = '';
+      }
+    }
   }
+  
   /* Close fullscreen */
-  closeFullScreen() {
+/*   closeFullScreen(): void {
+    console.log('entra');
+    const img = this.document.getElementById('img');
+    img.className = '';
     if (this.document.exitFullscreen) {
       this.document.exitFullscreen();
     } else if (this.document.mozCancelFullScreen) {
-      /* Firefox */
+      // Firefox
       this.document.mozCancelFullScreen();
     } else if (this.document.webkitExitFullscreen) {
-      /* Chrome, Safari and Opera */
+      // Chrome, Safari and Opera
       this.document.webkitExitFullscreen();
     } else if (this.document.msExitFullscreen) {
-      /* IE/Edge */
+      // IE/Edge
       this.document.msExitFullscreen();
     }
-  }
+  } */
 
-  returnHome(sensor:any) {
+  returnHome(sensor: any) {
     console.log(sensor);
     this.dragPositionReset = {
       x: this.dragPositionReset.x,
@@ -186,8 +208,10 @@ export class AdminComponent implements OnInit {
       .get(`http://13.80.8.137/api/1/downloadimage/${this.granja}`)
       .subscribe(
         (res: any) => {
-          this.url = res[0].frame.slice(20,res[0].frame.length);
-          this.url = 'data:image/jpeg;base64,' + res[0].frame.slice(20,res[0].frame.length);
+          this.url = res[0].frame.slice(20, res[0].frame.length);
+          this.url =
+            'data:image/jpeg;base64,' +
+            res[0].frame.slice(20, res[0].frame.length);
           this.done = true;
         },
         (err) => {
@@ -195,4 +219,7 @@ export class AdminComponent implements OnInit {
         }
       );
   }
+}
+function closeFullScreen() {
+  throw new Error('Function not implemented.');
 }

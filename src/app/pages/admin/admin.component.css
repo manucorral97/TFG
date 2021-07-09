@@ -21,6 +21,14 @@ img{
     height: 50%;
     max-height: 510px;
 }
+
+.fulldisplay{
+    width:90% !important; 
+    height: 90% !important; 
+    max-width:none !important; 
+    max-height:none !important;
+}
+
 .icon{
     padding: 5px;
 }
