@@ -9,6 +9,7 @@ import {
   Inject,
   OnInit,
   SecurityContext,
+  StaticProvider,
   ViewChild,
 } from '@angular/core';
 
@@ -17,6 +18,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { first } from 'rxjs/operators';
 import { DOCUMENT } from '@angular/common';
 import { AuthService } from '../auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin',
@@ -27,10 +29,12 @@ import { AuthService } from '../auth/auth.service';
 export class AdminComponent implements OnInit {
   components = [
     {
+      id: '0',
       name: 'Sensor 1',
       icon: 'sensors',
     },
     {
+      id: '1',
       name: 'Sensor 2',
       icon: 'sensors',
     },
@@ -57,6 +61,8 @@ export class AdminComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private sanitizer: DomSanitizer,
+    private authService: AuthService,
+    private route: Router,
     @Inject(DOCUMENT) private document: any
   ) {
     this.trustHTML = '';
@@ -103,8 +109,12 @@ export class AdminComponent implements OnInit {
         //console.log('Imagen en base 64', reader.result);
         /* Ya hace base 64 de la imagen */
         this.frame = reader.result;
-
+        var userID = this.authService.userID;
+        console.log(userID);
+        var new_id = userID + this.granja.toString();
+        console.log(new_id);
         const body = JSON.stringify({
+          //Pasar una cadena del id del usuario + el id de la instalacion
           id_instalacion: this.granja,
           frame: this.frame,
         });
@@ -197,8 +207,15 @@ export class AdminComponent implements OnInit {
     //Guardar en un drgposition
   }
 
-  showInfo(component: any) {
-    alert(component);
+  showInfo(component: any, tipo:string) {
+     console.log(component, tipo);
+     this.components[component.id].icon = tipo;
+  }
+
+  changeAll(tipo:string){
+    this.components.forEach(c => {
+      c.icon = tipo;
+    });
   }
 
   selectGranja(number: number) {
@@ -219,7 +236,9 @@ export class AdminComponent implements OnInit {
         }
       );
   }
-}
-function closeFullScreen() {
-  throw new Error('Function not implemented.');
+
+  goGraphs(component:any){
+    this.route.navigate(['admin/graphs', component]);
+  }
+
 }

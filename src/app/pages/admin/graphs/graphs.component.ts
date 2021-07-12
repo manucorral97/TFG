@@ -13,6 +13,7 @@ import { Subscription } from 'rxjs';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { CustomDateAdapter , APP_DATE_FORMATS } from './custom-date-adapter';
 import * as moment from 'moment';
+import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 
 //npm install ng2-charts@2.2.3 --save --force
 //npm install chart.js@2.9.3 --save
@@ -63,7 +64,10 @@ export class GraphsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private subscriptionAsk:Subscription = new Subscription;
 
-  constructor(private http: HttpClient, private DatePipe: DatePipe) {
+  selected:any;
+
+
+  constructor(private http: HttpClient, private DatePipe: DatePipe, private router: ActivatedRoute) {
     this.maxTime = new Date();
     this.minTime = new Date();
     this.filas = new Number;
@@ -74,6 +78,7 @@ export class GraphsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.grafica = false
     this.componente = 0;
     this.actualTime = new Date();
+
   }
 
 
@@ -83,6 +88,12 @@ export class GraphsComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit() {
     this.dataSource.data = [null];
     this.dataSource.paginator = this.paginator;
+    this.router.params.subscribe((e) => {
+      if(e){
+        this.selected=e.id;
+        this.componente=e.id;
+      }
+    });
   }
 
   ngAfterViewInit():void {

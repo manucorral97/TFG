@@ -23,6 +23,7 @@ export class AuthService implements OnInit{
   private statLogin = new BehaviorSubject<boolean>(true);
   //Queremos obtener el token del usuario para el interceptor
   private token = new BehaviorSubject<string>("");
+  public userID: any;
 
   timer:any;
   
@@ -57,19 +58,23 @@ export class AuthService implements OnInit{
     return this.token.getValue();
   }
 
+
+/*   get UserID():Observable < string >{
+    return this.userID.asObservable();
+  } */
+
   /* Recibimos un authUser de tipo User (lo hemos creado nosotros en user.interface y se pueden añadir mas registros) */
   login(authData:any): Observable < any > {
     //ACTIVAR PARA PERMITIR EL LOGIN DE LOS NUEVOS USUARIOS
     authData.password = Md5.hashStr(authData.password);
-    
+  
     //console.log("Logamos con esta password ->", authData.password)
     /* A la general del servidor habra que acceder al regustro de login */
     return this.http.post<UserResponse | any >(`${environment.API_URL}/login`, authData).pipe(
       map( (user: any) => {
         if (user != "Usuario o contraseña incorrecto"){
           /* Guardamos el token. En la respuesta tiene que venir un campo llamado token */
-          this.saveToken(user.token);
-          this.saveRol(user.rol);
+          this.saveUser(user);
           //Guardamos que esta logado y el tipo de usuario que es
           this.rol.next(user.rol);
           this.loggedIn.next(true);
@@ -86,6 +91,9 @@ export class AuthService implements OnInit{
       catchError((err) => this.handlerError(err))
     );
   }
+
+
+
   logout():void{
     localStorage.removeItem('token');
     localStorage.removeItem('rol');
@@ -117,13 +125,12 @@ export class AuthService implements OnInit{
     }
   }
   
-  private saveToken(token:string):void{
-    //Guardamos en local en la variable token el valor del token recibido. Nos valdra para movernos por los apartados correspondinetes de la aplicacion
-    localStorage.setItem('token', token);
-  }
-  private saveRol(rol:any):void{
-    //Guardamos en local en la variable token el valor del token recibido. Nos valdra para movernos por los apartados correspondinetes de la aplicacion
-    localStorage.setItem('rol', rol);
+  private saveUser(user:any):void{
+    console.log(user);
+    //Guardamos en local en la variable token el valor del token y el rol recibido. Nos valdra para movernos por los apartados correspondinetes de la aplicacion
+    localStorage.setItem('token', user.token);
+    localStorage.setItem('rol', user.rol);
+    this.userID = user.id;
   }
 
   //Aqui enviamos la peticion de registro al server
