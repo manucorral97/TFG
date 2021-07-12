@@ -24,7 +24,7 @@
 
 
 <mat-icon class="screen" (click)="openFullScreen()" id="fullscreen" *ngIf="this.granja>0">fullscreen</mat-icon>
-<div id="container-center">
+<div id="container-center" [hidden]="this.granja==0">
     <div class="container_img">
         <img src={{this.url}} id="img" *ngIf="this.done==true">
     </div>
@@ -48,10 +48,15 @@
                     <button mat-menu-item (click)="showInfo(c, 'thermostat')">Temperatura</button>
                     <button mat-menu-item (click)="showInfo(c, 'wb_sunny')">Luminosidad</button>
                     <button mat-menu-item (click)="goGraphs(c)">Generar gráfica</button>
+
+                    <form [formGroup] = "newName" (ngSubmit)="changeName(c)" id="formChangeName">
+                        <mat-form-field id="formChange" >
+                            <input matInput formControlName="name" type="text" placeholder="Nuevo Nombre" (click)="$event.stopPropagation();">
+                        </mat-form-field>
+                        <button [disabled]="newName.invalid" type="submit" mat-raised-button color="primary" id="buttonChange">Cambiar</button>
+                    </form>
                 </mat-menu>
-                <!--                 <mat-icon (click)="showInfo(c.name)">
-                    {{c.icon}}
-                </mat-icon> -->
+
                 <div class="title">
                     {{c.name}}
                 </div>

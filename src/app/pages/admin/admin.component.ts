@@ -9,8 +9,6 @@ import {
   Inject,
   OnInit,
   SecurityContext,
-  StaticProvider,
-  ViewChild,
 } from '@angular/core';
 
 import { Pipe, PipeTransform } from '@angular/core';
@@ -19,6 +17,7 @@ import { first } from 'rxjs/operators';
 import { DOCUMENT } from '@angular/common';
 import { AuthService } from '../auth/auth.service';
 import { Router } from '@angular/router';
+import { FormBuilder, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-admin',
@@ -39,6 +38,10 @@ export class AdminComponent implements OnInit {
       icon: 'sensors',
     },
   ];
+
+  newName= this.fb.group({
+    name:["", [Validators.required]],
+  });
 
   granja: number;
 
@@ -63,6 +66,7 @@ export class AdminComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private authService: AuthService,
     private route: Router,
+    private fb: FormBuilder,
     @Inject(DOCUMENT) private document: any
   ) {
     this.trustHTML = '';
@@ -239,6 +243,10 @@ export class AdminComponent implements OnInit {
 
   goGraphs(component:any){
     this.route.navigate(['admin/graphs', component]);
+  }
+
+  changeName(component:any){
+    this.components[component.id].name = this.newName.value.name;
   }
 
 }

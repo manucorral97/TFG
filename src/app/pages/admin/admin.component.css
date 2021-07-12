@@ -155,4 +155,20 @@ h6 {
   position: absolute;
   right: 5px;
   bottom: 95px;
+
+}
+
+#formChangeName{
+    display: flex;
+}
+
+#buttonChange{
+    padding: 0px !important;
+    font-size: smaller;
+    margin: 2px;
+    height: fit-content;
+}
+
+#formChange{
+    margin-left: 15px;
 }
