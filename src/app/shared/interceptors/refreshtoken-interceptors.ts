@@ -1,3 +1,4 @@
+//NO IMPLEMENTADO ACTUALMENTE
 import {Injectable} from "@angular/core";
 import {HttpEvent, HttpHandler, HttpRequest, HttpClient} from "@angular/common/http";
 import {HttpInterceptor} from "@angular/common/http";

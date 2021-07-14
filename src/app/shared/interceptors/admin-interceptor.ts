@@ -11,7 +11,7 @@ export class Interceptor implements HttpInterceptor{
 
     constructor(private authSvc:AuthService){}
 
-    //La req es la URL
+    //Metodo que nos ayuda a interceptar las peticiones al servidor y añadir automaticamente el rol y el token del usaurio de manera automatica
     intercept(req:HttpRequest<any>, next: HttpHandler):Observable<any>{
     //Solo queremos que se ejecute cuando haga la peticion a agm o last
     //if (req.url.includes(('agm') || ('last') || ('showusers'))){

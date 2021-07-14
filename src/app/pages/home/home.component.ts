@@ -10,15 +10,10 @@ import {Md5} from 'ts-md5/dist/md5';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(public authSvc:AuthService) { 
-
-  }
+  constructor(/*public authSvc:AuthService*/) { }
 
 
 
-  ngOnInit(): void {
-
-
-  }
+  ngOnInit(): void { }
 
 }

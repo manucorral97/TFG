@@ -6,70 +6,62 @@ import { UserResponse, User, Roles } from '@app/shared/models/user.interface';
 import { catchError, map } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Router } from '@angular/router';
-import * as bcrypt from 'bcryptjs';
 import { Md5 } from 'ts-md5/dist/md5';
-
 
 const helper = new JwtHelperService;
 
-@Injectable({
-  providedIn: 'root'
-})
+//Lo hacemos injectable para que sea visible en cualquier punto de la aplicación
+@Injectable({ providedIn: 'root' })
 export class AuthService implements OnInit{
+  //loggedIn nos ayudará a saber si se ha logado con exito
   private loggedIn = new BehaviorSubject<boolean>(false);
-  //Creamos una varibale donde almacenar el rol del usuario, por defecto sera nulo
+  //Varibale para almacenar el rol del usario
   private rol = new BehaviorSubject<string>("");
 
+  //Estado del login(login/logout)
   private statLogin = new BehaviorSubject<boolean>(true);
-  //Queremos obtener el token del usuario para el interceptor
+  //Varibale para almacenar el token del usario
   private token = new BehaviorSubject<string>("");
+  //Varibale para almacenar el ID del usario (not implemented)
   public userID: any;
 
+  //ChechToken
   timer:any;
   
   constructor(private http:HttpClient, private router: Router) { 
+    //Lanzamos checkToken
     this.checkToken();
-    /* const timeout = 1*60;
-    setTimeout(() => this.refreshToken(), timeout); */
   }
-  ngOnInit(): void {
-    
-  }
+  ngOnInit(): void { }
 
+  //Funcion para saber si el usuario está logado
   get isLogged():Observable<boolean>{
     return this.loggedIn.asObservable();
   }
-
+  //Funcion para obtener el rol del usuario
   get userRol():Observable < string >{
-    //console.log("ELEEEEE", this.rol.asObservable());
     return this.rol.asObservable();
+  }
+  //Funcion para obtener el estado del login
+  get statusLogin():Observable <boolean>{
+    return this.statLogin.asObservable();
   }
 
   //Necesario para pasarlo en el header de las peticiones
   get rol_():string{
     return this.rol.getValue();
   }
-
-  get statusLogin():Observable <boolean>{
-    return this.statLogin.asObservable();
-  }
-
+  //Funcion para obtener el token del usuario
   get userToken(): string{
     return this.token.getValue();
   }
 
-
-/*   get UserID():Observable < string >{
-    return this.userID.asObservable();
-  } */
-
-  /* Recibimos un authUser de tipo User (lo hemos creado nosotros en user.interface y se pueden añadir mas registros) */
+  //Funcion de login
   login(authData:any): Observable < any > {
-    //ACTIVAR PARA PERMITIR EL LOGIN DE LOS NUEVOS USUARIOS
+    //HASH contraseña
     authData.password = Md5.hashStr(authData.password);
   
-    //console.log("Logamos con esta password ->", authData.password)
-    /* A la general del servidor habra que acceder al regustro de login */
+    //Hacemos una peticion post 
     return this.http.post<UserResponse | any >(`${environment.API_URL}/login`, authData).pipe(
       map( (user: any) => {
         if (user != "Usuario o contraseña incorrecto"){
@@ -84,16 +76,15 @@ export class AuthService implements OnInit{
           setTimeout(() => this.refreshToken(), timeout);
           return user;
         } else {
-          console.log("MALLLLLL");
+          console.log("MAL");
         }
-        
       }),
       catchError((err) => this.handlerError(err))
     );
   }
 
 
-
+  //Funcion de logout
   logout():void{
     localStorage.removeItem('token');
     localStorage.removeItem('rol');
@@ -103,18 +94,18 @@ export class AuthService implements OnInit{
     this.token.next("");
     //Le decimos que cuando nos desloguemos nos lleve a login de nuevo
     this.router.navigate(['/login']);
-
+    //Desactivamos el refreshToken
     clearTimeout(this.timer);
     console.log("Cancelamos refresh");
   }
 
+  //Comprobamos si el token ha expirado
   private checkToken():void{
     const userToken = localStorage.getItem('token');
     var userRol = localStorage.getItem('rol');
     //Si tenemos un token comprobamos si ha expirado
     if (userToken && userRol){
       const isExpired = helper.isTokenExpired(userToken);
-      //console.log('isExpired ->', isExpired)
       if (isExpired){
         this.logout()
       } else {
@@ -125,25 +116,22 @@ export class AuthService implements OnInit{
     }
   }
   
+  //Guardamos el token y el rol del usuario en el localStorage
   private saveUser(user:any):void{
-    console.log(user);
+    //console.log(user);
     //Guardamos en local en la variable token el valor del token y el rol recibido. Nos valdra para movernos por los apartados correspondinetes de la aplicacion
     localStorage.setItem('token', user.token);
     localStorage.setItem('rol', user.rol);
-    this.userID = user.id;
+    //this.userID = user.id;
   }
 
   //Aqui enviamos la peticion de registro al server
   register(authData:any): Observable < any > {
-    //authData.password = bcrypt.hashSync(authData.password, this.salt);
     authData.password = Md5.hashStr(authData.password);
-
-    console.log(authData.password);
     
     /* A la general del servidor habra que acceder al regustro de usuarios */
     return this.http.post(`${environment.API_URL}/register`, authData, {responseType: 'text'}).pipe(
       map( (res: any) => {
-        //console.log("En auth.service obtenemos la respuesta de la BD ->", res)
         return res;
       }),
       catchError((err) => this.handlerError(err))
@@ -162,9 +150,8 @@ export class AuthService implements OnInit{
     return throwError(errorMessage);
   }
 
-
+  //Funcion que actualiza el token antes de caducar
   refreshToken():void {
-    console.log("Entro");
     //Llamamos justo antes de que se caduque el token (30 min)
     const timeout = 1000*60*29;
     this.timer = setTimeout(() => this.refreshToken(), timeout);

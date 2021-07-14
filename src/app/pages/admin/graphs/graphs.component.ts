@@ -7,13 +7,13 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import * as XLSX from 'xlsx';
 import { MatPaginatorIntl } from '@angular/material/paginator';
-import { Chart, ChartDataSets, ChartOptions, ChartType } from 'chart.js';
+import { ChartDataSets, ChartType } from 'chart.js';
 import { Color, Label } from 'ng2-charts';
 import { Subscription } from 'rxjs';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
-import { CustomDateAdapter , APP_DATE_FORMATS } from './custom-date-adapter';
+import { DateAdapter } from '@angular/material/core';
+import { CustomDateAdapter  } from './custom-date-adapter';
 import * as moment from 'moment';
-import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 //npm install ng2-charts@2.2.3 --save --force
 //npm install chart.js@2.9.3 --save
@@ -30,7 +30,7 @@ import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
   ]
 })
 export class GraphsComponent implements OnInit, AfterViewInit, OnDestroy {
-  ////
+  //// Varibale con las que se generara la grafica posteriormente
   lineChartData: ChartDataSets[] = [
     { data: [], label: '' },
   ];
@@ -44,15 +44,16 @@ export class GraphsComponent implements OnInit, AfterViewInit, OnDestroy {
   lineChartType = 'line' as ChartType;
   ////
 
-
+  //Columnas de la tabla
   displayedColumns: string[] = ['type', 'valor', 'time_stamp'];
+  //Tabla
   dataSource = new MatTableDataSource();
+  //Gráfico
   chart:any;
 
   actualTime: Date;
   maxTime: Date | string | null | undefined;
   minTime: Date | string | null | undefined;
-  urlHistorical: any = "http://13.80.8.137:80/api/1/graficar/1/1/1";
   filas: any;
   action:boolean;
 
@@ -81,7 +82,7 @@ export class GraphsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   }
 
-
+  //Paginar y ordenar la tabla
   @ViewChild(MatSort, { static: false}) sort: MatSort = new MatSort;
   @ViewChild(MatPaginator, { static: true}) paginator: MatPaginator = new MatPaginator(new MatPaginatorIntl(), ChangeDetectorRef.prototype);
 
@@ -96,8 +97,7 @@ export class GraphsComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  ngAfterViewInit():void {
-  }
+  ngAfterViewInit():void { }
 
   ngOnDestroy(): void {
     this.subscriptionAsk.unsubscribe();
@@ -160,13 +160,14 @@ export class GraphsComponent implements OnInit, AfterViewInit, OnDestroy {
     params = params.append('final', this.maxTime);
 
     this.subscriptionAsk.add(
-      this.http.get(this.urlHistorical, {params:params}).subscribe((data) => {
+      this.http.get("http://13.80.8.137:80/api/1/graficar/1/1/1", {params:params}).subscribe((data) => {
         this.printData(data)
       })
     );
     //console.log(minTime, maxTime);
   } 
 
+  //Metodo para pintar la tabla de los datos
   printData(historico: Object | any){
     this.action=true;
     this.historico = historico;
@@ -196,6 +197,7 @@ export class GraphsComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
   
+  //Metodo para filtrar la tabla por el tipo de dato seleccioando
   getType(typeFilter: string|any){
     var new_hist = this.historico;
     if (typeFilter == ""){
@@ -211,6 +213,7 @@ export class GraphsComponent implements OnInit, AfterViewInit, OnDestroy {
     } 
   }
 
+  //Metodo para exportar en excel los datos
   exportExcel(): void {  
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.dataSource.data);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
@@ -218,6 +221,7 @@ export class GraphsComponent implements OnInit, AfterViewInit, OnDestroy {
     XLSX.writeFile(wb, this.fileName);
   }
 
+  //Metodo que lanza la grafica al pulsar en el toogle button
   graficar():void {
     this.grafica = !this.grafica;
     if (this.grafica == true){
@@ -285,6 +289,7 @@ export class GraphsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   }
 
+  //Metodo para indicar sobre que componente queremos gráficar. Hay que indicarlo en la peticion
   selectComponente(number:number){
     this.componente=1;
   }

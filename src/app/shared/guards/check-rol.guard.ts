@@ -12,6 +12,8 @@ export class CheckRolGuard implements CanActivate {
   constructor(private authSvc: AuthService, private router: Router){
 
   }
+  //Metodo utilizado en las rutas de app-routing para dejar acceder solo si el usuario tiene el rol adecuado
+
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {

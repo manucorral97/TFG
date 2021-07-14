@@ -1,3 +1,4 @@
+//NO NECESARIO
 export type Roles = '0' | '1' | '2';
 export interface User{
     username: string;

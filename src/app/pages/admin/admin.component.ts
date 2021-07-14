@@ -104,34 +104,35 @@ export class AdminComponent implements OnInit {
   ngOnDestroy() {}
 
   onSelectFile(e: any) {
-    //console.log(e);
     if (e.target.files) {
       var reader = new FileReader();
       const file = e.target.files[0];
       reader.readAsDataURL(file);
       reader.onload = () => {
-        //console.log('Imagen en base 64', reader.result);
         /* Ya hace base 64 de la imagen */
         this.frame = reader.result;
+        //Posible tratamiento del id de la instalacion 
         var userID = this.authService.userID;
         console.log(userID);
         var new_id = userID + this.granja.toString();
         console.log(new_id);
+        //
+        //Cuerpo de la peticion para almacenar la imagen
         const body = JSON.stringify({
           //Pasar una cadena del id del usuario + el id de la instalacion
           id_instalacion: this.granja,
           frame: this.frame,
         });
 
+        //Peticion para almacenar la imagen 
         this.http.post('http://13.80.8.137/api/1/uploadimage', body).subscribe(
           (res) => {
-            //console.log(res);
             this.done = true;
           },
           (err) => {
+            //Si el error que nos da es este, se ha guardado la imagen
             if (
-              err.error.text ==
-              'Imagen de la instalación almacenada correctamente.'
+              err.error.text == 'Imagen de la instalación almacenada correctamente.'
             ) {
               this.done = true;
               this.url = this.frame;
@@ -143,6 +144,7 @@ export class AdminComponent implements OnInit {
     }
   }
 
+  //Metodo para poner la imagen en pantalla completa. Cambia la clase del div para verse más grande
   openFullScreen() {
     //Cambiar la imagen a 100%
     const img = this.document.getElementById('img');
@@ -173,7 +175,7 @@ export class AdminComponent implements OnInit {
   }
   
   /* Close fullscreen */
-/*   closeFullScreen(): void {
+  /*closeFullScreen(): void {
     console.log('entra');
     const img = this.document.getElementById('img');
     img.className = '';
@@ -191,6 +193,7 @@ export class AdminComponent implements OnInit {
     }
   } */
 
+  //Metodo para devolver las cajas a su posicion de inicio
   returnHome(sensor: any) {
     console.log(sensor);
     this.dragPositionReset = {
@@ -199,6 +202,7 @@ export class AdminComponent implements OnInit {
     };
   }
 
+  //Metodo que guarda las iamgenes de las cajas al soltarse (not implemented)
   savePosition($event: { source: { getFreeDragPosition: () => any } }) {
     this.dragPositionState.x = $event.source.getFreeDragPosition().x;
     this.dragPositionState.y = $event.source.getFreeDragPosition().y;
@@ -211,17 +215,20 @@ export class AdminComponent implements OnInit {
     //Guardar en un drgposition
   }
 
+  //Cambia el icono y la informacion de la caja seleccionada al tipo de dato seleccionado
   showInfo(component: any, tipo:string) {
-     console.log(component, tipo);
+     //console.log(component, tipo);
      this.components[component.id].icon = tipo;
   }
 
+  //Metodo que cambia todos los iconos de las cajas 
   changeAll(tipo:string){
     this.components.forEach(c => {
       c.icon = tipo;
     });
   }
 
+  //Metodo para elegir cada una de las granjas a disposicion del usuario
   selectGranja(number: number) {
     this.granja = number;
     /* Pedimos la imagen almacenada */
@@ -229,6 +236,7 @@ export class AdminComponent implements OnInit {
       .get(`http://13.80.8.137/api/1/downloadimage/${this.granja}`)
       .subscribe(
         (res: any) => {
+          //Tratamos la respuesta para sacar la imagen de ella
           this.url = res[0].frame.slice(20, res[0].frame.length);
           this.url =
             'data:image/jpeg;base64,' +
@@ -241,10 +249,12 @@ export class AdminComponent implements OnInit {
       );
   }
 
+  //Metodo que nos lleva a la pagina de graficar directamente
   goGraphs(component:any){
     this.route.navigate(['admin/graphs', component]);
   }
 
+  //Metodo para cambiar el nombre de un componente
   changeName(component:any){
     this.components[component.id].name = this.newName.value.name;
   }

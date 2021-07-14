@@ -3,8 +3,6 @@ import { AuthService } from '../auth.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-/* import  *  as crypto from 'crypto-js'; */
-import * as bcrypt from 'bcryptjs';
 
 @Component({
   selector: 'app-register',
@@ -14,6 +12,8 @@ import * as bcrypt from 'bcryptjs';
 export class RegisterComponent implements OnInit, OnDestroy {
   //Generamos un objeto de tipo Subscription que nos ayadará con la perfomance de la aplicacion
   private subscription: Subscription = new Subscription();
+
+  //Formulario de registro, nos ayudamos de Validators
   registerForm = this.fb.group({
     name: ['', [Validators.required]],
     lastname: ['', [Validators.required]],
@@ -23,6 +23,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     rol: ['', Validators.required],
   });
 
+  //Parametro para visualizar la contraseña
   hide = true;
   errorRegister: boolean;
 
@@ -33,11 +34,14 @@ export class RegisterComponent implements OnInit, OnDestroy {
   ) {
     this.errorRegister = false;
   }
-  ngOnInit(): void {}
+  ngOnInit(): void { }
+
+  //Cancelamos las subscripciones al salir del componente para mejorar el rendimiento
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
 
+  //Metodo que se lanza al pulsar en registar
   onRegister(): void {
     //Solo seguimos si es un formulario valido
     if (this.registerForm.invalid) {
@@ -45,22 +49,17 @@ export class RegisterComponent implements OnInit, OnDestroy {
     }
     //Recogemos el formulario del html
     const formValue = this.registerForm.value;
-    //Hasheamos la password
-    /* const salt = bcrypt.genSaltSync(10); */
-    //formValue.password = bcrypt.hashSync(formValue.password);
+
 
     //Llamamos a funcion register del auth.service
     this.subscription.add(
-      this.authSvc.register(formValue).subscribe(
-        (res) => {
-          if (res) {
-            if (res == 'El nombre de usuario no está disponible') {
+      this.authSvc.register(formValue).subscribe((res) => {
+          if (res == 'El nombre de usuario no está disponible') {
               this.errorRegister = true;
             } else {
               console.log(res);
               this.router.navigate(['/admin/users']);
             }
-          }
         },
         (err) => {
           console.log(err);

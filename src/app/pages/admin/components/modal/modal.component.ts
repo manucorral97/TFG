@@ -38,6 +38,7 @@ export class ModalComponent implements OnInit, OnDestroy {
     this.subscriptionSave.unsubscribe();
   }
 
+  //Guardamos los nuevos datos del usuario manteniendo el mismo ID
   onSave(user: any):void{
     //Hacer peticion al back 
     user.password = Md5.hashStr(user.password);
@@ -45,15 +46,10 @@ export class ModalComponent implements OnInit, OnDestroy {
 
     //this.subscriptionSave.add(
       this.http.post<any>("http://13.80.8.137/api/1/editusers", user).subscribe((res) =>{
-        //this.router.navigate(["/admin/users"]);
-        //this.ngOnInit();
-        console.log(res)
-        console.log("BIEN");
         window.location.reload();
       },
       (err) => {
         console.log(err);
-        //alert("Usuario eliminado satisfactoriamente");
         this.statusModify = false
         this.ngOnInit();
         }

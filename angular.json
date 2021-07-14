@@ -34,7 +34,8 @@
             "scripts": [],
             "allowedCommonJsDependencies": [
               "xlsx",
-              "ng2-charts.js"
+              "ng2-charts.js",
+              "chart.js"
             ]
           },
           "configurations": {
@@ -72,6 +73,11 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "sslCert": "/Users/manucorral/generate-trusted-ssl-certificate/server.crt",
+            "sslKey": "/Users/manucorral/generate-trusted-ssl-certificate/server.key"
+          
+          },
           "configurations": {
             "production": {
               "browserTarget": "TFG:build:production"
