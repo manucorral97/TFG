@@ -42,10 +42,11 @@ export class LoginComponent implements OnInit, OnDestroy {
       return;
     }
     //Llamamos al modulo de autenticacion a la funcion del estatus y cogemos la respuesta
-    this.authSvc.statusLogin.subscribe( (res) => {
-      (this.statusLogin = res)
-    }
-);
+    this.subscription.add(
+      this.authSvc.statusLogin.subscribe( (res) => {
+        (this.statusLogin = res)
+      })
+    );
 
     const formValue = this.loginForm.value;
 

@@ -77,14 +77,22 @@ export class UserComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   //Metodo para eliminar el usuario
-  onDelete(user: any): void {
+  async onDelete(user: any): Promise<void> {
     //Comprobamos que tiene los permisos adecuados
     if (this.rol!=0){
-      Swal.fire({
+      const { value: consulta } = await Swal.fire({
         icon: 'info',
         title: 'Oops...',
         text: 'No tienes los permisos adecuados!',
-      })
+        input: "textarea",
+        inputLabel:"¿Alguna consulta?",
+        inputPlaceholder: "Solicito...",
+        //timer: 1000*5
+      });
+      if (consulta){
+        console.log(consulta);
+      }
+      //¿Enviar un correo?
       return;
     }
     //SweetAlert para ayudar con la interaccion del usuario
@@ -129,14 +137,22 @@ export class UserComponent implements AfterViewInit, OnInit, OnDestroy {
     });
   }
   //Metodo para modificar un usuario
-  onModify(user: any): void {
+  async onModify(user: any): Promise<void> {
     //Comprobamos que tiene los permisos adecuados
     if (this.rol!=0){
-      Swal.fire({
+      const { value: consulta } = await Swal.fire({
         icon: 'info',
         title: 'Oops...',
         text: 'No tienes los permisos adecuados!',
-      })
+        input: "textarea",
+        inputLabel:"¿Alguna consulta?",
+        inputPlaceholder: "Solicito...",
+        //timer: 1000*5
+      });
+      if (consulta){
+        console.log(consulta);
+      }
+      //¿Enviar un correo?
       return;
     }
     //Llamaos al componente creado 

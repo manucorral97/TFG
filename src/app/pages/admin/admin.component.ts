@@ -18,6 +18,7 @@ import { DOCUMENT } from '@angular/common';
 import { AuthService } from '../auth/auth.service';
 import { Router } from '@angular/router';
 import { FormBuilder, Validators} from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-admin',
@@ -61,6 +62,11 @@ export class AdminComponent implements OnInit {
   elem: any;
   frame: string | any;
   done: boolean;
+
+  private subscriptionUp: Subscription = new Subscription;
+  private subscriptionDown: Subscription = new Subscription;
+
+
   constructor(
     private http: HttpClient,
     private sanitizer: DomSanitizer,
@@ -101,7 +107,10 @@ export class AdminComponent implements OnInit {
     this.dragPositionInit.y = this.dragPositionState.y;
   }
 
-  ngOnDestroy() {}
+  ngOnDestroy() {
+    this.subscriptionUp.unsubscribe();
+    this.subscriptionDown.unsubscribe();
+  }
 
   onSelectFile(e: any) {
     if (e.target.files) {
@@ -125,22 +134,24 @@ export class AdminComponent implements OnInit {
         });
 
         //Peticion para almacenar la imagen 
-        this.http.post('http://13.80.8.137/api/1/uploadimage', body).subscribe(
-          (res) => {
-            this.done = true;
-          },
-          (err) => {
-            //Si el error que nos da es este, se ha guardado la imagen
-            if (
-              err.error.text == 'Imagen de la instalación almacenada correctamente.'
-            ) {
+        this.subscriptionUp.add(
+          this.http.post('http://13.80.8.137/api/1/uploadimage', body).subscribe(
+            (res) => {
               this.done = true;
-              this.url = this.frame;
-              console.log(err.error.text);
+            },
+            (err) => {
+              //Si el error que nos da es este, se ha guardado la imagen
+              if (
+                err.error.text == 'Imagen de la instalación almacenada correctamente.'
+              ) {
+                this.done = true;
+                this.url = this.frame;
+                console.log(err.error.text);
+              }
             }
-          }
+          )
         );
-      };
+      }
     }
   }
 
@@ -232,7 +243,8 @@ export class AdminComponent implements OnInit {
   selectGranja(number: number) {
     this.granja = number;
     /* Pedimos la imagen almacenada */
-    this.http
+    this.subscriptionDown.add(
+      this.http
       .get(`http://13.80.8.137/api/1/downloadimage/${this.granja}`)
       .subscribe(
         (res: any) => {
@@ -246,7 +258,8 @@ export class AdminComponent implements OnInit {
         (err) => {
           console.log(err);
         }
-      );
+      )
+    );
   }
 
   //Metodo que nos lleva a la pagina de graficar directamente

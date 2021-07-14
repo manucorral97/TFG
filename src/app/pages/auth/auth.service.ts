@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, OnInit } from '@angular/core';
 import { environment }from '@env/environment';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
-import { UserResponse, User, Roles } from '@app/shared/models/user.interface';
 import { catchError, map } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Router } from '@angular/router';
@@ -62,7 +61,7 @@ export class AuthService implements OnInit{
     authData.password = Md5.hashStr(authData.password);
   
     //Hacemos una peticion post 
-    return this.http.post<UserResponse | any >(`${environment.API_URL}/login`, authData).pipe(
+    return this.http.post< any >(`${environment.API_URL}/login`, authData).pipe(
       map( (user: any) => {
         if (user != "Usuario o contraseña incorrecto"){
           /* Guardamos el token. En la respuesta tiene que venir un campo llamado token */
