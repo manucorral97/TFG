@@ -26,6 +26,7 @@
     "bcrypt": "^5.0.1",
     "bcryptjs": "^2.4.3",
     "chart.js": "^2.9.3",
+    "chartjs-plugin-zoom": "^0.6.6",
     "crypto-js": "^4.0.0",
     "dompurify": "^2.2.9",
     "file-saver": "^2.0.5",
