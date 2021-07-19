@@ -1,64 +1,27 @@
-import {
-  CdkDragDrop,
-  CdkDragEnd,
-  moveItemInArray,
-  transferArrayItem,
-} from '@angular/cdk/drag-drop';
-import { HttpClient } from '@angular/common/http';
-import {
-  Component,
-  Inject,
-  OnInit,
-  SecurityContext,
-} from '@angular/core';
-
-import { Pipe, PipeTransform } from '@angular/core';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { first } from 'rxjs/operators';
 import { DOCUMENT } from '@angular/common';
-import { AuthService } from '../auth/auth.service';
+import { HttpClient } from '@angular/common/http';
+import { Component, Inject, OnInit, SecurityContext } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
+import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { FormBuilder, Validators} from '@angular/forms';
+import { AuthService } from '@app/pages/auth/auth.service';
 import { Subscription } from 'rxjs';
-import { MatDialog } from '@angular/material/dialog';
-import { AlarmComponent } from './components/alarm/alarm.component';
-
+import { first } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-admin',
-  templateUrl: './admin.component.html',
-  styleUrls: ['./admin.component.css'],
-  template: ` <div>Interval: {{ observable$ | async }}</div>`,
+  selector: 'app-prueba',
+  templateUrl: './prueba.component.html',
+  styleUrls: ['./prueba.component.css']
 })
-export class AdminComponent implements OnInit {
+export class PruebaComponent implements OnInit {
+
   components = [
     {
       id: '0',
       name: 'Sensor 1',
       icon: 'sensors',
-    },
-    {
-      id: '1',
-      name: 'Sensor 2',
-      icon: 'sensors',
-    },
+    }
   ];
-
-  granjas = [
-    {
-      id: 1,
-      name: 'Granja 1',
-    },
-    {
-      id: 2,
-      name: 'Granja 2',
-    },
-    {
-      id: 3,
-      name: 'Granja 3',
-    },
-  ];
-
 
   newName= this.fb.group({
     name:["", [Validators.required]],
@@ -74,7 +37,7 @@ export class AdminComponent implements OnInit {
   dragPositionInit = { x: 0, y: 0 };
 
   private urlGET: any = 'http://13.80.8.137/agm';
-  urlEmpty = 'https://www.elegantthemes.com/blog/wp-content/uploads/2014/01/import-export-wordpress-content.png';
+  //url = 'https://www.elegantthemes.com/blog/wp-content/uploads/2014/01/import-export-wordpress-content.png';
   url: string | any;
 
   trustHTML: string | null;
@@ -82,8 +45,6 @@ export class AdminComponent implements OnInit {
   elem: any;
   frame: string | any;
   done: boolean;
-  alarmas: number | string;
-  data: any;
 
   private subscriptionUp: Subscription = new Subscription;
   private subscriptionDown: Subscription = new Subscription;
@@ -95,7 +56,6 @@ export class AdminComponent implements OnInit {
     private authService: AuthService,
     private route: Router,
     private fb: FormBuilder,
-    private dialog: MatDialog,
     @Inject(DOCUMENT) private document: any
   ) {
     this.trustHTML = '';
@@ -103,25 +63,26 @@ export class AdminComponent implements OnInit {
     this.frame = '';
     this.url = '';
     this.done = false;
-    this.alarmas = 2;
-    this.data = '';
   }
 
   ngOnInit(): void {
+    /* this.trustHTML = ''; */
     this.urlGET = this.sanitizer.sanitize(
       SecurityContext.URL,
       this.sanitizer.bypassSecurityTrustUrl(this.urlGET)
     );
-
-    this.http.get(this.urlGET, { responseType: 'text' }).pipe(first()).subscribe(
+    //this.ejemplo = this.sanitizer.sanitize(SecurityContext.HTML,this.sanitizer.bypassSecurityTrustHtml(this.ejemplo));
+    //console.log(this.ejemplo);
+    this.http
+      .get(this.urlGET, { responseType: 'text' })
+      .pipe(first())
+      .subscribe(
         (data) =>
           (this.trustHTML = this.sanitizer.sanitize(
             SecurityContext.HTML,
             this.sanitizer.bypassSecurityTrustHtml(data)
           ))
       );
-
-    //Timeout to know alarms numbers (save data in this.data and save number y this.alarmas)
 
     this.elem = document.getElementById('container-center');
 
@@ -235,16 +196,10 @@ export class AdminComponent implements OnInit {
     };
   }
 
-  //Metodo que guarda las imagenes de las cajas al soltarse (not implemented)
-  savePosition($event: CdkDragEnd) {
+  //Metodo que guarda las iamgenes de las cajas al soltarse (not implemented)
+  savePosition($event: { source: { getFreeDragPosition: () => any } }) {
     this.dragPositionState.x = $event.source.getFreeDragPosition().x;
     this.dragPositionState.y = $event.source.getFreeDragPosition().y;
-
-    var ejemplo = $event.dropPoint.x;
-
-    var container = this.document.getElementById('container-center');
-    console.log("ContainerLeft:", container.offsetLeft, "ContainerTop:", container.offsetTop);
-    //console.log(ejemplo);
     console.log(
       'Posiciones a guardar: ',
       this.dragPositionState.x,
@@ -284,7 +239,7 @@ export class AdminComponent implements OnInit {
           this.done = true;
         },
         (err) => {
-          //console.log(err);
+          console.log(err);
         }
       )
     );
@@ -299,20 +254,4 @@ export class AdminComponent implements OnInit {
   changeName(component:any){
     this.components[component.id].name = this.newName.value.name;
   }
-
-  alarmFunction(){
-    
-    const dialogRef = this.dialog.open(AlarmComponent, {
-      hasBackdrop: true,
-      height: '500px',
-      width: '700px',
-      data: {
-        title: 'Registro de Alarmas',
-        data: this.data
-      },
-    });
-    //Reseteamos el contador de alarmas
-    this.alarmas = ''
-  }
-
 }

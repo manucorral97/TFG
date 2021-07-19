@@ -38,6 +38,16 @@ const routes: Routes = [
       canActivate:[CheckRolGuard]
   },
   {
+    path: 'admin/prueba',
+    loadChildren: () =>
+      import('./pages/admin/prueba/prueba.module').then(m => m.PruebaModule),
+      data:{
+        allowRol : ['0','1','2']
+      },
+      //Comporbamos si ya esta logeado para que no pueda acceder a la ruta y que tenga los permisos
+      canActivate:[CheckRolGuard]
+  },
+  {
     path: 'admin',
     loadChildren: () =>
       import('./pages/admin/admin.module').then((m) => m.AdminModule),

@@ -1,72 +1,27 @@
-
-#container-center {
-  text-align: center; 
-  /*border: 1px solid red;*/
-  /*display: inline-block;*/
+.allpage{
+  border: 1px solid red;
   width: 70%;
-  height: auto;
+  height: 50%;
   margin: auto;
+  position: relative;
 }
 
-input[type="file"] {
-  display: none;
+.imagen {
+  border: 1px solid black;
+  width: 70%;
+  height: 50%;
   margin: auto;
-  height: 90% !important;
-}
-
-
-img {
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  margin: 0 auto !important;
-  width: 100%;
-  max-height: 510px;
-  /*border: 1px solid green;*/
-}
-
-.fulldisplay {
-  width: 90% !important;
-  height: 90% !important;
-  max-width: none !important;
-  max-height: none !important;
-}
-
-.icon {
-  padding: 5px;
-}
-.icon:hover {
-  background-color: rgba(128, 128, 128, 0.3);
-  border-radius: 100px;
-}
-
-.respuestaHTML {
-  width: 100%;
-}
-
-.url {
-  height: 100%;
-  border: 10px;
-  height: 100%;
-  width: 100%;
-}
-
-mat-icon {
-  cursor: pointer;
 }
 
 .box-container {
-  margin-top: -20px;
   width: auto;
   display: flex;
   float: left;
   border-top: 1px solid black;
   background-color: #ccc;
-  padding-top: 10px;
   width: 100%;
-  position: fixed;
+  position: absolute;
   bottom: 0px;
-  left: 0px;
 }
 
 .box {
@@ -134,51 +89,4 @@ h6 {
   cursor: pointer;
   width: 20px;
   height: 24px;
-}
-
-.container-file {
-  margin: 0 auto;
-  width: 100%;
-  text-align: center;
-  display: flex;
-}
-
-.selectGranja {
-  margin-top: 1rem;
-  margin-left: 1rem;
-}
-
-.uploadFile {
-  margin: 0 auto;
-  width: 100%;
-  position: absolute;
-}
-
-#changeAll {
-  border: 1px solid black;
-  position: absolute;
-  right: 5px;
-  bottom: 95px;
-
-}
-
-#formChangeName{
-    display: flex;
-}
-
-#buttonChange{
-    padding: 0px !important;
-    font-size: smaller;
-    margin: 2px;
-    height: fit-content;
-}
-
-#formChange{
-    margin-left: 15px;
-}
-
-#alarmas{
-  position: absolute;
-  top: 70px;
-  right: 20px;
 }

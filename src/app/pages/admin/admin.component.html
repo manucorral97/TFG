@@ -2,9 +2,8 @@
     <div>
         <mat-form-field appearance="fill" class="selectGranja">
             <mat-label>Mis granjas</mat-label>
-            <mat-select>
-                <mat-option value="one" (click)="selectGranja(1)">Granja 1</mat-option>
-                <mat-option value="two" (click)="selectGranja(2)">Granja 2</mat-option>
+            <mat-select >
+                <mat-option *ngFor="let g of this.granjas" value={{g.id}} (click)="selectGranja(g.id)">{{g.name}}</mat-option>
             </mat-select>
         </mat-form-field>
 
@@ -22,21 +21,14 @@
     </div>
 </div>
 
-
 <mat-icon class="screen" (click)="openFullScreen()" id="fullscreen" *ngIf="this.granja>0">fullscreen</mat-icon>
+
 <div id="container-center" [hidden]="this.granja==0">
-    <div class="container_img">
-        <img src={{this.url}} id="img" *ngIf="this.done==true">
-    </div>
-
-    <!--<div [innerHTML]= "this.ejemplo | SafePipe:'html' " runScripts  width="100%" heigth="100%"></div>-->
-    <!-- {{this.trustHTML}} -->
-    <!-- Funciona, pero por la pipe me lleva a la pagina /admin cada 10 segundos este donde este -->
-    <!-- <div [innerHtml]="this.trustHTML " runScripts class="url" style="margin-left: auto; margin-right: auto;"></div> -->
-
+    <img src={{this.url}} id="img" *ngIf="this.done==true">
+    <img src={{this.urlEmpty}} id="img" *ngIf="this.done==false">
     <div class="box-container">
         <div class="box" *ngFor="let c of components" cdkDrag [cdkDragFreeDragPosition]="dragPositionReset"
-            (cdkDragEnded)="savePosition($event)">
+            (cdkDragEnded)="savePosition($event)" cdkDragBoundary="#container-center">
             <mat-card>
                 <button mat-button [matMenuTriggerFor]="menu">
                     <mat-icon>
@@ -49,11 +41,13 @@
                     <button mat-menu-item (click)="showInfo(c, 'wb_sunny')">Luminosidad</button>
                     <button mat-menu-item (click)="goGraphs(c)">Generar gráfica</button>
 
-                    <form [formGroup] = "newName" (ngSubmit)="changeName(c)" id="formChangeName">
-                        <mat-form-field id="formChange" >
-                            <input matInput formControlName="name" type="text" placeholder="Nuevo Nombre" (click)="$event.stopPropagation();">
+                    <form [formGroup]="newName" (ngSubmit)="changeName(c)" id="formChangeName">
+                        <mat-form-field id="formChange">
+                            <input matInput formControlName="name" type="text" placeholder="Nuevo Nombre"
+                                (click)="$event.stopPropagation();">
                         </mat-form-field>
-                        <button [disabled]="newName.invalid" type="submit" mat-raised-button color="primary" id="buttonChange">Cambiar</button>
+                        <button [disabled]="newName.invalid" type="submit" mat-raised-button color="primary"
+                            id="buttonChange">Cambiar</button>
                     </form>
                 </mat-menu>
 
@@ -78,6 +72,8 @@
             </div>
         </div>
     </div>
+
+    
     <button mat-button [matMenuTriggerFor]="menu" id="changeAll" *ngIf="this.granja">
         <mat-icon>
             {{"menu"}}
@@ -105,3 +101,5 @@
     </button>
 
 </div>
+
+<button mat-raised-button color="warn" *ngIf="this.granja>0" id="alarmas" (click)="alarmFunction()" matBadge={{this.alarmas}} matBadgePosition="before" matBadgeColor="warn">Alarmas</button>

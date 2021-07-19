@@ -11,6 +11,7 @@ import { MainPipe } from '@app/shared/pipes/pipes.module';
 import { Directive } from '@shared/directives/directive.module';
 import { ModalComponent } from './components/modal/modal.component';
 import { FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { AlarmComponent } from './components/alarm/alarm.component';
 
 
 
@@ -18,7 +19,8 @@ import { FormsModule, ReactiveFormsModule} from '@angular/forms';
 @NgModule({
   declarations: [
     AdminComponent,
-    ModalComponent
+    ModalComponent,
+    AlarmComponent
   ],
   imports: [
     CommonModule,
