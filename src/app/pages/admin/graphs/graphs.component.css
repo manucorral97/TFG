@@ -88,3 +88,12 @@ th.mat-sort-header-sorted{
     margin-top: 1px;
     margin-left: 1rem;
 }
+
+#resetZoom{
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    text-align: center;
+    border: 1px solid grey;
+}

@@ -16,12 +16,14 @@ import { CustomDateAdapter } from './custom-date-adapter';
 import * as moment from 'moment';
 import { ActivatedRoute } from '@angular/router';
 import { BaseChartDirective } from 'ng2-charts';
-import 'chartjs-plugin-zoom';
+//import 'chartjs-plugin-zoom';
+
+// @ts-ignore
+import * as zoomPlugin from 'chartjs-plugin-zoom';
+import { min } from 'rxjs/operators';
 
 //npm install ng2-charts@2.2.3 --save --force
 //npm install chart.js@2.9.3 --save
-
-/* import { zoom } from 'chartjs-plugin-zoom'; */
 
 @Component({
   selector: 'app-graphs',
@@ -33,12 +35,12 @@ export class GraphsComponent implements OnInit, AfterViewInit, OnDestroy {
   //// Varibale con las que se generara la grafica posteriormente
   lineChartData: ChartDataSets[] = [{ data: [], label: '' }];
   lineChartLabels: Label[] = [];
-  lineChartOptions:any = {
+  lineChartOptions: any = {
     responsive: true,
   };
   lineChartColors: Color[] = [];
   lineChartLegend = true;
-  lineChartPlugins = [];
+  lineChartPlugins: any = [];
   lineChartType = 'line' as ChartType;
   ////
 
@@ -77,8 +79,10 @@ export class GraphsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.fileName = 'Datos.xlsx';
     this.historico = [];
     this.dataSource.data = [null];
+    ///
     this.grafica = false;
     this.componente = 0;
+    ////
     this.actualTime = new Date();
   }
 
@@ -96,6 +100,12 @@ export class GraphsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.componente = e.id;
       }
     });
+
+    ////
+    //this.maxTime = "2021-06-07T22:00:00";
+    //this.minTime = "2021-06-06T22:00:00";
+    //this.peticion (this.minTime, this.maxTime);
+    /////
   }
 
   ngAfterViewInit(): void {}
@@ -198,6 +208,9 @@ export class GraphsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   peticion(minTime: string | any, maxTime: string | any) {
+    //console.log(this.maxTime);
+    //this.maxTime = "2021-06-07T22:00:00";
+    //this.minTime = "2021-06-06T22:00:00";
     this.maxTime = this.maxTime + 'Z';
     this.minTime = this.minTime + 'Z';
     let params = new HttpParams();
@@ -273,6 +286,9 @@ export class GraphsComponent implements OnInit, AfterViewInit, OnDestroy {
   //Metodo que lanza la grafica al pulsar en el toogle button
   graficar(): void {
     this.grafica = !this.grafica;
+    //
+    //this.grafica==true;
+    //
     if (this.grafica == true) {
       let labels = [];
       for (var i = 0; i < this.historico.length / 3; i++) {
@@ -311,26 +327,72 @@ export class GraphsComponent implements OnInit, AfterViewInit, OnDestroy {
         //{ data: [85, 20, 78, 75, 13, 75], label: 'Crude oil pricessss' },
       ];
 
-      this.lineChartPlugins = [
-
-      ];
+      this.lineChartPlugins = [zoomPlugin];
 
       this.lineChartOptions = {
         responsive: true,
         pan: {
           enabled: true,
-          drag:true,
+          drag: {
+            enable:true,
+          	borderColor: 'rgb(0,0,0)',
+          	borderWidth: 5,
+          	backgroundColor: 'rgb(225,225,225)'
+          },
           mode: 'x',
+          rangeMin: {
+            // Format of min pan range depends on scale type
+            x: null,
+            y: null,
+          },
+          rangeMax: {
+            // Format of max pan range depends on scale type
+            x: null,
+            y: null,
+          },
+          onPan: function () {
+            //console.log('I was panned!!!');
+          },
         },
         zoom: {
           enabled: true,
-          drag: false,
-          speed: 0.1,
-          mode: 'x',
-/*           limits: {
-            max: 10,
-            min: 0.5,
-          }, */
+          wheel: {
+            enabled: false,
+          },
+          pinch: {
+            enabled: false
+          },
+          //drag: true,
+
+          // Drag-to-zoom rectangle style can be customized
+          drag: {
+            enable:true,
+          	borderColor: 'rgb(0,0,0)',
+          	borderWidth: 5,
+          	backgroundColor: 'rgb(225,225,225)'
+          },
+
+          // Zooming directions. Remove the appropriate direction to disable
+          // Eg. 'y' would only allow zooming in the y direction
+          mode: 'xy',
+
+          rangeMin: {
+            // Format of min zoom range depends on scale type
+            x: null,
+            y: null,
+          },
+          rangeMax: {
+            // Format of max zoom range depends on scale type
+            x: null,
+            y: null,
+          },
+
+          // Speed of zoom via mouse wheel
+          // (percentage of zoom on a wheel event)
+          speed: 0.9,
+          onZoom: function () {
+            //console.log('I was zoomed!!!');
+          },
         },
       };
 
@@ -349,12 +411,17 @@ export class GraphsComponent implements OnInit, AfterViewInit, OnDestroy {
         },
       ];
     }
-
   }
-
 
   //Metodo para indicar sobre que componente queremos gráficar. Hay que indicarlo en la peticion
   selectComponente(number: number) {
     this.componente = 1;
+  }
+
+  resetZoom(){
+    //console.log("Reset");
+    this.graficar();
+    this.graficar();
+
   }
 }

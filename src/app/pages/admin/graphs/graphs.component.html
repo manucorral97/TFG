@@ -92,8 +92,11 @@
 
 <div *ngIf="this.grafica && (filas != 0 && action==true)" class="graphs">
 
-    <canvas baseChart [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions"
-        [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType" [plugins]="lineChartPlugins">
+    <canvas baseChart [datasets]="this.lineChartData" [labels]="this.lineChartLabels" [options]="this.lineChartOptions"
+        [colors]="this.lineChartColors" [legend]="this.lineChartLegend" [chartType]="this.lineChartType" [plugins]="this.lineChartPlugins">
     </canvas>
+
+
+<button mat-button color="accent" id="resetZoom" (click)="resetZoom()">Reset Zoom</button>
 
 </div>
