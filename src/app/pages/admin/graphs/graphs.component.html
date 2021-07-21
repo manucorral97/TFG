@@ -1,38 +1,37 @@
-
 <div class="date_select">
     <div>
         <mat-form-field appearance="fill" class="selectComponente">
             <mat-label>Mis Sensores</mat-label>
             <mat-select [(value)]="selected">
-              <mat-option value="0" (click)="selectComponente(1)">Sensor 1</mat-option>
-              <mat-option value="1" (click)="selectComponente(2)">Sensor 2</mat-option>
+                <mat-option value="0" (click)="selectComponente(1)">Sensor 1</mat-option>
+                <mat-option value="1" (click)="selectComponente(2)">Sensor 2</mat-option>
             </mat-select>
-          </mat-form-field>
-    
+        </mat-form-field>
+
     </div>
-    <button (click)="oneHour()" class="ask" *ngIf="this.componente>=0">Una hora</button>
-    <button (click)="oneDay()" class="ask" *ngIf="this.componente>=0">Un día</button>
-    <button (click)="oneWeek()" class="ask" *ngIf="this.componente>=0">Una semana</button>
+    <button (click)="onDates('hour')" class="ask" *ngIf="this.componente>=0">Una hora</button>
+    <button (click)="onDates('day')" class="ask" *ngIf="this.componente>=0">Un día</button>
+    <button (click)="onDates('week')" class="ask" *ngIf="this.componente>=0">Una semana</button>
+    <button (click)="showInputDates()" class="ask"
+        *ngIf="this.componente>=0 && this.inputDates==false">Personalizado</button>
 
-    <mat-form-field appearance="standard" class="range_picker" *ngIf="this.componente">
-        <mat-label>Rango de fechas</mat-label>
-        <mat-date-range-input [rangePicker]="picker" [max]="this.actualTime">
-            <input matStartDate placeholder="Start date" #dateRangeEnd>
-            
-            <input matEndDate placeholder="End date" #dateRangeStart>
-        </mat-date-range-input>
+    <mat-card class="mat-card" *ngIf="this.inputDates == true" appearance="standard" class="range_picker">
+        <mat-card-content>
+            <form [formGroup]="this.datesForm" (ngSubmit)="onPersonalizado()">
+                <mat-form-field class="full-width-input">
+                    <input matInput formControlName="minDate" type="datetime-local" placeholder="Inicio" [max]="this.actualTime" touchUi>
+                </mat-form-field>
+                <mat-form-field class="full-width-input">
+                    <input matInput formControlName="maxDate" type="datetime-local" placeholder="Fin" [max]="this.actualTime">
+                </mat-form-field>
 
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-date-range-picker touchUi #picker color="accent">
-            <mat-date-range-picker-actions>
-                <button mat-button matDateRangePickerCancel>Cancelar</button>
-                <button mat-raised-button color="primary" matDateRangePickerApply
-                    (click)="fechas(dateRangeEnd, dateRangeStart)">Confirmar</button>
-            </mat-date-range-picker-actions>
-            <!-- <ngx-mat-datetime-picker #picker></ngx-mat-datetime-picker>  -->
-        </mat-date-range-picker>
-    </mat-form-field>
+                <button [disabled]="datesForm.invalid" mat-raised-button color="primary" id="buttonSend">Enviar</button>
+
+            </form>
+        </mat-card-content>
+    </mat-card>
 </div>
+
 
 <div class="results">
     <!--     {{minTime}} - {{maxTime}}-->
@@ -51,7 +50,8 @@
     </div>
 
     <div>
-        <table *ngIf="this.filas!=0" mat-table [dataSource]="dataSource" matSort matSortActive="time_stamp" matSortDirection="asc" class="mat-elevation-z8">
+        <table *ngIf="this.filas!=0" mat-table [dataSource]="dataSource" matSort matSortActive="time_stamp"
+            matSortDirection="asc" class="mat-elevation-z8">
 
             <!-- Tipo Column -->
             <ng-container matColumnDef="type">
@@ -83,9 +83,9 @@
         </div>
         <br>
         <div class="grafica_toggle">
-            <mat-slide-toggle (click)="graficar()" >Grafica</mat-slide-toggle>
+            <mat-slide-toggle (click)="graficar()">Grafica</mat-slide-toggle>
         </div>
-        
+
     </div>
 
 </div>
@@ -93,10 +93,31 @@
 <div *ngIf="this.grafica && (filas != 0 && action==true)" class="graphs">
 
     <canvas baseChart [datasets]="this.lineChartData" [labels]="this.lineChartLabels" [options]="this.lineChartOptions"
-        [colors]="this.lineChartColors" [legend]="this.lineChartLegend" [chartType]="this.lineChartType" [plugins]="this.lineChartPlugins">
+        [colors]="this.lineChartColors" [legend]="this.lineChartLegend" [chartType]="this.lineChartType"
+        [plugins]="this.lineChartPlugins">
     </canvas>
 
 
-<button mat-button color="accent" id="resetZoom" (click)="resetZoom()">Reset Zoom</button>
+    <button mat-button color="accent" id="resetZoom" (click)="resetZoom()">Reset Zoom</button>
 
 </div>
+
+
+
+<!-- <mat-form-field  *ngIf="this.inputDates == true" appearance="standard" class="range_picker">
+    <mat-label>Rango de fechas</mat-label>
+    <mat-date-range-input [rangePicker]="picker" [max]="this.actualTime">
+        <input matStartDate placeholder="Start date" #dateRangeEnd>
+        
+        <input matEndDate placeholder="End date" #dateRangeStart>
+    </mat-date-range-input>
+
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-date-range-picker touchUi #picker color="accent">
+        <mat-date-range-picker-actions>
+            <button mat-button matDateRangePickerCancel>Cancelar</button>
+            <button mat-raised-button color="primary" matDateRangePickerApply
+                (click)="fechas(dateRangeEnd, dateRangeStart)">Confirmar</button>
+        </mat-date-range-picker-actions>
+    </mat-date-range-picker>
+</mat-form-field> -->

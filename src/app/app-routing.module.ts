@@ -69,11 +69,12 @@ const routes: Routes = [
     loadChildren: () => 
       import('./pages/auth/register/register.module').then(m => m.RegisterModule),
       data:{
-        allowRol : ['0','1']
+        allowRol : ['0']
       },
       //Comporbamos si ya esta logeado para que no pueda acceder a la ruta y que tenga los permisos
       canActivate:[CheckRolGuard]
   },
+  { path: 'contact', loadChildren: () => import('./shared/components/contact/contact.module').then(m => m.ContactModule) },
 ];
 
 @NgModule({

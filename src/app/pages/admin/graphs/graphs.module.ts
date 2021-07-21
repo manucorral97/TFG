@@ -5,6 +5,7 @@ import { GraphsRoutingModule } from './graphs-routing.module';
 import { GraphsComponent } from './graphs.component';
 import { MaterialModule } from '@app/material.module';
 import { ChartsModule } from 'ng2-charts';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { ChartsModule } from 'ng2-charts';
     CommonModule,
     GraphsRoutingModule,
     MaterialModule,
-    ChartsModule
+    ChartsModule,
+    ReactiveFormsModule
   ],
   providers:[
     DatePipe

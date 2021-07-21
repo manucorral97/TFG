@@ -1,0 +1,37 @@
+<div class="card">
+    <h3>Información sobre nosotros.</h3>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio quae ullam ex aperiam neque dolores facilis
+        quisquam doloremque, facere magnam molestias eligendi, necessitatibus unde totam repudiandae reprehenderit aut
+        vitae nobis?</p>
+</div>
+<div class="card">
+    <h3>Información sobre el sistema.</h3>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio quae ullam ex aperiam neque dolores facilis
+        quisquam doloremque, facere magnam molestias eligendi, necessitatibus unde totam repudiandae reprehenderit aut
+        vitae nobis?</p>
+
+</div>
+<div class="card">
+    <h3>Formulario de Contacto.</h3>
+    <mat-card class="mat-card">
+        <mat-card-content>
+            <form [formGroup]="contactForm" (ngSubmit)="onContact()">
+                <mat-form-field class="full-width-input">
+                    <input matInput formControlName="name" type="text" placeholder="Nombre">
+                </mat-form-field>
+                <mat-form-field class="full-width-input">
+                    <input matInput formControlName="email" type="email" placeholder="Correo">
+                </mat-form-field>
+<!--                 <mat-form-field class="full-width-input">
+                    <input matInput id="text_area" formControlName="data" type="text-area" placeholder="Contacto...">
+                </mat-form-field> -->
+                <mat-form-field class="full-width-input">
+                    <textarea matInput id="text_area" formControlName="data" type="text-area" placeholder="Contacto..." maxlength="500"></textarea>
+                </mat-form-field>
+
+                <button [disabled]="contactForm.invalid" mat-raised-button color="primary">Enviar</button>
+
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>

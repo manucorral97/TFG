@@ -97,3 +97,23 @@ th.mat-sort-header-sorted{
     text-align: center;
     border: 1px solid grey;
 }
+
+
+.mat-card{
+    margin-top: 10px;
+    height: auto;
+    padding: 5px;
+}
+
+.full-width-input{
+    display: block;
+    font-size:12px;
+    width:auto;
+    
+}
+
+#buttonSend{
+    margin: 0 auto;
+    display: block;
+}
+

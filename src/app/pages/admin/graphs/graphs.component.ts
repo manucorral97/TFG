@@ -8,19 +8,17 @@ import { MatTableDataSource } from '@angular/material/table';
 import * as XLSX from 'xlsx';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { ChartDataSets, ChartType, Chart } from 'chart.js';
-import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { Color, Label } from 'ng2-charts';
 import { Subscription } from 'rxjs';
 import { DateAdapter } from '@angular/material/core';
 import { CustomDateAdapter } from './custom-date-adapter';
 import * as moment from 'moment';
 import { ActivatedRoute } from '@angular/router';
-import { BaseChartDirective } from 'ng2-charts';
-//import 'chartjs-plugin-zoom';
 
+//NO BORRAR ESTE COMENTARIO
 // @ts-ignore
 import * as zoomPlugin from 'chartjs-plugin-zoom';
-import { min } from 'rxjs/operators';
+import { FormBuilder, Validators } from '@angular/forms';
 
 //npm install ng2-charts@2.2.3 --save --force
 //npm install chart.js@2.9.3 --save
@@ -31,6 +29,7 @@ import { min } from 'rxjs/operators';
   styleUrls: ['./graphs.component.css'],
   providers: [{ provide: DateAdapter, useClass: CustomDateAdapter }],
 })
+
 export class GraphsComponent implements OnInit, AfterViewInit, OnDestroy {
   //// Varibale con las que se generara la grafica posteriormente
   lineChartData: ChartDataSets[] = [{ data: [], label: '' }];
@@ -51,7 +50,7 @@ export class GraphsComponent implements OnInit, AfterViewInit, OnDestroy {
   //Gráfico
   chart: any;
 
-  actualTime: Date;
+  actualTime: Date | string;
   maxTime: Date | string | null | undefined;
   minTime: Date | string | null | undefined;
   filas: any;
@@ -66,11 +65,18 @@ export class GraphsComponent implements OnInit, AfterViewInit, OnDestroy {
   private subscriptionAsk: Subscription = new Subscription();
 
   selected: any;
+  inputDates:boolean;
+
+  datesForm = this.fb.group({
+    minDate: [[], Validators.required],
+    maxDate: [[], Validators.required]
+  });
 
   constructor(
     private http: HttpClient,
     private DatePipe: DatePipe,
-    private router: ActivatedRoute
+    private router: ActivatedRoute,
+    private fb: FormBuilder
   ) {
     this.maxTime = new Date();
     this.minTime = new Date();
@@ -83,46 +89,66 @@ export class GraphsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.grafica = false;
     this.componente = 0;
     ////
-    this.actualTime = new Date();
+    this.actualTime = new Date().toISOString().split(".")[0];
+    this.inputDates = false
   }
+
 
   //Paginar y ordenar la tabla
   @ViewChild(MatSort, { static: false }) sort: MatSort = new MatSort();
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator =
     new MatPaginator(new MatPaginatorIntl(), ChangeDetectorRef.prototype);
 
+
   ngOnInit() {
+    //Inicialización de las porpiedades de la tabla (ordenar y paginar)
     this.dataSource.data = [null];
     this.dataSource.paginator = this.paginator;
+    // Cuando venimos a esta página a traves de la ruta con parametros (en admin)
     this.router.params.subscribe((e) => {
       if (e) {
         this.selected = e.id;
         this.componente = e.id;
       }
     });
-
-    ////
-    //this.maxTime = "2021-06-07T22:00:00";
-    //this.minTime = "2021-06-06T22:00:00";
-    //this.peticion (this.minTime, this.maxTime);
-    /////
   }
 
   ngAfterViewInit(): void {}
 
+  //Al cerrar el componente nos desusbcribimos de la peticion al back
   ngOnDestroy(): void {
     this.subscriptionAsk.unsubscribe();
   }
 
-  oneHour() {
+  //Para mostrar o no el formualrio de fechas personalizado
+  showInputDates(){
+    this.inputDates = true
+  }
+
+  //Tratamiento de las fechas por hora dia o semana
+  onDates(duration:string){
+    this.inputDates = false
     var time = new Date();
     this.maxTime = formatDate(time, 'yyyy-MM-ddTHH:mm:ss', 'en');
-    this.minTime = formatDate(
-      time.setHours(time.getHours() - 1),
-      'yyyy-MM-ddTHH:mm:ss',
-      'en'
-    );
-
+    if (duration == "hour"){
+      this.minTime = formatDate(
+        time.setHours(time.getHours() - 1),
+        'yyyy-MM-ddTHH:mm:ss',
+        'en'
+      );
+    } else if (duration == "day"){
+      this.minTime = formatDate(
+        time.setHours(time.getHours() - 24),
+        'yyyy-MM-ddTHH:mm:ss',
+        'en'
+      );
+    } else {
+      this.minTime = formatDate(
+        time.setHours(time.getHours() - 24 * 7),
+        'yyyy-MM-ddTHH:mm:ss',
+        'en'
+      );
+    }
     var maxTime_ = this.DatePipe.transform(
       this.maxTime,
       'yyyy-MM-ddTHH:mm:SS',
@@ -134,58 +160,16 @@ export class GraphsComponent implements OnInit, AfterViewInit, OnDestroy {
       'GMT'
     );
 
-    this.peticion(minTime_, maxTime_);
+    this.maxTime = maxTime_?.toString();
+    this.minTime = minTime_?.toString();
+
+    this.peticion(this.minTime, this.maxTime);
   }
 
-  oneDay() {
-    var time = new Date();
-    this.maxTime = formatDate(time, 'yyyy-MM-ddTHH:mm:ss', 'en');
-    this.minTime = formatDate(
-      time.setHours(time.getHours() - 24),
-      'yyyy-MM-ddTHH:mm:ss',
-      'en'
-    );
-
-    var maxTime_ = this.DatePipe.transform(
-      this.maxTime,
-      'yyyy-MM-ddTHH:mm:SS',
-      'GMT'
-    );
-    var minTime_ = this.DatePipe.transform(
-      this.minTime,
-      'yyyy-MM-ddTHH:mm:SS',
-      'GMT'
-    );
-
-    this.peticion(minTime_, maxTime_);
-  }
-
-  oneWeek() {
-    var time = new Date();
-    this.maxTime = formatDate(time, 'yyyy-MM-ddTHH:mm:ss', 'en');
-    this.minTime = formatDate(
-      time.setHours(time.getHours() - 24 * 7),
-      'yyyy-MM-ddTHH:mm:ss',
-      'en'
-    );
-
-    var maxTime_ = this.DatePipe.transform(
-      this.maxTime,
-      'yyyy-MM-ddTHH:mm:SS',
-      'GMT'
-    );
-    var minTime_ = this.DatePipe.transform(
-      this.minTime,
-      'yyyy-MM-ddTHH:mm:SS',
-      'GMT'
-    );
-
-    this.peticion(minTime_, maxTime_);
-  }
-
-  fechas(minTime: any, maxTime: any) {
-    const fecha_max = maxTime.value;
-    const fecha_min = minTime.value;
+  //Tratamiento de las fechas seleccionadas
+  onPersonalizado(){
+    const fecha_max = this.datesForm.value.maxDate;
+    const fecha_min = this.datesForm.value.minDate;
 
     var maxtime = new Date(fecha_max);
     var mintime = new Date(fecha_min);
@@ -207,15 +191,17 @@ export class GraphsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.peticion(this.minTime, this.maxTime);
   }
 
+  //Peticion de los datos
   peticion(minTime: string | any, maxTime: string | any) {
-    //console.log(this.maxTime);
-    //this.maxTime = "2021-06-07T22:00:00";
-    //this.minTime = "2021-06-06T22:00:00";
+
     this.maxTime = this.maxTime + 'Z';
     this.minTime = this.minTime + 'Z';
     let params = new HttpParams();
     params = params.append('inicio', this.minTime);
     params = params.append('final', this.maxTime);
+
+    console.log(this.minTime);
+    console.log(this.maxTime);
 
     this.subscriptionAsk.add(
       this.http
@@ -418,6 +404,7 @@ export class GraphsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.componente = 1;
   }
 
+  //Metodo para reseetear el zoom de la grafica
   resetZoom(){
     //console.log("Reset");
     this.graficar();
