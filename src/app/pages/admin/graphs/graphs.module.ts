@@ -6,6 +6,7 @@ import { GraphsComponent } from './graphs.component';
 import { MaterialModule } from '@app/material.module';
 import { ChartsModule } from 'ng2-charts';
 import { ReactiveFormsModule } from '@angular/forms';
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     GraphsRoutingModule,
     MaterialModule,
     ChartsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgxMaterialTimepickerModule
   ],
   providers:[
     DatePipe

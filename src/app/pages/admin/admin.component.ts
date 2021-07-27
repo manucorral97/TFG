@@ -36,11 +36,15 @@ export class AdminComponent implements OnInit {
       id: '0',
       name: 'Sensor 1',
       icon: 'sensors',
+      x:0,
+      y:0
     },
     {
       id: '1',
       name: 'Sensor 2',
       icon: 'sensors',
+      x:0,
+      y:0
     },
   ];
 
@@ -89,6 +93,7 @@ export class AdminComponent implements OnInit {
   private subscriptionDown: Subscription = new Subscription;
 
 
+  offset: any;
   constructor(
     private http: HttpClient,
     private sanitizer: DomSanitizer,
@@ -105,6 +110,7 @@ export class AdminComponent implements OnInit {
     this.done = false;
     this.alarmas = 2;
     this.data = '';
+    this.offset = { x: 0, y: 0 };
   }
 
   ngOnInit(): void {
@@ -121,7 +127,7 @@ export class AdminComponent implements OnInit {
           ))
       );
 
-    //Timeout to know alarms numbers (save data in this.data and save number y this.alarmas)
+    //Timeout to know alarms numbers (save data in this.data and save number in this.alarmas)
 
     this.elem = document.getElementById('container-center');
 
@@ -236,20 +242,46 @@ export class AdminComponent implements OnInit {
   }
 
   //Metodo que guarda las imagenes de las cajas al soltarse (not implemented)
-  savePosition($event: CdkDragEnd) {
-    this.dragPositionState.x = $event.source.getFreeDragPosition().x;
-    this.dragPositionState.y = $event.source.getFreeDragPosition().y;
+  savePosition($event: CdkDragEnd, id: string) {
+    //console.log("ID_Componente: ", id);
+    var id_number = parseInt(id);
 
-    var ejemplo = $event.dropPoint.x;
 
+    //Limites del contenedor
     var container = this.document.getElementById('container-center');
-    console.log("ContainerLeft:", container.offsetLeft, "ContainerTop:", container.offsetTop);
-    //console.log(ejemplo);
+    let topOffset = container.getBoundingClientRect().top;
+    let leftOffset = container.getBoundingClientRect().left;
+    let rightOffset = container.getBoundingClientRect().right;
+    let bottomOffset = container.getBoundingClientRect().bottom;
+    let height = container.getBoundingClientRect().height;
+    let width = container.getBoundingClientRect().width;
+    // X = LEFT
+    //let x = container.getBoundingClientRect().x;
+    // Y = TOP
+    //let y = container.getBoundingClientRect().y;
+
+    console.log("TOP: ", topOffset, "LEFT: ", leftOffset, "RIGHT: ", rightOffset, "BOTTOM: ", bottomOffset, "HEIGHT: ", height, "WIDTH: ", width);
+
+
+    //Cada sensor tiene un desfase de 114 px en la barra inferior
+    this.dragPositionState.x = $event.source.getFreeDragPosition().x + id_number*114;
+    this.dragPositionState.y = bottomOffset + $event.source.getFreeDragPosition().y + 268.25;
+
+
+
     console.log(
-      'Posiciones a guardar: ',
-      this.dragPositionState.x,
-      this.dragPositionState.y
+      'Posiciones a guardar: x:', this.dragPositionState.x, 
+      ", y:", this.dragPositionState.y
     );
+
+
+
+
+   /*  this.dragPositionState.x = this.dragPositionInit.x + this.offset.x;
+    this.dragPositionState.y = this.dragPositionInit.y + this.offset.y;
+
+    console.log("x", this.dragPositionState.x, "y",this.dragPositionState.y, "offset",this.offset); */
+
 
     //Guardar en un drgposition
   }
@@ -284,10 +316,16 @@ export class AdminComponent implements OnInit {
           this.done = true;
         },
         (err) => {
+          this.done = false;
           //console.log(err);
         }
       )
     );
+    //Reseteamos la posicion al cambiar de granja (Habrá que pedir las posiciones almacenadas)
+    this.dragPositionReset = {
+      x: this.dragPositionReset.x,
+      y: this.dragPositionReset.y,
+    };
   }
 
   //Metodo que nos lleva a la pagina de graficar directamente

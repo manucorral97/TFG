@@ -28,7 +28,7 @@
     <img src={{this.urlEmpty}} id="img" *ngIf="this.done==false">
     <div class="box-container">
         <div class="box" *ngFor="let c of components" cdkDrag [cdkDragFreeDragPosition]="dragPositionReset"
-            (cdkDragEnded)="savePosition($event)" cdkDragBoundary="#container-center">
+            (cdkDragEnded)="savePosition($event, c.id)" cdkDragBoundary="#container-center">
             <mat-card>
                 <button mat-button [matMenuTriggerFor]="menu">
                     <mat-icon>
@@ -56,8 +56,8 @@
                 </div>
             </mat-card>
 
-            <button (click)="returnHome(c.name)" class="return">
-                <mat-icon>
+            <button (click)="returnHome(c)" class="return">
+                <mat-icon class="close">
                     close
                 </mat-icon>
             </button>

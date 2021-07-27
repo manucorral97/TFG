@@ -12,8 +12,7 @@
     <button (click)="onDates('hour')" class="ask" *ngIf="this.componente>=0">Una hora</button>
     <button (click)="onDates('day')" class="ask" *ngIf="this.componente>=0">Un día</button>
     <button (click)="onDates('week')" class="ask" *ngIf="this.componente>=0">Una semana</button>
-    <button (click)="showInputDates()" class="ask"
-        *ngIf="this.componente>=0 && this.inputDates==false">Personalizado</button>
+    <button (click)="showInputDates()" class="ask" *ngIf="this.componente>=0 && this.inputDates==false">Personalizado</button>
 
     <mat-card class="mat-card" *ngIf="this.inputDates == true" appearance="standard" class="range_picker">
         <mat-card-content>

@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+//import { transporter } from '@app/pages/admin/components/mailer/mailer';
+//const Email = require('email-templates');
+//import * as Email from 'email-templates'
+
 
 @Component({
   selector: 'app-contact',
@@ -24,6 +28,8 @@ export class ContactComponent implements OnInit {
     console.log(this.contactForm.value.name);
     console.log(this.contactForm.value.email);
     console.log(this.contactForm.value.data);
+    //Send email
+    
   }
 
 }
