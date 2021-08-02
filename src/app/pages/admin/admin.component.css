@@ -1,9 +1,8 @@
-
 #container-center {
-  text-align: center; 
-  /*border: 1px solid red;*/
-  /*display: inline-block;*/
-  width: 70%;
+  text-align: center;
+/*   border: 1px solid green;
+ */  /*display: inline-block;*/
+  width: 640px;
   height: auto;
   margin: auto;
 }
@@ -14,22 +13,48 @@ input[type="file"] {
   height: 90% !important;
 }
 
-
-img {
-  text-align: center;
-  display: flex;
+.x {
+/*   border: 1px solid red;
+ */  width: 100%;
+  height: 100%;
   justify-content: center;
-  margin: 0 auto !important;
-  width: 100%;
-  max-height: 510px;
-  /*border: 1px solid green;*/
+  text-align: center;
+  align-items: center;
+}
+
+.section_img {
+  position: relative;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  display: flex !important;
+
+/*   border: 1px solid blue;
+ */  width: 640px;
+  height: 360px;
+}
+
+.img {
+  display: block;
+/*   border: 1px solid white;
+ */
+  margin-left: auto;
+
+  margin-right: auto;
+  width: 640px;
+  height: 360px;
 }
 
 .fulldisplay {
-  width: 90% !important;
-  height: 90% !important;
+  width: 100% !important;
+  height: 100% !important;
   max-width: none !important;
   max-height: none !important;
+}
+
+.fulldisplay_img{
+  width: 100% !important;
+  height: 100% !important;
 }
 
 .icon {
@@ -38,17 +63,6 @@ img {
 .icon:hover {
   background-color: rgba(128, 128, 128, 0.3);
   border-radius: 100px;
-}
-
-.respuestaHTML {
-  width: 100%;
-}
-
-.url {
-  height: 100%;
-  border: 10px;
-  height: 100%;
-  width: 100%;
 }
 
 mat-icon {
@@ -160,30 +174,33 @@ h6 {
   position: absolute;
   right: 5px;
   bottom: 95px;
-
 }
 
-#formChangeName{
-    display: flex;
+#formChangeName {
+  display: flex;
 }
 
-#buttonChange{
-    padding: 0px !important;
-    font-size: smaller;
-    margin: 2px;
-    height: fit-content;
+#buttonChange {
+  padding: 0px !important;
+  font-size: smaller;
+  margin: 2px;
+  height: fit-content;
 }
 
-#formChange{
-    margin-left: 15px;
+#formChange {
+  margin-left: 15px;
 }
 
-#alarmas{
+#alarmas {
   position: absolute;
   top: 70px;
   right: 20px;
 }
 
-.close{
+.close {
   color: red;
+}
+
+.div_cropper {
+  margin-top: 5px;
 }

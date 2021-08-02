@@ -30,6 +30,12 @@
         </mat-icon>
         <span class="nav-link">Gráficos</span>
     </a>
+    <a mat-list-item *ngIf="isLogged && (userRol == '0'|| userRol == '1'|| userRol =='2') " routerLink="alertas">
+        <mat-icon>
+            announcement
+        </mat-icon>
+        <span class="nav-link">Alertas</span>
+    </a>
 <!--     <a mat-list-item *ngIf="isLogged && (userRol == '0'|| userRol == '1'|| userRol =='2') " routerLink="admin/prueba">
         <mat-icon>
             trending_up

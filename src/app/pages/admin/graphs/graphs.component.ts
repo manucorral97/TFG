@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Injectable, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { DatePipe, formatDate } from '@angular/common';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { MatSort } from '@angular/material/sort';
@@ -9,11 +9,16 @@ import * as XLSX from 'xlsx';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { ChartDataSets, ChartType, Chart } from 'chart.js';
 import { Color, Label } from 'ng2-charts';
-import { Subscription } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { DateAdapter } from '@angular/material/core';
 import { CustomDateAdapter } from './custom-date-adapter';
 import * as moment from 'moment';
 import { ActivatedRoute } from '@angular/router';
+import { MatBottomSheet, MatBottomSheetRef } from '@angular/material/bottom-sheet';
+import { ExportToCsv } from 'export-to-csv';
+import { SharedService } from '@app/shared/services/shared.service';
+
+
 
 //NO BORRAR ESTE COMENTARIO
 // @ts-ignore
@@ -30,6 +35,9 @@ import { FormBuilder, Validators } from '@angular/forms';
   providers: [{ provide: DateAdapter, useClass: CustomDateAdapter }],
 })
 
+@Injectable({
+  providedIn: 'root'
+})
 export class GraphsComponent implements OnInit, AfterViewInit, OnDestroy {
   //// Varibale con las que se generara la grafica posteriormente
   lineChartData: ChartDataSets[] = [{ data: [], label: '' }];
@@ -56,7 +64,6 @@ export class GraphsComponent implements OnInit, AfterViewInit, OnDestroy {
   filas: any;
   action: boolean;
 
-  fileName: string;
   historico: Object[] | any;
 
   grafica: boolean;
@@ -72,17 +79,23 @@ export class GraphsComponent implements OnInit, AfterViewInit, OnDestroy {
     maxDate: [[], Validators.required]
   });
 
+
+  private messageSource = new BehaviorSubject<any>("x");
+  //currentMessage = this.messageSource.asObservable();
+  currentMessage:any = "";
+
   constructor(
     private http: HttpClient,
     private DatePipe: DatePipe,
     private router: ActivatedRoute,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private _bottomSheet: MatBottomSheet,
+    private SharedService: SharedService
   ) {
     this.maxTime = new Date();
     this.minTime = new Date();
     this.filas = new Number();
     this.action = false;
-    this.fileName = 'Datos.xlsx';
     this.historico = [];
     this.dataSource.data = [null];
     ///
@@ -90,7 +103,8 @@ export class GraphsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.componente = 0;
     ////
     this.actualTime = new Date().toISOString().split(".")[0];
-    this.inputDates = false
+    this.inputDates = false;
+    
   }
 
 
@@ -197,11 +211,17 @@ export class GraphsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.maxTime = this.maxTime + 'Z';
     this.minTime = this.minTime + 'Z';
     let params = new HttpParams();
+    
+    //this.maxTime="2021-06-15T16:03:00Z"
+    //this.minTime="2021-06-14T16:03:00Z"
+
     params = params.append('inicio', this.minTime);
     params = params.append('final', this.maxTime);
 
     console.log(this.minTime);
     console.log(this.maxTime);
+
+
 
     this.subscriptionAsk.add(
       this.http
@@ -227,6 +247,7 @@ export class GraphsComponent implements OnInit, AfterViewInit, OnDestroy {
       //Eliminamos el ultimo (no_data = false)
       historico.splice(-1, 1);
       this.dataSource.data = historico;
+      this.SharedService.setMessage(this.dataSource.data);
       this.filas = historico.length;
 
       for (var i = 0; i < this.historico.length; i++) {
@@ -261,13 +282,7 @@ export class GraphsComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  //Metodo para exportar en excel los datos
-  exportExcel(): void {
-    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.dataSource.data);
-    const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Datos');
-    XLSX.writeFile(wb, this.fileName);
-  }
+
 
   //Metodo que lanza la grafica al pulsar en el toogle button
   graficar(): void {
@@ -411,4 +426,54 @@ export class GraphsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.graficar();
 
   }
+
+  openBottomSheet(): void {
+    this._bottomSheet.open(BottomSheetOverviewExampleSheet);
+  }
+}
+
+@Component({
+  selector: 'bottom-graphs-sheet',
+  templateUrl: './bottom-graphs-sheet.html',
+  styleUrls: ['./bottom-graphs-sheet.css'],
+  providers:[
+    GraphsComponent
+  ]
+})
+export class BottomSheetOverviewExampleSheet implements OnInit{
+
+  data:any;
+  constructor(private SharedService: SharedService) { }
+
+  ngOnInit(): void {
+    this.data = this.SharedService.getMessage();    
+  }
+
+  exportCSV(){
+    const options = { 
+      fieldSeparator: ',',
+      quoteStrings: '"',
+      decimalSeparator: '.',
+      showLabels: true, 
+      //showTitle: true,
+      //title: 'My Awesome CSV',
+      useTextFile: false,
+      useBom: true,
+      useKeysAsHeaders: true,
+      filename:"Datos",
+      // headers: ['Column 1', 'Column 2', etc...] <-- Won't work with useKeysAsHeaders present!
+    };
+    const csvExporter = new ExportToCsv(options);
+    csvExporter.generateCsv(this.data);
+
+  }
+
+  //Metodo para exportar en excel los datos
+  exportXLSX(): void {
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.data);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Datos');
+    XLSX.writeFile(wb, "Datos.xlsx");
+  }
+
 }

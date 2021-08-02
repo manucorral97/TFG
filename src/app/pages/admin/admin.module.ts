@@ -12,6 +12,8 @@ import { Directive } from '@shared/directives/directive.module';
 import { ModalComponent } from './components/modal/modal.component';
 import { FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { AlarmComponent } from './components/alarm/alarm.component';
+import { AlertSidebarModule } from './components/alert-sidebar/alert-sidebar.module';
+import { AngularCropperjsModule } from 'angular-cropperjs';
 
 
 
@@ -31,7 +33,9 @@ import { AlarmComponent } from './components/alarm/alarm.component';
     MainPipe,
     Directive,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    AlertSidebarModule,
+    AngularCropperjsModule
   ],
   exports:[
     AdminComponent

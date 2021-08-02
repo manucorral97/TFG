@@ -1,8 +1,6 @@
 import {
   CdkDragDrop,
   CdkDragEnd,
-  moveItemInArray,
-  transferArrayItem,
 } from '@angular/cdk/drag-drop';
 import { HttpClient } from '@angular/common/http';
 import {
@@ -10,6 +8,7 @@ import {
   Inject,
   OnInit,
   SecurityContext,
+  ViewChild,
 } from '@angular/core';
 
 import { Pipe, PipeTransform } from '@angular/core';
@@ -22,6 +21,8 @@ import { FormBuilder, Validators} from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { AlarmComponent } from './components/alarm/alarm.component';
+import { Output, EventEmitter } from '@angular/core';
+import { CropperComponent } from 'angular-cropperjs';
 
 
 @Component({
@@ -72,10 +73,11 @@ export class AdminComponent implements OnInit {
 
   //Posicion de reset de las cajas (y de inicio...)
   dragPositionReset = { x: 0, y: 0 };
+  //dragPositionReset = { x: 222, y: -110 };
   //Posicion actual de las cajas
   dragPositionState = { x: 0, y: 0 };
   //Posicion de inicio de las cajas
-  dragPositionInit = { x: 0, y: 0 };
+  //dragPositionInit = { x: 110, y: 0 };
 
   private urlGET: any = 'http://13.80.8.137/agm';
   urlEmpty = 'https://www.elegantthemes.com/blog/wp-content/uploads/2014/01/import-export-wordpress-content.png';
@@ -94,6 +96,23 @@ export class AdminComponent implements OnInit {
 
 
   offset: any;
+  isOpen: boolean = false;
+  @Output() toggleSidenav = new EventEmitter();
+
+  imageUrl:string = '';
+  imageResult:string = '';
+  @ViewChild('angularCropper') angularCropper: CropperComponent = new CropperComponent;
+  config = {
+    zoomable:true,
+    cropBoxResizable: false,
+    data:{
+      width: 640,
+      height:360
+    }
+  };
+  
+
+  //private cropper: Cropper;
   constructor(
     private http: HttpClient,
     private sanitizer: DomSanitizer,
@@ -131,8 +150,8 @@ export class AdminComponent implements OnInit {
 
     this.elem = document.getElementById('container-center');
 
-    this.dragPositionInit.x = this.dragPositionState.x;
-    this.dragPositionInit.y = this.dragPositionState.y;
+    //this.dragPositionInit.x = this.dragPositionState.x;
+    //this.dragPositionInit.y = this.dragPositionState.y;
   }
 
   ngOnDestroy() {
@@ -141,53 +160,69 @@ export class AdminComponent implements OnInit {
   }
 
   onSelectFile(e: any) {
+    //this.imageUrl = ' ';
     if (e.target.files) {
       var reader = new FileReader();
       const file = e.target.files[0];
+      
       reader.readAsDataURL(file);
       reader.onload = () => {
-        /* Ya hace base 64 de la imagen */
-        this.frame = reader.result;
-        //Posible tratamiento del id de la instalacion 
-        var userID = this.authService.userID;
-        console.log(userID);
-        var new_id = userID + this.granja.toString();
-        console.log(new_id);
-        //
-        //Cuerpo de la peticion para almacenar la imagen
-        const body = JSON.stringify({
-          //Pasar una cadena del id del usuario + el id de la instalacion
-          id_instalacion: this.granja,
-          frame: this.frame,
-        });
-
-        //Peticion para almacenar la imagen 
-        this.subscriptionUp.add(
-          this.http.post('http://13.80.8.137/api/1/uploadimage', body).subscribe(
-            (res) => {
-              this.done = true;
-            },
-            (err) => {
-              //Si el error que nos da es este, se ha guardado la imagen
-              if (
-                err.error.text == 'Imagen de la instalación almacenada correctamente.'
-              ) {
-                this.done = true;
-                this.url = this.frame;
-                console.log(err.error.text);
-              }
-            }
-          )
-        );
+        this.imageUrl = reader.result as string;
       }
     }
+  }
+
+  getCroppedImage(){
+    this.imageUrl = '';
+    this.url = this.angularCropper.cropper.getCroppedCanvas().toDataURL('image/jpeg');
+
+
+    /* Ya hace base 64 de la imagen */
+    this.frame = this.url;    
+
+    //Posible tratamiento del id de la instalacion 
+    var userID = this.authService.userID;
+    console.log(userID);
+    var new_id = userID + this.granja.toString();
+    console.log(new_id);
+    //
+    //Cuerpo de la peticion para almacenar la imagen
+    const body = JSON.stringify({
+      //Pasar una cadena del id del usuario + el id de la instalacion
+      id_instalacion: this.granja,
+      frame: this.frame,
+    });
+
+    //Peticion para almacenar la imagen 
+    this.subscriptionUp.add(
+      this.http.post('http://13.80.8.137/api/1/uploadimage', body).subscribe(
+        (res) => {
+          this.done = true;
+        },
+        (err) => {
+          //Si el error que nos da es este, se ha guardado la imagen
+          if (
+            err.error.text == 'Imagen de la instalación almacenada correctamente.'
+          ) {
+            this.done = true;
+            this.url = this.frame;
+            console.log(err.error.text);
+          }
+        }
+      )
+    );
+    
   }
 
   //Metodo para poner la imagen en pantalla completa. Cambia la clase del div para verse más grande
   openFullScreen() {
     //Cambiar la imagen a 100%
+    const section_img = this.document.getElementById('section_img');
     const img = this.document.getElementById('img');
-    img.className += ' fulldisplay';
+
+    //const img = this.document.getElementById('img');
+    section_img.className += ' fulldisplay';
+    img.className += ' fulldisplay_img';
 
     if (this.elem.requestFullscreen) {
       this.elem.requestFullscreen();
@@ -208,7 +243,9 @@ export class AdminComponent implements OnInit {
     document.addEventListener('MSFullscreenChange', exitHandler);
     function exitHandler(this: any) {
       if (!document.fullscreenElement) {
-        img.className = '';
+        //img.className = '';
+        section_img.className = 'section_img';
+        img.className = 'img'
       }
     }
   }
@@ -236,15 +273,21 @@ export class AdminComponent implements OnInit {
   returnHome(sensor: any) {
     console.log(sensor);
     this.dragPositionReset = {
-      x: this.dragPositionReset.x,
-      y: this.dragPositionReset.y,
+      x: 0 ,//+ sensor.id * 114,
+      y: 0,
     };
   }
 
   //Metodo que guarda las imagenes de las cajas al soltarse (not implemented)
-  savePosition($event: CdkDragEnd, id: string) {
+  savePosition($event: CdkDragEnd, sensor: any) {
     //console.log("ID_Componente: ", id);
-    var id_number = parseInt(id);
+    var id_number = parseInt(sensor.id);
+
+    //¿OBTENER TAMAÑO DE LA VENTANA TAL VEZ?
+    var windowWidth = window.innerWidth;
+    var windowHeight = window.innerHeight;
+
+    console.log("Ventana:\nWidth -> ", windowWidth, "\nHeight -> ", windowHeight);
 
 
     //Limites del contenedor
@@ -260,18 +303,18 @@ export class AdminComponent implements OnInit {
     // Y = TOP
     //let y = container.getBoundingClientRect().y;
 
-    console.log("TOP: ", topOffset, "LEFT: ", leftOffset, "RIGHT: ", rightOffset, "BOTTOM: ", bottomOffset, "HEIGHT: ", height, "WIDTH: ", width);
+    console.log("IMAGEN\nTOP: ", topOffset, "\nLEFT: ", leftOffset, "\nRIGHT: ", rightOffset, "\nBOTTOM: ", bottomOffset, "\nHEIGHT: ", height, "\nWIDTH: ", width);
 
 
-    //Cada sensor tiene un desfase de 114 px en la barra inferior
+    //Cada sensor tiene un desfase de 114 px en la barra inferior (Se coge el punto mas a la izquierda, asique si quisieramos ocger el centro del box, sumar 57px)
     this.dragPositionState.x = $event.source.getFreeDragPosition().x + id_number*114;
-    this.dragPositionState.y = bottomOffset + $event.source.getFreeDragPosition().y + 268.25;
 
-
+    //this.dragPositionState.y = bottomOffset + $event.source.getFreeDragPosition().y + 268.25;
+    this.dragPositionState.y = bottomOffset-$event.source.getFreeDragPosition().y;
 
     console.log(
-      'Posiciones a guardar: x:', this.dragPositionState.x, 
-      ", y:", this.dragPositionState.y
+      'Posiciones a guardar\nX:', this.dragPositionState.x, 
+      "\nY:", this.dragPositionState.y
     );
 
 
@@ -302,6 +345,7 @@ export class AdminComponent implements OnInit {
   //Metodo para elegir cada una de las granjas a disposicion del usuario
   selectGranja(number: number) {
     this.granja = number;
+    this.done = false;
     /* Pedimos la imagen almacenada */
     this.subscriptionDown.add(
       this.http
@@ -351,6 +395,12 @@ export class AdminComponent implements OnInit {
     });
     //Reseteamos el contador de alarmas
     this.alarmas = ''
+  }
+
+  alarmFunction2(){
+    
+    this.toggleSidenav.emit();
+    this.isOpen =! this.isOpen;
   }
 
 }

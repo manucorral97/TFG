@@ -13,6 +13,7 @@ import { FormsModule} from '@angular/forms';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { Interceptor } from '@app/shared/interceptors/admin-interceptor';
 import { RefreshTokenInterceptor } from './shared/interceptors/refreshtoken-interceptors';
+import { AlertSidebarModule } from './pages/admin/components/alert-sidebar/alert-sidebar.module';
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import { RefreshTokenInterceptor } from './shared/interceptors/refreshtoken-inte
     SidebarModule,
     HttpClientModule,
     FormsModule,
-    DragDropModule
+    DragDropModule,
+    AlertSidebarModule
   ],
   providers: [
     {provide:HTTP_INTERCEPTORS, useClass:Interceptor, multi: true},

@@ -20,61 +20,80 @@ const routes: Routes = [
   {
     path: 'admin/users',
     loadChildren: () =>
-      import('./pages/admin/user/user.module').then(m => m.UserModule),
-      data:{
-        allowRol : ['0','1']
-      },
-      //Comporbamos si ya esta logeado para que no pueda acceder a la ruta y que tenga los permisos
-      canActivate:[CheckRolGuard]
+      import('./pages/admin/user/user.module').then((m) => m.UserModule),
+    data: {
+      allowRol: ['0', '1'],
+    },
+    //Comporbamos si ya esta logeado para que no pueda acceder a la ruta y que tenga los permisos
+    canActivate: [CheckRolGuard],
   },
   {
     path: 'admin/graphs',
     loadChildren: () =>
-      import('./pages/admin/graphs/graphs.module').then(m => m.GraphsModule),
-      data:{
-        allowRol : ['0','1','2']
-      },
-      //Comporbamos si ya esta logeado para que no pueda acceder a la ruta y que tenga los permisos
-      canActivate:[CheckRolGuard]
+      import('./pages/admin/graphs/graphs.module').then((m) => m.GraphsModule),
+    data: {
+      allowRol: ['0', '1', '2'],
+    },
+    //Comporbamos si ya esta logeado para que no pueda acceder a la ruta y que tenga los permisos
+    canActivate: [CheckRolGuard],
   },
   {
     path: 'admin/prueba',
     loadChildren: () =>
-      import('./pages/admin/prueba/prueba.module').then(m => m.PruebaModule),
-      data:{
-        allowRol : ['0','1','2']
-      },
-      //Comporbamos si ya esta logeado para que no pueda acceder a la ruta y que tenga los permisos
-      canActivate:[CheckRolGuard]
+      import('./pages/admin/prueba/prueba.module').then((m) => m.PruebaModule),
+    data: {
+      allowRol: ['0', '1', '2'],
+    },
+    //Comporbamos si ya esta logeado para que no pueda acceder a la ruta y que tenga los permisos
+    canActivate: [CheckRolGuard],
   },
   {
     path: 'admin',
     loadChildren: () =>
       import('./pages/admin/admin.module').then((m) => m.AdminModule),
-      data:{
-        allowRol : ['0','1','2']
-      },
-      //Comporbamos si ya esta logeado para que no pueda acceder a la ruta y que tenga los permisos
-      canActivate:[CheckRolGuard]
+    data: {
+      allowRol: ['0', '1', '2'],
+    },
+    //Comporbamos si ya esta logeado para que no pueda acceder a la ruta y que tenga los permisos
+    canActivate: [CheckRolGuard],
   },
-  
+
   {
     path: 'login',
     loadChildren: () =>
       import('./pages/auth/login/login.module').then((m) => m.LoginModule),
-      //Comporbamos si ya esta logeado para que no pueda acceder a la ruta
-      canActivate:[CheckLoginGuard]
+    //Comporbamos si ya esta logeado para que no pueda acceder a la ruta
+    canActivate: [CheckLoginGuard],
   },
-  { path: 'register', 
-    loadChildren: () => 
-      import('./pages/auth/register/register.module').then(m => m.RegisterModule),
-      data:{
-        allowRol : ['0']
+  {
+    path: 'register',
+    loadChildren: () =>
+      import('./pages/auth/register/register.module').then(
+        (m) => m.RegisterModule
+      ),
+    data: {
+      allowRol: ['0'],
+    },
+    //Comporbamos si ya esta logeado para que no pueda acceder a la ruta y que tenga los permisos
+    canActivate: [CheckRolGuard],
+  },
+  {
+    path: 'contact',
+    loadChildren: () =>
+      import('./shared/components/contact/contact.module').then(
+        (m) => m.ContactModule
+      ),
+  },
+  {
+    path: 'alertas',
+    loadChildren: () =>
+      import('./pages/alertas/alertas.module').then((m) => m.AlertasModule),
+      data: {
+        allowRol: ['0', '1', '2'],
       },
-      //Comporbamos si ya esta logeado para que no pueda acceder a la ruta y que tenga los permisos
-      canActivate:[CheckRolGuard]
+      canActivate: [CheckRolGuard],
   },
-  { path: 'contact', loadChildren: () => import('./shared/components/contact/contact.module').then(m => m.ContactModule) },
+  
 ];
 
 @NgModule({

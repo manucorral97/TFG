@@ -1,0 +1,136 @@
+.date_select{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    /*border: 1px solid black;*/
+}
+
+.ask{
+    text-decoration: none;
+    color: rgba(0, 0, 0, 0.452);
+    font-size: large;
+    text-align: center;
+    height: fit-content;
+    margin-top: 25px;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom-width: 1px;
+    background-color: white;
+    border-bottom-color: rgba(0, 0, 0, 0.452);
+    cursor: pointer;
+}
+
+.ask::selection{
+    background-color: aqua;
+}
+
+
+button:hover{
+    color: rgb(0, 0, 0);
+    border-bottom-color: rgb(0, 0, 0);
+    border-bottom-width: 2px;
+}
+table{
+    width: 70%;
+    margin: 0 auto;
+    margin-top: 1rem;
+}
+
+th.mat-sort-header-sorted{
+    color: black;
+}
+
+
+
+.mat-row:hover {
+    background-color: rgba(97, 97, 97, 0.479);
+  }
+
+.result_filas{
+    width: fit-content;
+    margin: 0 auto;
+    font-size: large;
+    
+}
+.download{
+    font-size: xx-large;
+    cursor: pointer;
+}
+
+.footer_table{
+    width: 70%;
+    margin:0 auto;
+    display: flex;
+    background-color: white;
+    justify-content: space-between;
+}
+.filters{
+    text-align: center;
+}
+
+.graphs{
+    margin: 0 auto;
+    margin-top: 10px;
+    width: 70%;
+    height: 70%;
+}
+
+.grafica_toggle{
+    margin: 0 auto;
+    width: 100%;
+    font-size: large;
+    justify-content: center;
+    text-align: center;
+}
+
+.selectComponente{
+    margin-top: 1px;
+    margin-left: 1rem;
+}
+
+#resetZoom{
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    text-align: center;
+    border: 1px solid grey;
+}
+
+
+.mat-card{
+    margin-top: 10px;
+    height: auto;
+    padding: 5px;
+}
+
+.full-width-input{
+    display: block;
+    font-size:12px;
+    width:auto;
+    
+}
+
+#buttonSend{
+    margin: 0 auto;
+    display: block;
+}
+
+
+.div_btn{
+    width: 100%;
+    margin-top: 10px;
+    text-align: center;
+
+}
+.btn-center{
+    background-color: #04AA6D;
+    color: white;
+}
+
+.btn-center:hover{
+    background-color: #3e8e41;
+    color: white;
+
+}

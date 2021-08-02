@@ -1,3 +1,4 @@
+
 <div class="container-file">
     <div>
         <mat-form-field appearance="fill" class="selectGranja">
@@ -8,7 +9,7 @@
         </mat-form-field>
 
     </div>
-
+    {{isOpen}}
     <div class="uploadFile" *ngIf="this.granja>0">
         <label class="custom-file">
             <mat-icon class="icon">
@@ -21,14 +22,25 @@
     </div>
 </div>
 
-<mat-icon class="screen" (click)="openFullScreen()" id="fullscreen" *ngIf="this.granja>0">fullscreen</mat-icon>
+<mat-icon class="screen" (click)="openFullScreen()" id="fullscreen" *ngIf="this.granja>0">open_in_full</mat-icon>
 
 <div id="container-center" [hidden]="this.granja==0">
-    <img src={{this.url}} id="img" *ngIf="this.done==true">
-    <img src={{this.urlEmpty}} id="img" *ngIf="this.done==false">
+    <section *ngIf="imageUrl!='' " >
+        <angular-cropper [imageUrl]=imageUrl #angularCropper [cropperOptions]=config></angular-cropper>
+
+        <div class="div_cropper">
+            <button (click)="getCroppedImage()">Recortar</button>
+        </div>
+    </section>
+    <div class="x" id="x">
+        <section class="section_img" id="section_img">
+            <img src={{this.url}} id="img" class="img" [hidden]="this.done==true">
+        </section>
+    </div>
+    <!-- <img src={{this.urlEmpty}} id="img2" *ngIf="this.done==false"> -->
     <div class="box-container">
         <div class="box" *ngFor="let c of components" cdkDrag [cdkDragFreeDragPosition]="dragPositionReset"
-            (cdkDragEnded)="savePosition($event, c.id)" cdkDragBoundary="#container-center">
+            (cdkDragEnded)="savePosition($event, c)" cdkDragBoundary="#container-center">
             <mat-card>
                 <button mat-button [matMenuTriggerFor]="menu">
                     <mat-icon>
@@ -76,7 +88,7 @@
     
     <button mat-button [matMenuTriggerFor]="menu" id="changeAll" *ngIf="this.granja">
         <mat-icon>
-            {{"menu"}}
+            {{"drag_indicator"}}
         </mat-icon>
         <mat-menu #menu="matMenu">
             <button mat-menu-item (click)="changeAll('water')">
@@ -102,4 +114,25 @@
 
 </div>
 
-<button mat-raised-button color="warn" *ngIf="this.granja>0" id="alarmas" (click)="alarmFunction()" matBadge={{this.alarmas}} matBadgePosition="before" matBadgeColor="warn">Alarmas</button>
+<!-- <button mat-raised-button color="warn" *ngIf="this.granja>0" id="alarmas" (click)="alarmFunction()" matBadge={{this.alarmas}} matBadgePosition="before" matBadgeColor="warn">Alarmas</button>
+-->
+<!-- 
+
+<mat-sidenav-container>
+    <mat-sidenav #alertSidenav mode="side">
+      <mat-toolbar color="primary">Menu</mat-toolbar>
+      <app-alert-sidebar></app-alert-sidebar>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <app-admin (toggleSidenav)="alertSidenav.toggle()"></app-admin>
+    </mat-sidenav-content>
+</mat-sidenav-container>
+
+
+    <mat-icon color="warn" *ngIf="this.granja>0" id="alarmas" (click)="alarmFunction2()"  (toggleSidenav)="alertSidenav.toggle()">
+    {{"menu"}}
+</mat-icon>
+ -->
+
+
+
