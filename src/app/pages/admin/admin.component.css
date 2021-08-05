@@ -231,6 +231,7 @@ h6 {
   margin-top: 10px;
   right: 10px;
   background-color: white;
+  overflow: visible;
 }
 
 mat-drawer-content {
@@ -253,4 +254,54 @@ h3{
   border: 1px solid red;
   width: fit-content;
 
+}
+
+#prueba{
+/*   border: 1px solid red;
+ */  height: auto;
+ position: absolute;
+ left: 0%;
+ z-index: 1;
+}
+
+.value{
+  position: absolute;
+  top: 25px;
+  right: 10px;
+  font-size: large;
+}
+
+.title{
+  position: absolute;
+  bottom: 0px;
+  left: 35px;
+}
+
+@keyframes blink {
+  0%   { border-color:red; }
+  50%  { border-color:black;}
+  100% { border-color:red; }
+}
+
+@-webkit-keyframes blink {
+  0%   { border-color:red; }
+  50%  { border-color:black;}
+  100% { border-color:red; }
+}
+@-moz-keyframes blink {
+  0%   { border-color:red; }
+  50%  { border-color:black;}
+  100% { border-color:red; }
+}
+@-ms-keyframes blink {
+  0%   { border-color:red; }
+  50%  { border-color:black;}
+  100% { border-color:red; }
+}
+.alert_box {
+  -webkit-animation: blink 1s infinite;
+  -moz-animation:    blink 1s infinite;
+  -ms-animation:     blink 1s infinite;
+  animation: blink 1s infinite;
+  border: 2px red solid;
 }

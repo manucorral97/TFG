@@ -18,8 +18,8 @@
         <br>
         <span>Seleccione una imagen</span>
     </div>
-    <mat-drawer-container class="example-container" autosize [hasBackdrop]="false" *ngIf="this.granja>0">
-        <mat-drawer #drawer class="example-sidenav" mode="side" position="start">
+    <mat-drawer-container class="example-container" autosize [hasBackdrop]="false" *ngIf="this.granja>0"  (click)='alarmFunction()' matBadge={{this.alarmas}} matBadgePosition="before" matBadgeColor="warn">
+        <mat-drawer #drawer class="example-sidenav" mode="side" position="start" >
           <h3>Alertas</h3>
           <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
@@ -92,9 +92,12 @@
     <!-- <img src={{this.urlEmpty}} id="img2" *ngIf="this.done==false"> -->
     <div class="box-container">
         <div class="box" *ngFor="let c of components" cdkDrag [cdkDragFreeDragPosition]="dragPositionReset"
-            (cdkDragEnded)="savePosition($event, c)" cdkDragBoundary="#container-center">
-            <mat-card>
-                <button mat-button [matMenuTriggerFor]="menu">
+            (cdkDragEnded)="savePosition($event, c)" cdkDragBoundary="#container-center" id={{c.id}}>
+            <mat-card id={{c.id}}>
+                <div class="value">
+                    {{c.x}}
+                </div>
+                <button mat-button [matMenuTriggerFor]="menu" id="prueba">
                     <mat-icon>
                         {{c.icon}}
                     </mat-icon>
@@ -165,6 +168,31 @@
     </button>
 
 </div>
+
+<section class="example-section" [hidden]="this.granja==0">
+    <span class="example-list-section">
+      <mat-checkbox class="example-margin"
+                    [checked]="allComplete"
+                    [color]="task.color"
+                    [indeterminate]="someComplete()"
+                    (change)="setAll($event.checked)"
+                    (click)="sensorAlert(task)">
+        {{task.name}}
+      </mat-checkbox>
+    </span>
+    <span class="example-list-section">
+      <ul>
+        <li *ngFor="let subtask of task.subtasks">
+          <mat-checkbox [(ngModel)]="subtask.completed"
+                        [color]="subtask.color"
+                        (ngModelChange)="updateAllComplete()"
+                        (click)="sensorAlert(subtask)">
+            {{subtask.name}}
+          </mat-checkbox>
+        </li>
+      </ul>
+    </span>
+  </section>
 
 <!-- <button mat-raised-button color="warn" *ngIf="this.granja>0" id="alarmas" (click)="alarmFunction()" matBadge={{this.alarmas}} matBadgePosition="before" matBadgeColor="warn">Alarmas</button>
 -->

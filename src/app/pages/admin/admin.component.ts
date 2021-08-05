@@ -23,7 +23,15 @@ import { MatDialog } from '@angular/material/dialog';
 import { AlarmComponent } from './components/alarm/alarm.component';
 import { Output, EventEmitter } from '@angular/core';
 import { CropperComponent } from 'angular-cropperjs';
+import { ThemePalette } from '@angular/material/core';
 
+
+export interface Task {
+  name: string;
+  completed: boolean;
+  color: ThemePalette;
+  subtasks?: Task[];
+}
 
 
 export interface PeriodicElement {
@@ -55,6 +63,80 @@ var ELEMENT_DATA: PeriodicElement[] = [
   template: ` <div>Interval: {{ observable$ | async }}</div>`,
 })
 export class AdminComponent implements OnInit {
+
+  task: Task = {
+    name: 'Alertas',
+    completed: false,
+    color: 'primary',
+    subtasks: [
+      {name: '1', completed: false, color: 'accent'},
+      {name: '2', completed: false, color: 'accent'},
+    ]
+  };
+
+  allComplete: boolean = false;
+
+  updateAllComplete() {
+    this.allComplete = this.task.subtasks != null && this.task.subtasks.every(t => t.completed);
+  }
+
+  someComplete(): boolean {
+
+    if (this.task.subtasks == null) {
+      return false;
+    }
+    return this.task.subtasks.filter(t => t.completed).length > 0 && !this.allComplete;
+  }
+
+  setAll(completed: boolean) {
+
+    this.allComplete = completed;
+    if (this.task.subtasks == null) {
+      return;
+    }
+    this.task.subtasks.forEach(t => t.completed = completed);
+  }
+
+  sensorAlert(component:any){
+    //console.log(component, component.completed);
+    if(component.name == "Alertas"){
+      this.task.completed = !this.task.completed;
+      if (this.task.completed == true){
+        //ALL ALERT
+        console.log("ALERTA GEBERAL");
+        for (var c in this.components){
+          const box = this.document.getElementById(this.components[c].id);
+          box.className += ' alert_box';
+        }
+      }
+      else{
+        for (var c in this.components){
+          const box = this.document.getElementById(this.components[c].id);
+          box.className = ' box';
+        }
+      }
+      
+    }
+    else{
+      const box_id = component.name - 1;
+      const alert = component.completed;
+      //console.log(component, alert);
+      console.log("Alerta en ", box_id);
+      const box = this.document.getElementById(box_id);
+      if (alert == false){
+        //
+        
+        box.className += ' alert_box';
+      }
+      else{
+        //NO ALERT
+        box.className = 'box';
+        //console.log("No alerta en ", component.id);
+      }
+    }
+
+  }
+
 
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol', 'action'];
   dataSource = ELEMENT_DATA;
@@ -413,7 +495,7 @@ export class AdminComponent implements OnInit {
 
   alarmFunction(){
     
-    const dialogRef = this.dialog.open(AlarmComponent, {
+/*     const dialogRef = this.dialog.open(AlarmComponent, {
       hasBackdrop: true,
       height: '500px',
       width: '700px',
@@ -421,7 +503,7 @@ export class AdminComponent implements OnInit {
         title: 'Registro de Alarmas',
         data: this.data
       },
-    });
+    }); */
     //Reseteamos el contador de alarmas
     this.alarmas = ''
   }
