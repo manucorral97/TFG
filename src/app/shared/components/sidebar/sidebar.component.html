@@ -12,18 +12,18 @@
         </mat-icon>
         <span class="nav-link">Usuarios</span>
     </a>
-    <a mat-list-item *ngIf="isLogged && userRol == '0' " routerLink="admin/users">
+<!--     <a mat-list-item *ngIf="isLogged && userRol == '0' " routerLink="admin/users">
         <mat-icon>
             agriculture
         </mat-icon>
         <span class="nav-link">Granjas</span>
-    </a>
-    <a mat-list-item *ngIf="isLogged && userRol == '1' " routerLink="admin/users">
+    </a> -->
+<!--     <a mat-list-item *ngIf="isLogged && userRol == '1' " routerLink="admin/users">
         <mat-icon>
             agriculture
         </mat-icon>
         <span class="nav-link">Mi granja</span>
-    </a>
+    </a> -->
     <a mat-list-item *ngIf="isLogged && (userRol == '0'|| userRol == '1'|| userRol =='2') " routerLink="admin/graphs">
         <mat-icon>
             trending_up

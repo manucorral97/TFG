@@ -1,0 +1,26 @@
+<h2 mat-dialog-title>{{data?.title}}</h2>
+<h3>Temperatura</h3>
+<div>
+<label>MIN </label>
+<mat-slider thumbLabel aria-label="unit(s)" (change)="valueSlider($event, 'temp', 'min')" class="temp"></mat-slider>
+<mat-slider thumbLabel invert aria-label="unit(s)" (change)="valueSlider($event, 'temp', 'max')" class="temp"></mat-slider>
+<label> MAX</label>
+</div>
+<div>
+
+<h3>Humedad</h3>
+<label>MIN </label>
+<mat-slider thumbLabel aria-label="unit(s)" (change)="valueSlider($event, 'hum', 'min')" class="hum"></mat-slider>
+<mat-slider thumbLabel invert aria-label="unit(s)" (change)="valueSlider($event, 'hum', 'max')" class="hum"></mat-slider>
+<label> MAX</label>
+<div>
+
+</div>
+<h3>Luminosidad</h3>
+<label>MIN </label>
+<mat-slider thumbLabel aria-label="unit(s)" (change)="valueSlider($event, 'lum', 'min')" class="lum"></mat-slider>
+<mat-slider thumbLabel invert aria-label="unit(s)" (change)="valueSlider($event, 'lum', 'max')" class="lum"></mat-slider>
+<label> MAX</label>
+</div>
+
+

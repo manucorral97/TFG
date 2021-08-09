@@ -1,3 +1,28 @@
+<div class="date_select">
+
+  <button (click)="onDates('hour')" class="ask" >Una hora</button>
+  <button (click)="onDates('day')" class="ask" >Un día</button>
+  <button (click)="onDates('week')" class="ask" >Una semana</button>
+<!--   <button (click)="showInputDates()" class="ask">Personalizado</button>
+ -->  <button class="ask">Personalizado</button>
+
+  <mat-card class="mat-card" *ngIf="this.inputDates == true" appearance="standard" class="range_picker">
+      <mat-card-content>
+          <form [formGroup]="this.datesForm" (ngSubmit)="onPersonalizado()">
+              <mat-form-field class="full-width-input">
+                  <input matInput formControlName="minDate" type="datetime-local" placeholder="Inicio" [max]="this.actualTime" touchUi>
+              </mat-form-field>
+              <mat-form-field class="full-width-input">
+                  <input matInput formControlName="maxDate" type="datetime-local" placeholder="Fin" [max]="this.actualTime">
+              </mat-form-field>
+
+              <button [disabled]="datesForm.invalid" mat-raised-button color="primary" id="buttonSend">Enviar</button>
+
+          </form>
+      </mat-card-content>
+  </mat-card>
+</div>
+
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
     <!--- Note that these columns can be defined in any order.
@@ -7,6 +32,11 @@
     <ng-container matColumnDef="position">
       <th mat-header-cell *matHeaderCellDef> Sensor </th>
       <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="valor">
+      <th mat-header-cell *matHeaderCellDef> Dato </th>
+      <td mat-cell *matCellDef="let element"> {{element.valor}} </td>
     </ng-container>
   
     <!-- Name Column -->
@@ -26,10 +56,12 @@
       <th mat-header-cell *matHeaderCellDef> Fecha </th>
       <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
     </ng-container>
-  
+
+
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
+
   <div class="div_btn">
     <button mat-raised-button (click)="openBottomSheet()" class="btn-center">Descargar tabla</button>
   </div>

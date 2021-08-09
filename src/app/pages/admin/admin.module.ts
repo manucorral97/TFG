@@ -14,6 +14,7 @@ import { FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { AlarmComponent } from './components/alarm/alarm.component';
 import { AlertSidebarModule } from './components/alert-sidebar/alert-sidebar.module';
 import { AngularCropperjsModule } from 'angular-cropperjs';
+import { ThresholdComponent } from './components/threshold/threshold.component';
 
 
 
@@ -22,7 +23,8 @@ import { AngularCropperjsModule } from 'angular-cropperjs';
   declarations: [
     AdminComponent,
     ModalComponent,
-    AlarmComponent
+    AlarmComponent,
+    ThresholdComponent
   ],
   imports: [
     CommonModule,

@@ -432,6 +432,8 @@ export class GraphsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 }
 
+
+/* Este segundo componnete nos sirve para, al pulsar en descargar tabla, elegir entre CVS y XLSX */
 @Component({
   selector: 'bottom-graphs-sheet',
   templateUrl: './bottom-graphs-sheet.html',

@@ -13,42 +13,36 @@ import * as XLSX from 'xlsx';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { SharedService } from '@app/shared/services/shared.service';
 
-
-
 export interface PeriodicElement {
+  id: number;
   name: string;
+  valor: string;
   position: number;
-  weight: number;
+  weight: string;
   symbol: string;
 }
 
 const ELEMENT_DATA: PeriodicElement[] = [
-  {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
-  {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
-  {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
-  {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
-  {position: 5, name: 'Boron', weight: 10.811, symbol: 'B'},
-  {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C'},
-  {position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N'},
-  {position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O'},
-  {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
-  {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
+  {
+    id: 0,
+    position: 1,
+    name: '50',
+    valor: 'Temperatura',
+    weight: '30-40',
+    symbol: '2021-08-15 19:00',
+
+  },
+  { id: 1, position: 2, name: '20', weight: "25-30", symbol: '2021-08-15 19:01', valor: 'Humedad'},
 ];
-
-
-
-
 
 @Component({
   selector: 'app-alertas',
   templateUrl: './alertas.component.html',
-  styleUrls: ['./alertas.component.css']
+  styleUrls: ['./alertas.component.css'],
 })
 export class AlertasComponent implements OnInit, OnDestroy {
-
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
+  displayedColumns: string[] = ['position', 'valor','name', 'weight', 'symbol'];
   dataSource = ELEMENT_DATA;
-
 
   //Tabla
   //dataSource = new MatTableDataSource();
@@ -56,19 +50,25 @@ export class AlertasComponent implements OnInit, OnDestroy {
   maxTime: Date | string | null | undefined;
   minTime: Date | string | null | undefined;
   filas: any;
-  inputDates:boolean;
+  inputDates: boolean;
   historico: Object[] | any;
   action: boolean;
+  actualTime: Date | string;
+
 
   datesForm = this.fb.group({
     minDate: [[], Validators.required],
-    maxDate: [[], Validators.required]
+    maxDate: [[], Validators.required],
   });
 
   private subscriptionAsk: Subscription = new Subscription();
 
-
-  constructor(private DatePipe: DatePipe, private http: HttpClient, private fb: FormBuilder, private _bottomSheet: MatBottomSheet) { 
+  constructor(
+    private DatePipe: DatePipe,
+    private http: HttpClient,
+    private fb: FormBuilder,
+    private _bottomSheet: MatBottomSheet
+  ) {
     //this.dataSource.data = [null];
     this.maxTime = new Date();
     this.minTime = new Date();
@@ -76,18 +76,17 @@ export class AlertasComponent implements OnInit, OnDestroy {
     this.inputDates = false;
     this.historico = [];
     this.action = false;
+    this.actualTime = new Date;
   }
-
 
   //Paginar y ordenar la tabla
   @ViewChild(MatSort, { static: false }) sort: MatSort = new MatSort();
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator =
     new MatPaginator(new MatPaginatorIntl(), ChangeDetectorRef.prototype);
 
-
   ngOnInit(): void {
     //Inicialización de las porpiedades de la tabla (ordenar y paginar)
-/*     this.dataSource.data = [null];
+    /*     this.dataSource.data = [null];
     this.dataSource.paginator = this.paginator; */
   }
 
@@ -95,19 +94,18 @@ export class AlertasComponent implements OnInit, OnDestroy {
     this.subscriptionAsk.unsubscribe();
   }
 
-
   //Tratamiento de las fechas por hora dia o semana
-  onDates(duration:string){
-    this.inputDates = false
+  onDates(duration: string) {
+    this.inputDates = false;
     var time = new Date();
     this.maxTime = formatDate(time, 'yyyy-MM-ddTHH:mm:ss', 'en');
-    if (duration == "hour"){
+    if (duration == 'hour') {
       this.minTime = formatDate(
         time.setHours(time.getHours() - 1),
         'yyyy-MM-ddTHH:mm:ss',
         'en'
       );
-    } else if (duration == "day"){
+    } else if (duration == 'day') {
       this.minTime = formatDate(
         time.setHours(time.getHours() - 24),
         'yyyy-MM-ddTHH:mm:ss',
@@ -138,7 +136,7 @@ export class AlertasComponent implements OnInit, OnDestroy {
   }
 
   //Tratamiento de las fechas seleccionadas
-  onPersonalizado(){
+  onPersonalizado() {
     const fecha_max = this.datesForm.value.maxDate;
     const fecha_min = this.datesForm.value.minDate;
 
@@ -162,10 +160,8 @@ export class AlertasComponent implements OnInit, OnDestroy {
     this.peticion(this.minTime, this.maxTime);
   }
 
-
   //Peticion de los datos
   peticion(minTime: string | any, maxTime: string | any) {
-
     this.maxTime = this.maxTime + 'Z';
     this.minTime = this.minTime + 'Z';
     let params = new HttpParams();
@@ -186,9 +182,8 @@ export class AlertasComponent implements OnInit, OnDestroy {
     //console.log(minTime, maxTime);
   }
 
-
   //Metodo para pintar la tabla de los datos
-/*   printData(historico: Object | any) {
+  /*   printData(historico: Object | any) {
     this.action = true;
     this.historico = historico;
     var error = {
@@ -219,9 +214,10 @@ export class AlertasComponent implements OnInit, OnDestroy {
   openBottomSheet(): void {
     this._bottomSheet.open(BottomSheetOverviewExampleSheet);
   }
-
 }
 
+
+/* Este segundo componnete nos sirve para, al pulsar en descargar tabla, elegir entre CVS y XLSX */
 @Component({
   selector: 'bottom-sheet-overview-example-sheet',
   templateUrl: './bottom-sheet-overview-example-sheet.html',
@@ -234,30 +230,29 @@ export class BottomSheetOverviewExampleSheet implements OnInit {
     throw new Error('Method not implemented.');
   }
 
-  exportCSV(){
-    const options = { 
+  exportCSV() {
+    const options = {
       fieldSeparator: ',',
       quoteStrings: '"',
       decimalSeparator: '.',
-      showLabels: true, 
+      showLabels: true,
       //showTitle: true,
       //title: 'My Awesome CSV',
       useTextFile: false,
       useBom: true,
       useKeysAsHeaders: true,
-      filename:"Alertas",
+      filename: 'Alertas',
       // headers: ['Column 1', 'Column 2', etc...] <-- Won't work with useKeysAsHeaders present!
     };
     const csvExporter = new ExportToCsv(options);
- 
-    csvExporter.generateCsv(ELEMENT_DATA);
 
+    csvExporter.generateCsv(ELEMENT_DATA);
   }
 
-  exportXLSX(){
+  exportXLSX() {
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(ELEMENT_DATA);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Alertas');
-    XLSX.writeFile(wb, "Alertas.xlsx");
+    XLSX.writeFile(wb, 'Alertas.xlsx');
   }
 }

@@ -21,6 +21,8 @@ import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerMod
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatSliderModule} from '@angular/material/slider';
+
 
 
 
@@ -29,7 +31,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 const myModules = [MatToolbarModule, MatSidenavModule, MatButtonModule, MatMenuModule, MatListModule, MatIconModule, MatInputModule,
                 MatCardModule, MatTableModule, MatSortModule, MatExpansionModule,MatFormFieldModule,MatSelectModule, MatDatepickerModule,
                 MatNativeDateModule, MatPaginatorModule, MatSlideToggleModule, MatDialogModule, NgxMatDatetimePickerModule,
-                NgxMatNativeDateModule,NgxMatTimepickerModule, MatBadgeModule, MatBottomSheetModule, MatCheckboxModule];
+                NgxMatNativeDateModule,NgxMatTimepickerModule, MatBadgeModule, MatBottomSheetModule, MatCheckboxModule, MatSliderModule];
 
 @NgModule({
     imports: [ ... myModules],

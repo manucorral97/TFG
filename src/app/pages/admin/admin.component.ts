@@ -24,6 +24,7 @@ import { AlarmComponent } from './components/alarm/alarm.component';
 import { Output, EventEmitter } from '@angular/core';
 import { CropperComponent } from 'angular-cropperjs';
 import { ThemePalette } from '@angular/material/core';
+import { ThresholdComponent } from './components/threshold/threshold.component';
 
 
 export interface Task {
@@ -35,24 +36,14 @@ export interface Task {
 
 
 export interface PeriodicElement {
+  id: number;
   name: string;
   position: number;
   weight: number;
   symbol: string;
 }
 
-var ELEMENT_DATA: PeriodicElement[] = [
-  {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
-  {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
-  {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
-  {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
-  {position: 5, name: 'Boron', weight: 10.811, symbol: 'B'},
-  {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C'},
-  {position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N'},
-  {position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O'},
-  {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
-  {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
-];
+
 
 
 
@@ -73,6 +64,12 @@ export class AdminComponent implements OnInit {
       {name: '2', completed: false, color: 'accent'},
     ]
   };
+
+  ELEMENT_DATA: PeriodicElement[] = [
+    {id:0, position: 1, name: 'Temperatura Extrema', weight: 50, symbol: '19:00'},
+    {id:1, position: 2, name: 'Humedad Baja', weight: 20, symbol: '19:01'},
+    
+  ];
 
   allComplete: boolean = false;
 
@@ -139,7 +136,7 @@ export class AdminComponent implements OnInit {
 
 
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol', 'action'];
-  dataSource = ELEMENT_DATA;
+  dataSource = this.ELEMENT_DATA;
   components = [
     {
       id: '0',
@@ -243,6 +240,20 @@ export class AdminComponent implements OnInit {
 
   }
 
+  //Funcion que abre el ThresholdComponent
+  threshold(sensor: any){
+    const dialogRef = this.dialog.open(ThresholdComponent, {
+      hasBackdrop: true,
+      height: '400px',
+      width: '500px',
+      data: {
+        title: 'Ajustar baremos',
+        data: sensor
+      },
+    });
+  }
+
+  //Funcion que se lanza cada vez que se abre el componente
   ngOnInit(): void {
     this.urlGET = this.sanitizer.sanitize(
       SecurityContext.URL,
@@ -265,11 +276,15 @@ export class AdminComponent implements OnInit {
     //this.dragPositionInit.y = this.dragPositionState.y;
   }
 
+  //Funcion que se lanza al cerrar el com ponente
   ngOnDestroy() {
+
+    //Nos desusbcribimos para mejorar rendimiento
     this.subscriptionUp.unsubscribe();
     this.subscriptionDown.unsubscribe();
   }
 
+  //Funcion cuando se elige una imagen
   onSelectFile(e: any) {
     //this.imageUrl = ' ';
     if (e.target.files) {
@@ -283,6 +298,7 @@ export class AdminComponent implements OnInit {
     }
   }
 
+  //Función para recortar la imagen seleccionada
   getCroppedImage(){
     this.imageUrl = '';
     this.url = this.angularCropper.cropper.getCroppedCanvas().toDataURL('image/jpeg');
@@ -296,7 +312,7 @@ export class AdminComponent implements OnInit {
     console.log(userID);
     var new_id = userID + this.granja.toString();
     console.log(new_id);
-    //
+    
     //Cuerpo de la peticion para almacenar la imagen
     const body = JSON.stringify({
       //Pasar una cadena del id del usuario + el id de la instalacion
@@ -398,7 +414,7 @@ export class AdminComponent implements OnInit {
     var windowWidth = window.innerWidth;
     var windowHeight = window.innerHeight;
 
-    console.log("Ventana:\nWidth -> ", windowWidth, "\nHeight -> ", windowHeight);
+    //console.log("Ventana:\nWidth -> ", windowWidth, "\nHeight -> ", windowHeight);
 
 
     //Limites del contenedor
@@ -416,28 +432,28 @@ export class AdminComponent implements OnInit {
 
     console.log("IMAGEN\nTOP: ", topOffset, "\nLEFT: ", leftOffset, "\nRIGHT: ", rightOffset, "\nBOTTOM: ", bottomOffset, "\nHEIGHT: ", height, "\nWIDTH: ", width);
 
+    //PODRIAN VALER
+    //console.log("X: ", $event.source.getFreeDragPosition().x + id_number*114)
+    //console.log("Y: ", $event.source.getFreeDragPosition().y + 710.125)
 
-    //Cada sensor tiene un desfase de 114 px en la barra inferior (Se coge el punto mas a la izquierda, asique si quisieramos ocger el centro del box, sumar 57px)
-    this.dragPositionState.x = $event.source.getFreeDragPosition().x + id_number*114;
+    //PRIEBO A COGER EL DROPPOINT Y SI SE SALE DEL CONTENEDOR PONGO LOS MAXIMOS
+    this.dragPositionState.x = $event.dropPoint.x;
+    if (this.dragPositionState.x < container.getBoundingClientRect().left){
+      this.dragPositionState.x = container.getBoundingClientRect().left
+    } else if (this.dragPositionState.x > container.getBoundingClientRect().right){
+      this.dragPositionState.x = container.getBoundingClientRect().right
+    }
+    
+    this.dragPositionState.y = $event.dropPoint.y;
+    if (this.dragPositionState.y < container.getBoundingClientRect().top){
+      this.dragPositionState.y = container.getBoundingClientRect().top
+    } else if (this.dragPositionState.y > container.getBoundingClientRect().bottom){
+      this.dragPositionState.y = container.getBoundingClientRect().bottom
+    }
 
-    //this.dragPositionState.y = bottomOffset + $event.source.getFreeDragPosition().y + 268.25;
-    this.dragPositionState.y = bottomOffset-$event.source.getFreeDragPosition().y;
-
-    console.log(
-      'Posiciones a guardar\nX:', this.dragPositionState.x, 
-      "\nY:", this.dragPositionState.y
-    );
-
-
-
-
-   /*  this.dragPositionState.x = this.dragPositionInit.x + this.offset.x;
-    this.dragPositionState.y = this.dragPositionInit.y + this.offset.y;
-
-    console.log("x", this.dragPositionState.x, "y",this.dragPositionState.y, "offset",this.offset); */
-
-
-    //Guardar en un drgposition
+    console.log(this.dragPositionState.x);
+    console.log(this.dragPositionState.y);
+    //ESTO FUNCIONA CORRECTAMENTE
   }
 
   //Cambia el icono y la informacion de la caja seleccionada al tipo de dato seleccionado
@@ -493,30 +509,17 @@ export class AdminComponent implements OnInit {
     this.components[component.id].name = this.newName.value.name;
   }
 
+  //Metodo que se lanza al abrir el menu lateral de alarmas
   alarmFunction(){
-    
-/*     const dialogRef = this.dialog.open(AlarmComponent, {
-      hasBackdrop: true,
-      height: '500px',
-      width: '700px',
-      data: {
-        title: 'Registro de Alarmas',
-        data: this.data
-      },
-    }); */
-    //Reseteamos el contador de alarmas
     this.alarmas = ''
   }
 
-  alarmFunction2(){
-    
-    this.toggleSidenav.emit();
-    this.isOpen =! this.isOpen;
-  }
+  //Metodo para eliminar una de alertas
+  deleteRow(element: any){
+    console.log(element.id);
 
-  deleteRow(i: any){
-    console.log(i);
-    //this.dataSource = this.dataSource.splice(i,1);
+    this.dataSource.splice(element.id, 1 );
+    console.log(this.dataSource);
   }
 
 }

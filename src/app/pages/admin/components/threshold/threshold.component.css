@@ -1,0 +1,19 @@
+*{
+    justify-content: center;
+    text-align: center;
+}
+
+:host ::ng-deep .temp .mat-slider-thumb{
+    color: red;
+    background-color: red;
+}
+
+:host ::ng-deep .hum .mat-slider-thumb{
+    color: blue;
+    background-color: blue;
+}
+
+:host ::ng-deep .lum .mat-slider-thumb{
+    color: yellow;
+    background-color: yellow;
+}
