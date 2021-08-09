@@ -9,6 +9,7 @@ export class NotFoundComponent implements OnInit {
 
   constructor() { }
 
+  //Pensada para cuando el usuario intente acceder a partes no creadas (no implementada)
   ngOnInit(): void {
   }
 

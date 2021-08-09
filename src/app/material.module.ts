@@ -20,10 +20,10 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule} from '@angular-material-components/datetime-picker';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
-import {MatCheckboxModule} from '@angular/material/checkbox';
-import {MatSliderModule} from '@angular/material/slider';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSliderModule } from '@angular/material/slider';
 
-
+//A traves de este modulo, añadimos todas aquellas funcionalidades de angular material que nos interesen, añadiendo este modulo al componente preciso
 
 
 

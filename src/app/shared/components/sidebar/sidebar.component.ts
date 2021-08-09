@@ -29,7 +29,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
-
+/* 
   onDragStart():void{
     console.log('got drag start');
   }
@@ -38,6 +38,6 @@ export class SidebarComponent implements OnInit, OnDestroy {
   }
   onDragEnd():void{
     console.log('got drag end');
-  }
+  } */
 
 }
