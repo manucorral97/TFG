@@ -1,6 +1,6 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { FormBuilder, ReactiveFormsModule} from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Md5 } from 'ts-md5';
 import { Router } from '@angular/router';
@@ -16,11 +16,11 @@ export class ModalComponent implements OnInit, OnDestroy {
   private subscriptionSave: Subscription = new Subscription;
   userModify = this.fb.group({
     id:[""],
-    name:[""],
-    lastname: [""],
-    username: [""],
-    password: [""],
-    rol: [""],
+    name:["", Validators.required],
+    lastname: ["", Validators.required],
+    username: ["", Validators.required],
+    password: ["", [Validators.required, Validators.minLength(5)]],
+    rol: ["", Validators.required],
   });
 
   statusModify:boolean;

@@ -5,16 +5,16 @@
     <div class="modal-form">
         <form [formGroup] = "userModify" >
             <mat-form-field class="full-width-input">
-                <input matInput required placeholder="Nombre" formControlName="name"  [(ngModel)]="data.user.name">
+                <input matInput placeholder="Nombre" formControlName="name"  [(ngModel)]="data.user.name">
             </mat-form-field>
             <mat-form-field class="full-width-input">
-                <input matInput required placeholder="Apellidos" formControlName="lastname" [(ngModel)]="data.user.lastname">
+                <input matInput placeholder="Apellidos" formControlName="lastname" [(ngModel)]="data.user.lastname">
             </mat-form-field>
             <mat-form-field class="full-width-input">
-                <input matInput required placeholder="Username" formControlName="username" [(ngModel)]="data.user.username">
+                <input matInput placeholder="Username" formControlName="username" [(ngModel)]="data.user.username">
             </mat-form-field>
             <mat-form-field class="full-width-input">
-                <input matInput required [type] = "hide ? 'password' : 'text'" placeholder="Password" formControlName="password">
+                <input matInput [type] = "hide ? 'password' : 'text'" placeholder="Password" formControlName="password">
                 <button type="button" (keydown.enter)="$event.preventDefault()" mat-icon-button matSuffix (click)="hide = !hide">
                     <mat-icon>
                         {{ hide ? "visibility_off" : "visibility" }}
@@ -23,7 +23,7 @@
             </mat-form-field>
             <mat-form-field class="full-width-input">
                 <mat-label >Rol</mat-label>
-                <mat-select formControlName="rol" required [(ngModel)]="data.user.rol">
+                <mat-select formControlName="rol" [(ngModel)]="data.user.rol">
                     <mat-option value="0">SuperAdmin</mat-option>
                     <mat-option value="1">Admin</mat-option>
                     <mat-option value="2">Trabajador</mat-option>
