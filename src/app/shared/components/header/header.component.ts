@@ -1,8 +1,8 @@
 import { Component, OnInit, Output, EventEmitter, OnDestroy, Injectable} from '@angular/core';
 import { AuthService } from '@app/pages/auth/auth.service';
-import { LoginModule } from '@app/pages/auth/login/login.module';
-import { LoginComponent } from '@app/pages/auth/login/login.component';
 import { Subscription } from 'rxjs';
+import { SharedService } from '@app/shared/services/shared.service';
+import { UtilsSidenavService } from '@app/shared/services/utilsSidenav.service';
 
 @Injectable({
   providedIn:'root'
@@ -19,15 +19,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
   isLogged = false;
   show = false;
   showName = false;
-  name2:string|null;
+  showInstalacion = false
+  instalacion:any;
 
   //Generamos un objeto de tipo Subscription que nos ayadará con la perfomance de la aplicacion, 
   // ya que no dejaremos abiertos objetos de tipo Observable que consuman memoria de la aplicacion
   private subscription: Subscription = new Subscription;
 
   @Output() toggleSidenav = new EventEmitter<void>(); 
-  constructor(public authSvc:AuthService) { 
-    this.name2="";
+  constructor(public authSvc:AuthService, public sharedSvc:SharedService, public utilsSvc:UtilsSidenavService) { 
   }
 
   ngOnInit(): void {
@@ -40,6 +40,18 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.authSvc.userRol.subscribe( (res) => (this.userRol = res)));
 
     this.show=false;
+
+    //Esperamos a que se logee el usuario para activar el campo del header con el nombre del usuario
+    this.sharedSvc.getUserNameObservable.subscribe((res) => {
+      this.username=res;
+      this.showName = true;
+    })
+
+    //Esperamos a que elija una instalacion el usuario para activar el campo del header con el nombre de la instalacion
+    this.sharedSvc.getInstalacionObservable.subscribe((res) => {
+      this.instalacion=res;
+      this.showInstalacion = true;
+    })
 
     
 
@@ -62,19 +74,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.authSvc.logout();
     //Si la sidebar esta expuesta, al deslogarse la cerramos
     if(this.show == true){
-      this.toggleSidenav.emit();
+      this.utilsSvc.openSidenav(false)
       this.show=false;
-      
     }
     this.showName = false;
-
-
-  }
-
-  actualizar(name:string){
-    this.showName = true;
-    this.username = name;
-    console.log( "En header", this.username, this.showName);
+    this.showInstalacion = false;
 
   }
 

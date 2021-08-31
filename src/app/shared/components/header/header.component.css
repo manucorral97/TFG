@@ -9,3 +9,22 @@ a{
 .log{
     background-color: aliceblue;
 }
+
+mat-card{
+    margin-top: 15px;
+    margin-bottom: 15px;
+    height: -webkit-fill-available;
+    left: 70px;
+}
+
+.header_status{
+    display: inline-flex;
+}
+
+p{
+    font-size: medium;
+    vertical-align: middle;
+    top: -15px;
+    position: relative;
+
+}

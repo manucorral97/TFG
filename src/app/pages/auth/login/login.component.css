@@ -24,3 +24,7 @@ p{
 input::placeholder{
     content: "";
 }
+
+#vis:focus{
+    outline: none
+}

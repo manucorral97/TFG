@@ -4,6 +4,7 @@ import { FormBuilder, Validators} from '@angular/forms';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { HeaderComponent } from '@app/shared/components/header/header.component';
+import { SharedService } from '@app/shared/services/shared.service';
 
 @Component({
   selector: 'app-login',
@@ -38,7 +39,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   @Output() private updateName = new EventEmitter<string>();
   @Output() propagar = new EventEmitter<string>();
 
-  constructor(private authSvc: AuthService, private fb:FormBuilder, private router: Router, private header:HeaderComponent ) { }
+  constructor(private authSvc: AuthService, private fb:FormBuilder, private router: Router, private header:HeaderComponent, private sharedSvc: SharedService) { }
 
 
   ngOnInit(): void {  }
@@ -64,11 +65,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     this.subscription.add(
       this.authSvc.login(formValue).subscribe( (res) => {
-        this.username = this.loginForm.value.username;
-        console.log(this.username);
-        this.header.actualizar(this.loginForm.value.username);
-        this.updateName.emit(this.loginForm.value.username);
-        this.propagar.emit("HOLA")
+        //Enviamos el username al header para mostrarlo en pantalla
+        this.sharedSvc.setUserName(this.loginForm.value.username);
         this.router.navigate([""]);
 
 

@@ -25,6 +25,7 @@ import { Output, EventEmitter } from '@angular/core';
 import { CropperComponent } from 'angular-cropperjs';
 import { ThemePalette } from '@angular/material/core';
 import { ThresholdComponent } from './components/threshold/threshold.component';
+import { SharedService } from '@app/shared/services/shared.service';
 
 
 export interface Task {
@@ -230,6 +231,7 @@ export class AdminComponent implements OnInit {
     private route: Router,
     private fb: FormBuilder,
     private dialog: MatDialog,
+    private SharedSvc: SharedService,
     @Inject(DOCUMENT) private document: any
   ) {
     this.trustHTML = '';
@@ -275,6 +277,8 @@ export class AdminComponent implements OnInit {
     //Timeout to know alarms numbers (save data in this.data and save number in this.alarmas)
 
     this.elem = document.getElementById('container-center');
+
+    
 
     //this.dragPositionInit.x = this.dragPositionState.x;
     //this.dragPositionInit.y = this.dragPositionState.y;
@@ -482,6 +486,7 @@ export class AdminComponent implements OnInit {
 
   //Metodo para elegir cada una de las granjas a disposicion del usuario
   selectGranja(number: number) {
+    this.SharedSvc.setInstalacion(number);
     this.granja = number;
     this.done = false;
     /* Pedimos la imagen almacenada */

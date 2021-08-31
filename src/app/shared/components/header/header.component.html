@@ -1,5 +1,3 @@
-
-
 <mat-toolbar color="primary">
     <!-- Titulo -->
     <a mat-mini-fab routerLink="/">TFG</a>
@@ -14,11 +12,17 @@
 
     <!-- Dejamos hueco para las opciones -->
     <span class="spacer"></span>
-    <div [hidden]="this.showName == true">
-        <h5 >
-            Bienvenido {{this.username}} | Instalación: {{0}}
-        </h5>  
-    </div>
+    <mat-card *ngIf="this.showName == true || this.showInstalacion == true">
+        <div class="header_status">
+            <p *ngIf="this.showName == true">
+                Bienvenido {{this.username}} 
+            </p>
+            <p *ngIf="this.showInstalacion == true">
+                &nbsp;| Instalación: {{this.instalacion}}
+            </p>
+        </div>
+    </mat-card>
+    
     <span class="spacer"></span>
 
  

@@ -2,19 +2,19 @@
     <mat-card class="mat-card">
         <mat-card-content>
             <h1>Login</h1>
-            <form [formGroup] = "loginForm" (ngSubmit)="onLogin()">
+            <form [formGroup] = "loginForm" (ngSubmit)="onLogin()" (keydown.enter)="onLogin()">
             <mat-form-field class="full-width-input">
                 <input matInput formControlName="username" type="text" placeholder="Usuario" >
             </mat-form-field>
             <mat-form-field class="full-width-input">
                 <input matInput formControlName="password" [type] = "hide ? 'password' : 'text'" placeholder="Contraseña" >
-                <button mat-icon-button matSuffix (click)="hide =! hide">
+                <button type="button" mat-icon-button matSuffix (keydown.enter)="$event.preventDefault()" (click)="hide =! hide" id="vis">
                     <mat-icon>
                         {{ hide ? "visibility_off" : "visibility" }}
                     </mat-icon>
                 </button>
             </mat-form-field>
-            <button [disabled]="loginForm.invalid" type="submit" mat-raised-button color="primary" id="buttonChange">Iniciar sesion</button>
+            <button [disabled]="loginForm.invalid" type="submit" mat-raised-button color="primary" id="buttonChange" (keyup.enter)="onLogin()">Iniciar sesion</button>
         <p *ngIf="!statusLogin"> Usuario o contraseña incorrectos</p>
         </form>
         </mat-card-content>
