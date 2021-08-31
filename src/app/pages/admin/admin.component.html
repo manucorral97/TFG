@@ -86,6 +86,12 @@
     </section>
     <div class="x" id="x">
         <section class="section_img" id="section_img">
+
+    <button *ngIf="isFullDisplay" (click)="closeFullScreen()" class="buttonCloseFullDisplay">
+        <mat-icon>
+            {{"highlight_off"}}
+        </mat-icon>
+    </button>
             <img src={{this.url}} id="img" class="img" [hidden]="this.done==true">
         </section>
     </div>
@@ -146,9 +152,9 @@
         <mat-icon>
             {{"drag_indicator"}}
         </mat-icon>
-        <mat-menu #menu="matMenu">
-            <button mat-menu-item (click)="changeAll('water')">
-                <mat-icon>
+        <mat-menu #menu="matMenu" class="zindex">
+            <button mat-menu-item (click)="changeAll('water')" class="zindex">
+                <mat-icon class="zindex">
                     {{"water"}}
                 </mat-icon>
                 Humedad
@@ -167,6 +173,7 @@
             </button>
         </mat-menu>
     </button>
+
 
 </div>
 

@@ -4,6 +4,7 @@ import { SidebarComponent } from './sidebar.component';
 import { MaterialModule } from '@app/material.module'
 import { RouterModule } from '@angular/router';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { UtilsSidenavService } from '@app/shared/services/utilsSidenav.service';
 
 
 
@@ -19,6 +20,9 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
   ],
   exports:[
     SidebarComponent
+  ],
+  providers:[
+    UtilsSidenavService
   ]
 })
 export class SidebarModule { }

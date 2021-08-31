@@ -16,6 +16,8 @@ export class Interceptor implements HttpInterceptor{
     //Solo queremos que se ejecute cuando haga la peticion a agm o last
     //if (req.url.includes(('agm') || ('last') || ('showusers'))){
     if (req.url.includes('http')){
+        //Cogemos el token y el rol de auth Service
+
         const authToken = this.authSvc.userToken;
         const authRol = this.authSvc.rol_;
         const authReq = req.clone({

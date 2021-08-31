@@ -224,12 +224,14 @@ export class GraphsComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
     this.subscriptionAsk.add(
-      this.http
-        .get('http://13.80.8.137:80/api/1/graficar/1/1/1', { params: params })
+      this.http.get('http://13.80.8.137:80/api/1/graficar/1/1/1', { params: params })
         .subscribe((data) => {
           this.printData(data);
+        }, (err) => {
+          console.log("Err:", err);
         })
     );
+    
     //console.log(minTime, maxTime);
   }
 

@@ -1,12 +1,12 @@
 <mat-nav-list>
-    <a mat-list-item routerLink="/admin">
+    <a mat-list-item routerLink="/admin" (click)="closeSide()">
         <mat-icon>
             insert_chart_outlined
         </mat-icon>
         <span class="nav-link">Dashboard</span>
     </a>
     <!-- SOLO SI ES SUPERADMIN (entiendo) -->
-    <a mat-list-item *ngIf="isLogged && (userRol == '0' || userRol == '1') " routerLink="admin/users">
+    <a mat-list-item *ngIf="isLogged && (userRol == '0' || userRol == '1') " routerLink="admin/users" (click)="closeSide()">
         <mat-icon>
             people
         </mat-icon>
@@ -24,13 +24,13 @@
         </mat-icon>
         <span class="nav-link">Mi granja</span>
     </a> -->
-    <a mat-list-item *ngIf="isLogged && (userRol == '0'|| userRol == '1'|| userRol =='2') " routerLink="admin/graphs">
+    <a mat-list-item *ngIf="isLogged && (userRol == '0'|| userRol == '1'|| userRol =='2') " routerLink="admin/graphs" (click)="closeSide()">
         <mat-icon>
             trending_up
         </mat-icon>
         <span class="nav-link">Gráficos</span>
     </a>
-    <a mat-list-item *ngIf="isLogged && (userRol == '0'|| userRol == '1'|| userRol =='2') " routerLink="alertas">
+    <a mat-list-item *ngIf="isLogged && (userRol == '0'|| userRol == '1'|| userRol =='2') " routerLink="alertas" (click)="closeSide()">
         <mat-icon>
             announcement
         </mat-icon>

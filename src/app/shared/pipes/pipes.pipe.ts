@@ -8,7 +8,7 @@ import * as DOMPurify  from "dompurify";
 })
 export class SafePipe implements PipeTransform {
 
-  constructor(protected sanitizer: DomSanitizer, ) {}
+constructor(protected sanitizer: DomSanitizer, ) {}
  
  public transform(value: any, type: string): SafeHtml | SafeStyle | SafeScript | SafeUrl | SafeResourceUrl {
 	//const sanitizedContent = DOMPurify.sanitize(value);

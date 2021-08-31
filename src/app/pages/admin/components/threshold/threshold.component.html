@@ -4,6 +4,7 @@
 <label>MIN </label>
 <mat-slider thumbLabel aria-label="unit(s)" (change)="valueSlider($event, 'temp', 'min')" class="temp"></mat-slider>
 <mat-slider thumbLabel invert aria-label="unit(s)" (change)="valueSlider($event, 'temp', 'max')" class="temp"></mat-slider>
+
 <label> MAX</label>
 </div>
 <div>
@@ -22,5 +23,8 @@
 <mat-slider thumbLabel invert aria-label="unit(s)" (change)="valueSlider($event, 'lum', 'max')" class="lum"></mat-slider>
 <label> MAX</label>
 </div>
+
+<button mat-raised-button color="accent" class="cancel">Cancelar</button>
+<button mat-raised-button color="primary" (click)="valueSlider($event, 'lum', 'max')" class="confirm">Confirmar</button>
 
 

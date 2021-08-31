@@ -10,6 +10,8 @@ export class RunScriptsDirective implements OnInit {
             this.reinsertScripts();
         });
     }
+
+    //Funcion cogida para re-ejecutar los Script recibidos en peticiones, ya que son bloqueados por Angular de forma nativa
     reinsertScripts(): void {
         //console.log("Directiva");
         const scripts = <HTMLScriptElement[] | any >this.elementRef.nativeElement.getElementsByTagName('script');

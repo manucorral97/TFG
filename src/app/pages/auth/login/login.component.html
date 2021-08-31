@@ -8,7 +8,7 @@
             </mat-form-field>
             <mat-form-field class="full-width-input">
                 <input matInput formControlName="password" [type] = "hide ? 'password' : 'text'" placeholder="Contraseña" >
-                <button mat-icon-button matSuffix (click)="hide = !hide">
+                <button mat-icon-button matSuffix (click)="hide =! hide">
                     <mat-icon>
                         {{ hide ? "visibility_off" : "visibility" }}
                     </mat-icon>

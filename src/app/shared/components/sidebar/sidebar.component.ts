@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from '@app/pages/auth/auth.service';
+import { UtilsSidenavService } from '@app/shared/services/utilsSidenav.service';
 import { Subscription } from 'rxjs';
 
 
@@ -15,7 +16,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   
   private subscription: Subscription = new Subscription;
 
-  constructor(public authSvc:AuthService) { }
+  constructor(public authSvc:AuthService, private utilsSvc: UtilsSidenavService) { }
 
   ngOnInit(): void {
     this.subscription.add(
@@ -29,15 +30,9 @@ export class SidebarComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
-/* 
-  onDragStart():void{
-    console.log('got drag start');
+  //Cerramos el sidenav cuando pulsemos en un apartado concreto del menu
+  closeSide(): void {
+    this.utilsSvc.openSidenav(false);    
   }
-  onDragMove(event: PointerEvent):void{
-    console.log(`got drag move ${Math.round(event.clientX)} ${Math.round(event.clientY)}`);
-  }
-  onDragEnd():void{
-    console.log('got drag end');
-  } */
 
 }

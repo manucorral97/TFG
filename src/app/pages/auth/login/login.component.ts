@@ -1,14 +1,18 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Injectable, OnDestroy, OnInit, Output } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { FormBuilder, Validators} from '@angular/forms';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-import * as bcrypt from 'bcryptjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
+import { HeaderComponent } from '@app/shared/components/header/header.component';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
+})
+
+@Injectable({
+  providedIn: 'root'
 })
 export class LoginComponent implements OnInit, OnDestroy {
 
@@ -18,6 +22,11 @@ export class LoginComponent implements OnInit, OnDestroy {
     password: ["", [Validators.required]]
   });
 
+  public username:string = "X";
+
+
+
+
   //Generamos un objeto de tipo Subscription que nos ayadará con la perfomance de la aplicacion
   private subscription: Subscription = new Subscription;
 
@@ -26,7 +35,10 @@ export class LoginComponent implements OnInit, OnDestroy {
   //Creamos una varibale que nos servira para mostrar un mensaje por pantlla en caso de que no haya usuario registrado
   statusLogin = true;
 
-  constructor(private authSvc: AuthService, private fb:FormBuilder, private router: Router ) { }
+  @Output() private updateName = new EventEmitter<string>();
+  @Output() propagar = new EventEmitter<string>();
+
+  constructor(private authSvc: AuthService, private fb:FormBuilder, private router: Router, private header:HeaderComponent ) { }
 
 
   ngOnInit(): void {  }
@@ -52,7 +64,14 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     this.subscription.add(
       this.authSvc.login(formValue).subscribe( (res) => {
+        this.username = this.loginForm.value.username;
+        console.log(this.username);
+        this.header.actualizar(this.loginForm.value.username);
+        this.updateName.emit(this.loginForm.value.username);
+        this.propagar.emit("HOLA")
         this.router.navigate([""]);
+
+
       }, (err) =>{
         console.log("Usuario o contraseña incorrecto")
       })

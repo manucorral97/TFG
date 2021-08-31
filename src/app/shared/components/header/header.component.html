@@ -1,3 +1,5 @@
+
+
 <mat-toolbar color="primary">
     <!-- Titulo -->
     <a mat-mini-fab routerLink="/">TFG</a>
@@ -11,10 +13,19 @@
     </ng-container>
 
     <!-- Dejamos hueco para las opciones -->
-    <span class="spacer"></span>    
+    <span class="spacer"></span>
+    <div [hidden]="this.showName == true">
+        <h5 >
+            Bienvenido {{this.username}} | Instalación: {{0}}
+        </h5>  
+    </div>
+    <span class="spacer"></span>
+
+ 
     <div>
+
         <!-- Si esta logado y es superAdmin o admin que pueda registrar a gente -->
-        <a mat-button *ngIf="isLogged && (['0'].includes(userRol)) " routerLink="/register">Registro</a>
+        <a mat-button *ngIf="isLogged && (['0'].includes(userRol))" routerLink="/register">Registro</a>
         <!-- Si no esta logado que aparezca login -->
         <a mat-button routerLink="/contact">Contacto</a>
         <a mat-stroked-button color="accent" class="log" *ngIf="!isLogged; else viewLogout" routerLink="/login">Login</a>
@@ -26,3 +37,4 @@
 <ng-template #viewLogout>
     <a mat-stroked-button color="accent" (click)="onLogout()" class="log">Logout</a>
 </ng-template>
+

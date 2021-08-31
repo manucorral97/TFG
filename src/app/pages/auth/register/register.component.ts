@@ -53,6 +53,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
     //Llamamos a funcion register del auth.service
     this.subscription.add(
+      
       this.authSvc.register(formValue).subscribe((res) => {
           if (res == 'El nombre de usuario no está disponible') {
               this.errorRegister = true;

@@ -220,6 +220,9 @@ export class AdminComponent implements OnInit {
   };  
 
   //private cropper: Cropper;
+
+  isFullDisplay:boolean;
+
   constructor(
     private http: HttpClient,
     private sanitizer: DomSanitizer,
@@ -237,6 +240,7 @@ export class AdminComponent implements OnInit {
     this.alarmas = 2;
     this.data = '';
     this.offset = { x: 0, y: 0 };
+    this.isFullDisplay = false;
 
   }
 
@@ -343,6 +347,11 @@ export class AdminComponent implements OnInit {
 
   //Metodo para poner la imagen en pantalla completa. Cambia la clase del div para verse más grande
   openFullScreen() {
+
+    this.isFullDisplay = true;
+
+
+    
     //Cambiar la imagen a 100%
     const section_img = this.document.getElementById('section_img');
     const img = this.document.getElementById('img');
@@ -372,13 +381,14 @@ export class AdminComponent implements OnInit {
       if (!document.fullscreenElement) {
         //img.className = '';
         section_img.className = 'section_img';
-        img.className = 'img'
+        img.className = 'img';
+        this.isFullDisplay = false;
       }
     }
   }
   
   /* Close fullscreen */
-  /*closeFullScreen(): void {
+  closeFullScreen(): void {
     console.log('entra');
     const img = this.document.getElementById('img');
     img.className = '';
@@ -394,7 +404,8 @@ export class AdminComponent implements OnInit {
       // IE/Edge
       this.document.msExitFullscreen();
     }
-  } */
+    this.isFullDisplay = false;
+  }
 
   //Metodo para devolver las cajas a su posicion de inicio
   returnHome(sensor: any) {

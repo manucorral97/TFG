@@ -41,6 +41,7 @@ export class AuthService implements OnInit{
   get userRol():Observable < string >{
     return this.rol.asObservable();
   }
+
   //Funcion para obtener el estado del login
   get statusLogin():Observable <boolean>{
     return this.statLogin.asObservable();
@@ -50,6 +51,7 @@ export class AuthService implements OnInit{
   get rol_():string{
     return this.rol.getValue();
   }
+
   //Funcion para obtener el token del usuario
   get userToken(): string{
     return this.token.getValue();

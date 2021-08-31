@@ -32,6 +32,7 @@ input[type="file"] {
 /*   border: 1px solid blue;
  */  width: 640px;
   height: 360px;
+  z-index: 0;
 }
 
 .img {
@@ -43,6 +44,8 @@ input[type="file"] {
   margin-right: auto;
   width: 640px;
   height: 360px;
+  z-index: 0;
+  opacity: 1;
 }
 
 .fulldisplay {
@@ -175,7 +178,12 @@ h6 {
   position: absolute;
   right: 5px;
   bottom: 95px;
-  z-index: 1;
+  z-index: 3;
+}
+
+.zindex{
+  z-index: 3;
+  opacity: 1;
 }
 
 #formChangeName {
@@ -307,4 +315,12 @@ h3{
   -ms-animation:     blink 1s infinite;
   animation: blink 1s infinite;
   border: 1px red solid;
+}
+
+.buttonCloseFullDisplay{
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: transparent;
+  border: none;
 }
