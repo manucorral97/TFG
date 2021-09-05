@@ -2,11 +2,11 @@
     <div>
         <mat-form-field appearance="fill" class="selectGranja">
             <mat-label>Mis granjas</mat-label>
-            <mat-select >
+            <mat-select [(value)]="this.granjaString">
                 <mat-option *ngFor="let g of this.granjas" value={{g.id}} (click)="selectGranja(g.id)">{{g.name}}</mat-option>
             </mat-select>
         </mat-form-field>
-
+        
     </div>
     <div class="uploadFile" *ngIf="this.granja>0">
         <label class="custom-file">
@@ -87,9 +87,9 @@
     <div class="x" id="x">
         <section class="section_img" id="section_img">
 
-    <button *ngIf="isFullDisplay" (click)="closeFullScreen()" class="buttonCloseFullDisplay">
+    <button *ngIf="this.isFullDisplay == true" (click)="closeFullScreen()" class="buttonCloseFullDisplay">
         <mat-icon>
-            {{"highlight_off"}}
+            highlight_off
         </mat-icon>
     </button>
             <img src={{this.url}} id="img" class="img" [hidden]="this.done==true">

@@ -58,6 +58,7 @@ input[type="file"] {
 .fulldisplay_img{
   width: 100% !important;
   height: 100% !important;
+
 }
 
 .icon {
@@ -165,6 +166,7 @@ h6 {
 .selectGranja {
   margin-top: 1rem;
   margin-left: 1rem;
+  z-index: 3;
 }
 
 .uploadFile {
@@ -183,7 +185,9 @@ h6 {
 
 .zindex{
   z-index: 3;
-  opacity: 1;
+  opacity: 1 !important;
+  transform: scale(1, 1) !important;
+  
 }
 
 #formChangeName {
@@ -323,4 +327,5 @@ h3{
   right: 10px;
   background-color: transparent;
   border: none;
+  z-index: 2;
 }

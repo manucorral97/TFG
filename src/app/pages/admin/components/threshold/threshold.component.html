@@ -24,7 +24,7 @@
 <label> MAX</label>
 </div>
 
-<button mat-raised-button color="accent" class="cancel">Cancelar</button>
-<button mat-raised-button color="primary" (click)="valueSlider($event, 'lum', 'max')" class="confirm">Confirmar</button>
+<button mat-raised-button color="accent" class="cancel" [mat-dialog-close]="true">Cancelar</button>
+<button mat-raised-button color="primary" (click)="valueSlider($event, 'lum', 'max')" class="confirm" [mat-dialog-close]="true">Confirmar</button>
 
 

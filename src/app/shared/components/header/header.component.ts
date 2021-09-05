@@ -49,7 +49,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     //Esperamos a que elija una instalacion el usuario para activar el campo del header con el nombre de la instalacion
     this.sharedSvc.getInstalacionObservable.subscribe((res) => {
-      this.instalacion=res;
+      this.instalacion=res.toString();
       this.showInstalacion = true;
     })
 

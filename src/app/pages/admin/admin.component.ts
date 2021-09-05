@@ -1,7 +1,4 @@
-import {
-  CdkDragDrop,
-  CdkDragEnd,
-} from '@angular/cdk/drag-drop';
+import { CdkDragEnd } from '@angular/cdk/drag-drop';
 import { HttpClient } from '@angular/common/http';
 import {
   Component,
@@ -11,8 +8,12 @@ import {
   ViewChild,
 } from '@angular/core';
 
-import { Pipe, PipeTransform } from '@angular/core';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import {
+  OverlayContainer,
+  FullscreenOverlayContainer
+} from '@angular/cdk/overlay';
+
+import { DomSanitizer } from '@angular/platform-browser';
 import { first } from 'rxjs/operators';
 import { DOCUMENT } from '@angular/common';
 import { AuthService } from '../auth/auth.service';
@@ -20,12 +21,12 @@ import { Router } from '@angular/router';
 import { FormBuilder, Validators} from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
-import { AlarmComponent } from './components/alarm/alarm.component';
 import { Output, EventEmitter } from '@angular/core';
 import { CropperComponent } from 'angular-cropperjs';
 import { ThemePalette } from '@angular/material/core';
 import { ThresholdComponent } from './components/threshold/threshold.component';
 import { SharedService } from '@app/shared/services/shared.service';
+import { HeaderComponent } from '@app/shared/components/header/header.component';
 
 
 export interface Task {
@@ -44,17 +45,13 @@ export interface PeriodicElement {
   symbol: string;
 }
 
-
-
-
-
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css'],
   template: ` <div>Interval: {{ observable$ | async }}</div>`,
 })
-export class AdminComponent implements OnInit {
+export class AdminComponent implements OnInit  {
 
   task: Task = {
     name: 'Alertas',
@@ -175,7 +172,8 @@ export class AdminComponent implements OnInit {
     name:["", [Validators.required]],
   });
 
-  granja: number;
+  granja: number|any;
+  granjaString: number|any;
 
   //Posicion de reset de las cajas (y de inicio...)
   dragPositionReset = { x: 0, y: 0 };
@@ -231,7 +229,8 @@ export class AdminComponent implements OnInit {
     private route: Router,
     private fb: FormBuilder,
     private dialog: MatDialog,
-    private SharedSvc: SharedService,
+    private sharedSvc: SharedService,
+    private header: HeaderComponent,
     @Inject(DOCUMENT) private document: any
   ) {
     this.trustHTML = '';
@@ -278,7 +277,8 @@ export class AdminComponent implements OnInit {
 
     this.elem = document.getElementById('container-center');
 
-    
+
+    //this.granja="1";
 
     //this.dragPositionInit.x = this.dragPositionState.x;
     //this.dragPositionInit.y = this.dragPositionState.y;
@@ -353,8 +353,6 @@ export class AdminComponent implements OnInit {
   openFullScreen() {
 
     this.isFullDisplay = true;
-
-
     
     //Cambiar la imagen a 100%
     const section_img = this.document.getElementById('section_img');
@@ -389,11 +387,12 @@ export class AdminComponent implements OnInit {
         this.isFullDisplay = false;
       }
     }
+
   }
   
   /* Close fullscreen */
   closeFullScreen(): void {
-    console.log('entra');
+    
     const img = this.document.getElementById('img');
     img.className = '';
     if (this.document.exitFullscreen) {
@@ -486,7 +485,7 @@ export class AdminComponent implements OnInit {
 
   //Metodo para elegir cada una de las granjas a disposicion del usuario
   selectGranja(number: number) {
-    this.SharedSvc.setInstalacion(number);
+    this.sharedSvc.setInstalacion(number);
     this.granja = number;
     this.done = false;
     /* Pedimos la imagen almacenada */
